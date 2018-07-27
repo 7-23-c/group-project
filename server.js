@@ -1,10 +1,11 @@
 // module imports
-require('dotenv').config(); // for DEVELOPMENT purposes
+require('dotenv').config(); // DEVELOPMENT ONLY
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const logger = require('morgan');
 const app = express();
 const dbConfig = require('./server/config/database');
 
@@ -15,6 +16,7 @@ dbConfig();
 // app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
+app.use(logger('dev')); // DEVELOPMENT ONLY
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
