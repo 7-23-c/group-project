@@ -24,7 +24,7 @@ app.use(cookieParser())
 app.use(passport.initialize());
 
 // all api related routes go here
-app.use('/', require('./server/routes/authentication'));
+app.use('/', require('./server/routes/users'));
 
 // PRODUCTION ONLY
 // app.get('*', (req, res) => {
