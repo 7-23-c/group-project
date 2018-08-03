@@ -1,14 +1,13 @@
 # group-project
 
 DEVELOPMENT
-* Download and install yarn from https://yarnpkg.com/en/docs/install
 * Open 2 CLI windows, 1 for your server & 1 for your client
 1. *cd group-project*
-2. *yarn install* 
-3. *yarn dev*
+2. *npm install* 
+3. *npm dev*
 4. *cd group-project/client*
-5. *yarn install*
-6. *yarn start*
+5. *npm install*
+6. *npm start*
 
 PRODUCTION
 * To deploy your app to Heroku, complete the following steps:
