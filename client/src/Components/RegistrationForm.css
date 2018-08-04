@@ -1,13 +1,15 @@
 .RegistrationForm {
-  
   text-align: center;
   border: 25px solid skyblue;
   border-radius: 0 0 5px 5px;
   box-sizing: border-box;
   margin-bottom: 5em;
-  padding: 5em;
+  padding: 3em 2em;
   max-width: 100%;
   width: 500px;
 }
 
+.RegistrationForm button {
+  margin-top: 16px;
+}
 

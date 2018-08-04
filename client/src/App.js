@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Registration from './Components/Registration';
 import './App.css';
 
 class App extends Component {
@@ -8,7 +9,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-header">Beacons</h1>
         </header>
-
+        <Registration />
       </div>
     );
   }

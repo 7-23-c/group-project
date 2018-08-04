@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import "./Registration.css";
 import RegistrationForm from "./RegistrationForm";
 
@@ -20,15 +19,13 @@ class Registration extends Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <div className="Registration">
-                    <div className="Registration-header">
-                        <h1> Registration </h1>
-                        <h2> Welcome new user! </h2>
-                    </div>
-                    <RegistrationForm onChange={fields => this.onChange(fields)} />
+            <div className="Registration">
+                <div className="Registration-header">
+                    <h1> Registration </h1>
+                    <h2> Welcome new user! </h2>
                 </div>
-            </MuiThemeProvider>
+                <RegistrationForm onChange={fields => this.onChange(fields)} />
+            </div>
         );
     }
 }

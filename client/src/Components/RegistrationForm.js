@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
-import RaisedButton from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 import './RegistrationForm.css';
 
 class RegistrationForm extends Component {
@@ -103,51 +103,36 @@ class RegistrationForm extends Component {
             <form className="RegistrationForm">
                 <TextField
                     name="first_name"
-                    hintText="First Name"
+                    label="First Name"
                     value={this.state.first_name}
                     onChange={e => this.change(e)}
-                    errorText={this.state.first_name_error}
-                    floatingLabelFixed
                 />
-                <br />
                 <TextField
                     name="last_name"
-                    hintText="Last Name"
+                    label="Last Name"
                     value={this.state.last_name}
                     onChange={e => this.change(e)}
-                    errorText={this.state.last_name_error}
-                    floatingLabelFixed
                 />
-                <br />
                 <TextField
                     name="username"
-                    hintText="Username"
+                    label="Username"
                     value={this.state.username}
                     onChange={e => this.change(e)}
-                    errorText={this.state.username_error}
-                    floatingLabelFixed
                 />
-                <br />
                 <TextField
                     name="email"
-                    hintText="Email"
+                    label="Email"
                     value={this.state.email}
                     onChange={e => this.change(e)}
-                    errorText={this.state.email_error}
-                    floatingLabelFixed
                 />
-                <br />
                 <TextField
                     name="password"
-                    hintText="Password"
+                    label="Password"
                     value={this.state.password}
                     onChange={e => this.change(e)}
-                    errorText={this.state.password_error}
                     type="password"
-                    floatingLabelFixed
                 />
-                <br />
-                <RaisedButton label="Submit" onClick={e => this.onSubmit(e)} primary />
+                <Button label="Submit" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Register</Button>
             </form>
         );
     }
