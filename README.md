@@ -1,7 +1,6 @@
 # group-project
 
 DEVELOPMENT
-* Download and install yarn from https://yarnpkg.com/en/docs/install
 * Open 2 CLI windows, 1 for your server & 1 for your client
 1. *cd group-project*
 2. *npm install* 
