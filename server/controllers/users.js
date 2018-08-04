@@ -38,7 +38,7 @@ UserController.updateUser = function(req, res, next) {
             user.username = req.body.username;
         }
         if (req.body.password) {
-            user.local.password = req.body.password;
+            user.local.password = user.generateHash(req.body.password);
         }
 
         user.save(function(err) {

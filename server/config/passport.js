@@ -52,7 +52,7 @@ passport.use('generate-token', new LocalStrategy({
                 return done(null, false, { error: 'Something unexpected happened. Please try again.' });
             }
 
-            if (!user.validPassword(password)) {
+            if (!user || !user.validPassword(password)) {
                 return done(null, false, { error: 'Invalid username or password.' });
             }
 
