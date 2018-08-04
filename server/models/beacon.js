@@ -1,7 +1,6 @@
 // import needed modules
 const mongoose = require('mongoose');
 
-
 // define the schema for our beacon model
 const beaconSchema = new mongoose.Schema({ 
     name: String,
@@ -9,11 +8,10 @@ const beaconSchema = new mongoose.Schema({
         latitude: Number,
         longitutde: Number
     },
-
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-        },
+    },
     description: String
 });
 

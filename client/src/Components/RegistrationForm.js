@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
+import TextField from "@material-ui/core/TextField";
+import RaisedButton from "@material-ui/core/Button";
 import './RegistrationForm.css';
 
 class RegistrationForm extends Component {
