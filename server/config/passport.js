@@ -31,3 +31,5 @@ passport.use('local-registration', new LocalStrategy({
         });
     }
 ));
+
+module.exports = passport;

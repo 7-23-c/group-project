@@ -1,7 +1,6 @@
 const UserController = new Object();
 const passport = require('passport');
 const User = require('../models/user');
-const Authorize = require('../helpers/authorize');
 
 require('../config/passport');
 
