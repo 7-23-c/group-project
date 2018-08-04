@@ -4,12 +4,9 @@
   font-size: 1.5em;
 }
 
-
 .App-header {
-  border: 1em solid skyblue;
+  border: .3em solid skyblue;
   background-color: skyblue;
   border-radius: 0 0 5px 5px;
   color: white;
 }
-
-

@@ -10,5 +10,5 @@ ReactDOM.render(
     <BrowserRouter>
         <App />
     </BrowserRouter>,
-document.getElementById('Registration Section'));
+document.getElementById('root'));
 registerServiceWorker();
