@@ -147,7 +147,7 @@ class RegistrationForm extends Component {
                     floatingLabelFixed
                 />
                 <br />
-                <RaisedButton label="Submit" onClick={e => this.onSubmit(e)} primary />
+                <RaisedButton label="Register!" onClick={e => this.onSubmit(e)} primary />
             </form>
         );
     }

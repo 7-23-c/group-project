@@ -1,0 +1,21 @@
+.Login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.Login-header {
+  border:  solid skyblue ;
+  border-radius: 5px 5px 0 0;
+  background-color: skyblue;
+  box-sizing: border-box;
+  margin-top: 5em;
+  max-width: 100%;
+  height: 150px;
+  padding: 20px;
+  color: white;
+  width: 500px;
+  
+}
