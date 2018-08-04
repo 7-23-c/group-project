@@ -4,7 +4,7 @@ DEVELOPMENT
 * Open 2 CLI windows, 1 for your server & 1 for your client
 1. *cd group-project*
 2. *npm install* 
-3. *npm start*
+3. *npm dev*
 4. *cd group-project/client*
 5. *npm install*
 6. *npm start*
