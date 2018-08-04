@@ -21,8 +21,8 @@ class Registration extends Component {
         return (
             <div className="Registration">
                 <div className="Registration-header">
-                    <h1> Registration </h1>
-                    <h2> Welcome new user! </h2>
+                    <h1>Registration</h1>
+                    <h2>Welcome new user!</h2>
                 </div>
                 <RegistrationForm onChange={fields => this.onChange(fields)} />
             </div>
