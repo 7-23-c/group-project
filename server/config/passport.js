@@ -2,16 +2,16 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
 
 passport.use('local-registration', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
-  },
+},
   function (req, email, password, done) {
-    User.findOne({
-      'local.email': email
-    }, function (err, user) {
+    User.findOne({ 'local.email': email }, function (err, user) {
       if (err) {
         return done(null, false, {
           error: 'Something unexpected happen. Please try again.'
@@ -42,61 +42,29 @@ passport.use('local-registration', new LocalStrategy({
   }
 ));
 
-
-/*
- var strategy = new Strategy(params, function (payload, done) {
-    //finding the user in the database
-    console.log(payload);
-    models.users.findById(parseInt(payload.userId))
-        .then((user) => {
-            //if the user is found
-            if (user) {
-                return done(null, {
-                    id: user.id,
-                    username: user.username
-                });
-            } else {
-                return done(new Error("User not found"), null);
-            }
-        }).catch((err) => {
-        console.log(err);
-            return done(new Error("uncaught error! try again later"), null);
-        })
-});
-
-  module.exports = {
-    initialize: function () {
-        return passport.initialize();
-    },
-    authenticate: function (req, res, next) {
-        return passport.authenticate("jwt", {
-            session: false
-        }, (err, user, info) => {
+passport.use('generate-token', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+},
+    function(email, password, done) {
+        User.findOne({ 'local.email': email }, function(err, user) {
             if (err) {
-                console.log(err);
-                return next(err);
+                return done(null, false, { error: 'Something unexpected happened. Please try again.' });
             }
-            if (!user) {
-                return res.json({
-                    status: 'error',
-                    error: 'ANOTHORIZED_USER'
-                });
+
+            if (!user.validPassword(password)) {
+                return done(null, false, { error: 'Invalid username or password.' });
             }
-            // Forward user information to the next middleware
-            req.user = user; 
-            next();
-        })(req, res, next);
+
+            jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '30d'}, function(err, token) {
+                if (err) {
+                    return done(null, false, { error: 'Something unexpected happened. Please try again..' })
+                }
+
+                return done(null, user, { token: token });
+            });
+        });
     }
-};
-
-//import the express router
-var express = require('express');
-var router = express.Router();
-//here I am importing the functions defined above, I put them in the config folder
-var jwt_login_strategy = require('../config/jwt-login-strategy');
-//and finally use the jwt_login_strategy as a middleware
-router.post('something', jwt_login_strategy.authenticate, your_other_middleware(req, res, next)=>{...});
-
-*/
+));
 
 module.exports = passport;

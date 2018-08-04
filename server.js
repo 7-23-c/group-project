@@ -24,7 +24,10 @@ app.use(cookieParser())
 app.use(passport.initialize());
 
 // all api related routes go here
-app.use('/', require('./server/routes/users'));
+app.use('/', [
+    require('./server/routes/users'),
+    require('./server/routes/tokens')
+]);
 
 // PRODUCTION ONLY
 // app.get('*', (req, res) => {

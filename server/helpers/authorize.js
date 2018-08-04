@@ -8,12 +8,12 @@ const jwt = require('jsonwebtoken');
 */
 function Authorize(req, res, next) {
     var id = req.params.id;
-    var token = req.headers.token;
+    var token = req.headers.authorization.split(' ')[1];
     var jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
     
     jwt.verify(token, jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'Unauthorized Access.'})
+            return res.json({ error: 'Something unexpected happen. Please try again.'})
         } else if (decoded.id === id) {
             return next();
         } else {
