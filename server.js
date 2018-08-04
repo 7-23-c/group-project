@@ -1,5 +1,5 @@
 // module imports
-require('dotenv').config(); // DEVELOPMENT ONLY
+// require('dotenv').config(); // DEVELOPMENT ONLY
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
