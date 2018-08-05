@@ -9,12 +9,9 @@ class LoginForm extends Component {
 
     // initialize state:
     state = {
-
         email: "",
-        email_error: "",
-
         password: "",
-        password_error: ""
+        error: ""
     };
 
     change = e => {
@@ -23,35 +20,6 @@ class LoginForm extends Component {
             [e.target.name]: e.target.value
         });
     };
-    //Validation stuff goes here:
-    // validate = () => {
-    //     let isError = false;
-    //     const errors = {
-
-    //         username_error: "",
-    //         password_error: ""
-    //     };
-    //     //check the first_name field
-
-    //     //check the username
-    //     if (this.state.username.length < 4) {
-    //         isError = true;
-    //         errors.username_error = "Username was not found";
-    //     }
-
-    //     //check the password length
-    //     if (this.state.password.length < 5) {
-    //         isError = true;
-    //         errors.password_error = "Password does not match username";
-    //     }
-
-    //     this.setState({
-    //         ...this.state,
-    //         ...errors
-    //     });
-
-    //     return isError;
-    // };
 
     onSubmit = e => {
         e.preventDefault();
@@ -69,36 +37,24 @@ class LoginForm extends Component {
                 window.location = '/dashboard';
             }
         })
-        .catch(function(err) {
-            console.log(err);
-        })
-        /*
-        const err = this.validate();
-        if (!err) {
-            // clear form after the onSubmit()
+        .catch(err => {
             this.setState({
-
-                username: "",
-                username_error: "",
-
-                password: "",
-                password_error: ""
+                error: 'Invalid Username or Password'
             });
-            this.props.onChange({
-                username: "",
-                password: ""
-            });
-        }*/
+        })
     };
 
     render() {
         return (
             <form className="LoginForm">
+            {this.state.error.length > 0 ? <div className="error">{this.state.error}</div> : null}
                 <TextField
                     name="email"
                     label="Email"
                     value={this.state.username}
                     onChange={e => this.change(e)}
+                    error={this.state.error.length > 0 ? true : false}
+                    fullWidth={true}
                 />
                 <TextField
                     name="password"
@@ -106,8 +62,17 @@ class LoginForm extends Component {
                     value={this.state.password}
                     onChange={e => this.change(e)}
                     type="password"
+                    error={this.state.error.length > 0 ? true : false}
+                    fullWidth={true}
                 />
-                <Button type="submit" label="Login" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Login</Button>
+                <Button
+                    type="submit"
+                    label="Login"
+                    onClick={e => this.onSubmit(e)}
+                    variant="contained"
+                    size="medium"
+                    fullWidth={true}
+                >Login</Button>
                 <div>Don't have an account yet? <Link to="/register">Create one!</Link></div>
             </form>
         );

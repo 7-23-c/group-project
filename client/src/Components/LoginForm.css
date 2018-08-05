@@ -3,7 +3,7 @@
   border: 25px solid skyblue;
   border-radius: 0 0 5px 5px;
   box-sizing: border-box;
-  padding: 5em;
+  padding: 3em 2em;
   max-width: 100%;
   width: 500px;
   background-color: #FFFFFF;
@@ -12,6 +12,10 @@
 .LoginForm button {
   margin-top: 16px;
   margin-bottom: 16px;
+}
+
+.error {
+  color: #F44336;
 }
 
 
