@@ -23,6 +23,8 @@ app.use(cookieParser())
 
 app.use(passport.initialize());
 
+app.disable('x-powered-by');
+
 // all api related routes go here
 app.use('/', [
     require('./server/routes/users'),
