@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./Login.css";
 import LoginForm from "./LoginForm";
 
-
 class Login extends Component {
     state = {
         fields: {}

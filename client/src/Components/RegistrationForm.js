@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import './RegistrationForm.css';
+import { Link } from 'react-router-dom';
 
 class RegistrationForm extends Component {
 
@@ -133,6 +134,7 @@ class RegistrationForm extends Component {
                     type="password"
                 />
                 <Button type="submit" label="Submit" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Register</Button>
+                <div>Already have an account? <Link to="/login">Login!</Link></div>
             </form>
         );
     }

@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from 'axios';
 import './LoginForm.css';
+import { Link } from 'react-router-dom';
 
 class LoginForm extends Component {
 
@@ -107,6 +108,7 @@ class LoginForm extends Component {
                     type="password"
                 />
                 <Button type="submit" label="Login" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Login</Button>
+                <div>Don't have an account yet? <Link to="/register">Create one!</Link></div>
             </form>
         );
     }
