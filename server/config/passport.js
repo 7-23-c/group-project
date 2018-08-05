@@ -24,6 +24,25 @@ passport.use('local-registration', new LocalStrategy({
         });
       }
 
+      // begin validation checks
+      var errors = [];
+
+      if (!req.body.fName) {
+        errors.push('First name must not be left blank.');
+      }
+
+      if (!req.body.lName) {
+        errors.push('Last name must not be left blank.');
+      }
+
+      if (!req.body.username) {
+        errors.push('Username must not be left blank.');
+      }
+
+      if (errors.length > 0) {
+        return done(null, false, { errors: errors });
+      }
+      
       var newUser = new User();
 
       newUser.local.email = email;

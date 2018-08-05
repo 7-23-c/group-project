@@ -1,4 +1,4 @@
-.RegistrationForm {
+.LoginForm {
   text-align: center;
   border: 25px solid skyblue;
   border-radius: 0 0 5px 5px;
@@ -9,8 +9,13 @@
   background-color: #FFFFFF;
 }
 
-.RegistrationForm button {
+.LoginForm button {
   margin-top: 16px;
   margin-bottom: 16px;
 }
+
+.error {
+  color: #F44336;
+}
+
 
