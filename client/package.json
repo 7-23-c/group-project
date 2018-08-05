@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^1.4.3",
+    "axios": "^0.18.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-icons": "^2.2.7",
