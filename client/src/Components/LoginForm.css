@@ -1,5 +1,4 @@
 .LoginForm {
-  
   text-align: center;
   border: 25px solid skyblue;
   border-radius: 0 0 5px 5px;
@@ -8,6 +7,10 @@
   padding: 5em;
   max-width: 100%;
   width: 500px;
+}
+
+.LoginForm button {
+  margin-top: 16px;
 }
 
 

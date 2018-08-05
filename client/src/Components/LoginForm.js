@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import './LoginForm.css';
 
 class LoginForm extends Component {
@@ -76,29 +76,20 @@ class LoginForm extends Component {
     render() {
         return (
             <form className="LoginForm">
-
-
-                <br />
                 <TextField
                     name="username"
-                    hintText="Username"
+                    label="Username"
                     value={this.state.username}
                     onChange={e => this.change(e)}
-                    errorText={this.state.username_error}
-                    floatingLabelFixed
                 />
-                <br />
                 <TextField
                     name="password"
-                    hintText="Password"
+                    label="Password"
                     value={this.state.password}
                     onChange={e => this.change(e)}
-                    errorText={this.state.password_error}
                     type="password"
-                    floatingLabelFixed
                 />
-                <br />
-                <RaisedButton label="Login" onClick={e => this.onSubmit(e)} primary />
+                <Button label="Login" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Login</Button>
             </form>
         );
     }
