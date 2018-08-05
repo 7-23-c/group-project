@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Login.css";
 import LoginForm from "./LoginForm";
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
     state = {
@@ -17,15 +18,19 @@ class Login extends Component {
     };
 
     render() {
-        return (
-            <div className="Login">
-                <div className="Login-header">
-                    <h1>Login</h1>
-                    <h2>Welcome Back!</h2>
+        if (localStorage.getItem('token') !== null) {
+            return <Redirect to='/dashboard' />
+        } else {
+            return (
+                <div className="Login">
+                    <div className="Login-header">
+                        <h1>Login</h1>
+                        <h2>Welcome Back!</h2>
+                    </div>
+                    <LoginForm onChange={fields => this.onChange(fields)} />
                 </div>
-                <LoginForm onChange={fields => this.onChange(fields)} />
-            </div>
-        );
+            );
+        }
     }
 }
 
