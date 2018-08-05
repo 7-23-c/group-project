@@ -23,8 +23,7 @@ class LoginForm extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        // TODO: submit stuff (send url to the database)
-        // this.props.onSubmit(this.state);
+        
         Axios.post('/token', {
             email: this.state.email,
             password: this.state.password

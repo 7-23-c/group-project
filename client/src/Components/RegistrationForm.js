@@ -74,7 +74,7 @@ class RegistrationForm extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        if (true) {
+        if (this.validate() === false) {
             Axios.post('/users', {
                 fName: this.state.first_name,
                 lName: this.state.last_name,
@@ -83,8 +83,8 @@ class RegistrationForm extends Component {
                 password: this.state.password
             })
             .then(function(res) {
-                if (res.data.error) {
-                    console.log(res.data.error);
+                if (res.data.errors) {
+                    console.log(res.data.errors);
                 } else if (res.data.message === 'Missing credentials') {
                     console.log(res.data.message);
                 } else {

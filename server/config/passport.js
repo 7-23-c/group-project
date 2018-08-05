@@ -40,7 +40,7 @@ passport.use('local-registration', new LocalStrategy({
       }
 
       if (errors.length > 0) {
-        return done(null, false, { error: errors });
+        return done(null, false, { errors: errors });
       }
       
       var newUser = new User();
