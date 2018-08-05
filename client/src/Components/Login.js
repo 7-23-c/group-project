@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import "./Registration.css";
-import RegistrationForm from "./RegistrationForm";
+import "./Login.css";
+import LoginForm from "./LoginForm";
 import { Redirect } from 'react-router-dom';
 
-
-class Registration extends Component {
+class Login extends Component {
     state = {
         fields: {}
     };
@@ -23,16 +22,16 @@ class Registration extends Component {
             return <Redirect to='/dashboard' />
         } else {
             return (
-                <div className="Registration">
-                    <div className="Registration-header">
-                        <h1>Registration</h1>
-                        <h2>Welcome new user!</h2>
+                <div className="Login">
+                    <div className="Login-header">
+                        <h1>Login</h1>
+                        <h2>Welcome Back!</h2>
                     </div>
-                    <RegistrationForm onChange={fields => this.onChange(fields)} />
+                    <LoginForm onChange={fields => this.onChange(fields)} />
                 </div>
             );
         }
     }
 }
 
-export default Registration;
+export default Login;

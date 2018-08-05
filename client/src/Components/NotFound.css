@@ -1,0 +1,30 @@
+.NotFound {
+    min-height: 100vh;
+    background-image: url('../Images/closed.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.NotFound div {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+}
+
+.NotFound span {
+    color: #31b0e2;
+    text-decoration: underline;
+}
+
+.NotFound span:hover {
+    cursor: pointer;
+}
+
+.NotFound a {
+    color: #31b0e2;
+    text-decoration: underline;
+}
