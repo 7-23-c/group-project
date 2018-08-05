@@ -4,6 +4,8 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  background-color: #31b0e2;
+  min-height: 100vh;
 }
 
 .Login-header {

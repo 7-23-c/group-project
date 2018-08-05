@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import './RegistrationForm.css';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
 class RegistrationForm extends Component {
 
@@ -74,6 +75,20 @@ class RegistrationForm extends Component {
         e.preventDefault();
         // TODO: submit stuff (send url to the database)
         // this.props.onSubmit(this.state);
+        Axios.post('/users', {
+            fName: this.state.first_name,
+            lName: this.state.last_name,
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
+        })
+        .then(function(res) {
+            console.log(res);
+        })
+        .catch(function(err) {
+
+        })
+        /*
         const err = this.validate();
         if (!err) {
             // clear form after the onSubmit()
@@ -96,7 +111,7 @@ class RegistrationForm extends Component {
                 email: "",
                 password: ""
             });
-        }
+        }*/
     };
 
     render() {

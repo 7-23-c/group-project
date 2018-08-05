@@ -93,7 +93,7 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <form  className="LoginForm">
+            <form className="LoginForm">
                 <TextField
                     name="email"
                     label="Email"
