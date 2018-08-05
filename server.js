@@ -16,7 +16,7 @@ dbConfig();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
-app.use(logger('dev')); // DEVELOPMENT ONLY
+// app.use(logger('dev')); // DEVELOPMENT ONLY
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
