@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Axios from 'axios';
 import './LoginForm.css';
 
 class LoginForm extends Component {
@@ -8,8 +9,8 @@ class LoginForm extends Component {
     // initialize state:
     state = {
 
-        username: "",
-        username_error: "",
+        email: "",
+        email_error: "",
 
         password: "",
         password_error: ""
@@ -55,6 +56,22 @@ class LoginForm extends Component {
         e.preventDefault();
         // TODO: submit stuff (send url to the database)
         // this.props.onSubmit(this.state);
+        Axios.post('/token', {
+            email: this.state.email,
+            password: this.state.password
+        })
+        .then(function(res) {
+            if (!res.data.token) {
+                throw new Error('Invalid Username or Password');
+            } else {
+                localStorage.setItem('token', res.data.token);
+                window.location = '/dashboard';
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+        /*
         const err = this.validate();
         if (!err) {
             // clear form after the onSubmit()
@@ -70,15 +87,15 @@ class LoginForm extends Component {
                 username: "",
                 password: ""
             });
-        }
+        }*/
     };
 
     render() {
         return (
-            <form className="LoginForm">
+            <form  className="LoginForm">
                 <TextField
-                    name="username"
-                    label="Username"
+                    name="email"
+                    label="Email"
                     value={this.state.username}
                     onChange={e => this.change(e)}
                 />
@@ -89,7 +106,7 @@ class LoginForm extends Component {
                     onChange={e => this.change(e)}
                     type="password"
                 />
-                <Button label="Login" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Login</Button>
+                <Button type="submit" label="Login" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Login</Button>
             </form>
         );
     }

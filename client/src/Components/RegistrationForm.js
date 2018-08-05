@@ -132,7 +132,7 @@ class RegistrationForm extends Component {
                     onChange={e => this.change(e)}
                     type="password"
                 />
-                <Button label="Submit" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Register</Button>
+                <Button type="submit" label="Submit" onClick={e => this.onSubmit(e)} variant="contained" size="medium">Register</Button>
             </form>
         );
     }
