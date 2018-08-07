@@ -14,9 +14,18 @@ const userSchema = mongoose.Schema({
         last: String
     },
     friends: [{
+        _id: false,
         friend_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
+        },
+        accepted: {
+            type: Boolean,
+            default: false
+        },
+        sender: {
+            type: Boolean,
+            default: false
         }
     }],
     beacons: [{

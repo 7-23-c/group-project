@@ -28,7 +28,8 @@ app.disable('x-powered-by');
 // all api related routes go here
 app.use('/', [
     require('./server/routes/users'),
-    require('./server/routes/tokens')
+    require('./server/routes/tokens'),
+    require('./server/routes/friends')
 ]);
 
 // PRODUCTION ONLY
