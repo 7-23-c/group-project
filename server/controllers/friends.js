@@ -103,7 +103,41 @@ friendsController.removeFriend = function(req, res, next) {
 }
 
 friendsController.acceptFriend = function(req, res, next) {
-// in progress
+    var token = req.headers.authorization.split(' ')[1];
+
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+        User.findById(decoded.id, function(err, user) {
+            var myFriend = user.friends.filter(friend => friend.friend_id === req.params.id);
+            
+            if (!myFriend.accepted && !myFriend.sender) {
+                var myFriendIndex = user.friends.findIndex(friend => friend.friend_id.toString() === req.params.id);
+
+                user.friends[myFriendIndex].accepted = true;
+
+                user.save(function(err) {
+                    if (err) {
+                        return res.json({ error: 'Unable to accept friend request.' });
+                    } else {
+                        User.findById(req.params.id, function(err, friend) {
+                            var myIndex = friend.friends.findIndex(friend => friend.friend_id.toString() === decoded.id);
+                            
+                            friend.friends[myIndex].accepted = true;
+
+                            friend.save(function(err) {
+                                if (err) {
+                                    return res.json({ error: 'Something weird happened. Not able to accept friend request.' })
+                                } else {
+                                    return res.json({ success: 'Accepted friend request.' });
+                                }
+                            });
+                        });
+                    }
+                });
+            } else {
+                res.json({ error: 'You have to be the sender of the request to accept a friend request.'});
+            }
+        });
+    });
 }
 
 module.exports = friendsController;
