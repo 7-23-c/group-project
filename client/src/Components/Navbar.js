@@ -11,23 +11,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import InboxIcon from '@material-ui/icons/Inbox';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
 import './Navbar.css';
 
 class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            top: false,
-            left: false,
-            bottom: false,
-            right: false
+            left: false
         };
     }
 
-    toggleDrawer = (side, open) => () => {
+    toggleDrawer = (open) => () => {
         this.setState({
-          [side]: open,
+          left: open,
         });
       };
 
@@ -48,7 +45,7 @@ class Navbar extends Component {
                 <AppBar position="static">
                     <Toolbar>
                         { this.props.isLoggedIn
-                            ?   <IconButton onClick={this.toggleDrawer('left', true)} className="menuButton" color="inherit" aria-label="Menu">
+                            ?   <IconButton onClick={this.toggleDrawer(true)} className="menuButton" color="inherit" aria-label="Menu">
                                     <MenuIcon />
                                 </IconButton>
                             : null
@@ -64,24 +61,30 @@ class Navbar extends Component {
                     </Toolbar>
                 </AppBar>
                         
-                <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
-                <div
-                    tabIndex={0}
-                    role="button"
-                    onClick={this.toggleDrawer('left', false)}
-                    onKeyDown={this.toggleDrawer('left', false)}
-                >
-                    <div className="list">
-                        <List>
-                            <ListItem button={true}>
-                                <ListItemIcon>
-                                    <InboxIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Test" />
-                            </ListItem>
-                        </List>
+                <Drawer open={this.state.left} onClose={this.toggleDrawer(false)}>
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        onClick={this.toggleDrawer(false)}
+                        onKeyDown={this.toggleDrawer(false)}
+                        className="topNavContainer"
+                    >
+                        <div className="list">
+                            <List className="topNav">
+                                <ListItem button={true}>
+                                    <ListItemIcon>
+                                        <PersonIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Test" />
+                                </ListItem>
+                            </List>
+                            <List>
+                                <ListItem button={true}>
+                                    <ListItemText primary="Test" />
+                                </ListItem>
+                            </List>
+                        </div>
                     </div>
-                </div>
                 </Drawer>
             </div>
         )

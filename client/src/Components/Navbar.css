@@ -11,6 +11,17 @@
     margin-right: 20;
 }
 
+.topNavContainer {
+    height: 100%;
+}
+
 .list {
+    display: flex;
+    flex-direction: column;
     width: 250px;
+    min-height: 100%;
+}
+
+.topNav {
+    flex-grow: 1;
 }
