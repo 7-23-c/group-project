@@ -47,9 +47,13 @@ class Navbar extends Component {
             <div className="root">
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton onClick={this.toggleDrawer('left', true)} className="menuButton" color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
+                        { this.props.isLoggedIn
+                            ?   <IconButton onClick={this.toggleDrawer('left', true)} className="menuButton" color="inherit" aria-label="Menu">
+                                    <MenuIcon />
+                                </IconButton>
+                            : null
+                        }
+                        
                         <Typography className="flex" variant="title" color="inherit">
                             Beacons
                         </Typography>
@@ -59,6 +63,7 @@ class Navbar extends Component {
                         }
                     </Toolbar>
                 </AppBar>
+                        
                 <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
                 <div
                     tabIndex={0}
@@ -68,10 +73,10 @@ class Navbar extends Component {
                 >
                     <div className="list">
                         <List>
-                            <ListItem>
-                            <ListItemIcon>
-                                <InboxIcon />
-                                    </ListItemIcon>
+                            <ListItem button={true}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
                                 <ListItemText primary="Test" />
                             </ListItem>
                         </List>
