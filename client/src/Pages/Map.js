@@ -7,7 +7,7 @@ class Map extends Component {
             return <Redirect to='/login' />
         } else {
             return (
-                <h3>Dashboard</h3>
+                <h3>Map</h3>
             )
         }
     }

@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/Map';
 import FriendIcon from '@material-ui/icons/People';
+import SettingsIcon from '@material-ui/icons/SettingsRounded';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -80,8 +81,11 @@ class Navbar extends Component {
                                 </ListItem>
                             </List>
                             <List>
-                                <ListItem button={true}>
-                                    <ListItemText primary="Test" />
+                                <ListItem button={true} component={Link} to="/settings">
+                                    <ListItemIcon>
+                                        <SettingsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Settings" />
                                 </ListItem>
                             </List>
                         </div>
