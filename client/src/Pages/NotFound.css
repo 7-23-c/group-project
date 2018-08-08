@@ -1,12 +1,12 @@
 .NotFound {
-    min-height: 100vh;
+    min-height: calc(100vh - 64px);
     background-image: url('../Images/closed.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .NotFound div {
-    min-height: 100vh;
+    min-height: calc(100vh - 64px);;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -5,13 +5,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import FriendIcon from '@material-ui/icons/People';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Link } from 'react-router-dom';
 
-import PersonIcon from '@material-ui/icons/PersonOutlined';
 import './Navbar.css';
 
 class Navbar extends Component {
@@ -28,15 +30,9 @@ class Navbar extends Component {
         });
       };
 
-    onLogout = function() {
+    onLogout = () => {
         localStorage.removeItem('token');
         window.location = '/login';
-    }
-
-    onLogin = function() {
-        if (window.location.pathname !== '/login') {
-            window.location = '/login';
-        }
     }
 
     render() {
@@ -56,8 +52,7 @@ class Navbar extends Component {
                         </Typography>
                         { this.props.isLoggedIn
                             ? <Button onClick={this.onLogout} color="inherit">Logout</Button>
-                            : <Button onClick={this.onLogin} color="inherit">Login</Button>
-                        }
+                            : null }
                     </Toolbar>
                 </AppBar>
                         
@@ -71,11 +66,17 @@ class Navbar extends Component {
                     >
                         <div className="list">
                             <List className="topNav">
-                                <ListItem button={true}>
+                                <ListItem button={true} component={Link} to="/dashboard">
                                     <ListItemIcon>
-                                        <PersonIcon />
+                                        <DashboardIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Test" />
+                                    <ListItemText primary="Dashboard" />
+                                </ListItem>
+                                <ListItem button={true} component={Link} to="/friends">
+                                    <ListItemIcon>
+                                        <FriendIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Friends" />
                                 </ListItem>
                             </List>
                             <List>
