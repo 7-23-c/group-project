@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 const Home = () => {
     if (localStorage.getItem('token') !== null) {
-        return <Redirect to='/dashboard' />
+        return <Redirect to='/map' />
     } else {
         return <Redirect to='/login' />
     }

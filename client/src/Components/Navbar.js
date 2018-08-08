@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import MapIcon from '@material-ui/icons/Map';
 import FriendIcon from '@material-ui/icons/People';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -66,11 +66,11 @@ class Navbar extends Component {
                     >
                         <div className="list">
                             <List className="topNav">
-                                <ListItem button={true} component={Link} to="/dashboard">
+                                <ListItem button={true} component={Link} to="/map">
                                     <ListItemIcon>
-                                        <DashboardIcon />
+                                        <MapIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary="Dashboard" />
+                                    <ListItemText primary="Map" />
                                 </ListItem>
                                 <ListItem button={true} component={Link} to="/friends">
                                     <ListItemIcon>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-class Dashboard extends Component {
+class Map extends Component {
     render() {
         if (localStorage.getItem('token') === null) {
             return <Redirect to='/login' />
@@ -13,4 +13,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default Map;

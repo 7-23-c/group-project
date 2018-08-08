@@ -10,7 +10,7 @@ friendsController.getFriends = function(req, res, next) {
         if (err) {
             return res.json({ error: 'Something unexpected happened. Please try again.'})
         } else {
-            User.findById(decoded.id, 'friends', function(err, user) {
+            User.findById(decoded.id, 'friends').populate('friends.friend_id', 'username').exec(function(err, user) {
                 if (err) {
                     return res.json({ error: 'Something unexpected happened. Please try again.'})
                 } else {

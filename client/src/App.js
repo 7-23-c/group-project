@@ -3,8 +3,8 @@ import Registration from './Pages/Registration';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
 import NotFound from './Pages/NotFound';
-import Dashboard from './Pages/Dashboard';
-import Friends from './Pages/Friends';
+import Map from './Pages/Map';
+//import Friends from './Pages/Friends';
 import Navigation from './Components/Navbar';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
@@ -31,10 +31,9 @@ class App extends Component {
                 <Navigation isLoggedIn={this.state.isLoggedIn} />
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/map" component={Map} />
                     <Route exact path="/register" component={Registration} />
                     <Route exact path="/login" component={Login} />
-                    <Route exact path="/friends" component={Friends} />
                     <Route path="*" component={NotFound} />
                 </Switch>
             </div>
