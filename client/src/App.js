@@ -1,13 +1,19 @@
+// import react components
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
+
+// import pages
 import Registration from './Pages/Registration';
 import Login from './Pages/Login';
 import Landing from './Pages/Landing';
 import NotFound from './Pages/NotFound';
 import Map from './Pages/Map';
-//import Friends from './Pages/Friends';
+
+// import custom components
 import Navigation from './Components/Navbar';
 import PrivateRoute from './Components/PrivateRoute';
-import { Switch, Route } from 'react-router-dom';
+
+// import css
 import './App.css';
 
 class App extends Component {

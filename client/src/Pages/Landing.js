@@ -1,4 +1,7 @@
+// import react components
 import React, { Component } from 'react';
+
+// import css
 import './Landing.css';
 
 class Home extends Component {

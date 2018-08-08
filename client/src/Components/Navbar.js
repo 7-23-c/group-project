@@ -1,19 +1,26 @@
+// import react components
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+// import components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import MapIcon from '@material-ui/icons/Map';
-import FriendIcon from '@material-ui/icons/People';
-import SettingsIcon from '@material-ui/icons/SettingsRounded';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from 'react-router-dom';
+
+// import icons
+import MenuIcon from '@material-ui/icons/Menu';
+import MapIcon from '@material-ui/icons/Map';
+import FriendIcon from '@material-ui/icons/People';
+import SettingsIcon from '@material-ui/icons/SettingsRounded';
+
+// import css
 import './Navbar.css';
 
 const Navigation = () => {

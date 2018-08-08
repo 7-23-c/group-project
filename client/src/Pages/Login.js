@@ -1,7 +1,12 @@
+// import react components
 import React, { Component } from "react";
-import "./Login.css";
-import LoginForm from "../Components/LoginForm";
 import { Redirect } from 'react-router-dom';
+
+// import custom components
+import LoginForm from "../Components/LoginForm";
+
+// import css
+import "./Login.css";
 
 class Login extends Component {
     state = {

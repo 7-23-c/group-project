@@ -1,13 +1,18 @@
+// import react components
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
+
+// import components
+import registerServiceWorker from './registerServiceWorker';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+// import custom components
 import App from './App';
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+// import css
+import './index.css';
+
 ReactDOM.render(
     <BrowserRouter>
         <div>
@@ -15,5 +20,5 @@ ReactDOM.render(
             <App />
         </div>
     </BrowserRouter>,
-document.getElementById('root'));
+document.getElementById('app'));
 registerServiceWorker();

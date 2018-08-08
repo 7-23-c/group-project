@@ -1,9 +1,14 @@
+// import react components
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
+
+// import components
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Axios from 'axios';
+
+// import css
 import './LoginForm.css';
-import { Link } from 'react-router-dom';
 
 class LoginForm extends Component {
 
