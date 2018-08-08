@@ -19,7 +19,7 @@ class Login extends Component {
 
     render() {
         if (localStorage.getItem('token') !== null) {
-            return <Redirect to='/dashboard' />
+            return <Redirect to='/map' />
         } else {
             return (
                 <div className="Login">
