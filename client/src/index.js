@@ -4,7 +4,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import Friends from './Components/Friends';
+import Friends from './Pages/Friends';
 
 //ReactDOM.render(<Friends />, document.getElementById('root'));
 ReactDOM.render(

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Registration.css";
-import RegistrationForm from "./RegistrationForm";
+import RegistrationForm from "../Components/RegistrationForm";
 import { Redirect } from 'react-router-dom';
 
 
