@@ -1,25 +1,35 @@
 const BeaconController = new Object();
 const Beacon = require('../models/beacon');
+const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
 
 BeaconController.createNewBeacon = function(req, res, next) {
-    var beacon = new Beacon({
-        title: req.body.title || "Untitled Beacon", 
-        location: {
-            longitude: req.body.longitude,
-            latitude: req.body.latitude
-        } 
+    var token = req.header.authorization.split(' ')[1];
+
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+        if (err) {
+            return res.json({ error: 'An error occurred while trying to create the beacon.' });
+        } else {
+            var beacon = new Beacon({
+                name: req.body.title || "Untitled Beacon", 
+                location: {
+                    longitude: req.body.longitude,
+                    latitude: req.body.latitude
+                },
+                created_by: decoded.id
+            });
+            
+            beacon.save()
+                .then(data => {
+                    res.json({ success: 'Beacon created successfully!' });
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        error: 'An error occurred while saving the Beacon.'
+                    });
+                });
+        }
     });
-    
-    beacon.save()
-    .then(data => {
-        res.json({ success: 'Beacon created successfully!' });
-    })
-    .catch(err => {
-        res.status(500).json({
-            error: 'An error occurred while saving the Beacon.'
-        });
-    });   
 }
 
 BeaconController.findAllBeacons = (req, res, next) => {
@@ -63,7 +73,7 @@ BeaconController.findOneBeacon = (req, res, next) => {
 BeaconController.updateBeacon = (req, res, next) => {
     // Find beacon and update it with the request body
     Beacon.findByIdAndUpdate(req.params.id, {
-        title: req.body.title || "Untitled Beacon",
+        name: req.body.title || "Untitled Beacon",
         location: {
             longitude: req.body.longitude,
             latitude: req.body.latitude
