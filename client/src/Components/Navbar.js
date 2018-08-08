@@ -14,8 +14,36 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
-
 import './Navbar.css';
+
+const Navigation = () => {
+    return (
+        <React.Fragment>
+            <List className="topNav">
+                <ListItem button={true} component={Link} to="/map">
+                    <ListItemIcon>
+                        <MapIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Map" />
+                </ListItem>
+                <ListItem button={true} component={Link} to="/friends">
+                    <ListItemIcon>
+                        <FriendIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Friends" />
+                </ListItem>
+            </List>
+            <List>
+                <ListItem button={true} component={Link} to="/settings">
+                    <ListItemIcon>
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" />
+                </ListItem>
+            </List>
+        </React.Fragment>
+    )
+}
 
 class Navbar extends Component {
     constructor(props) {
@@ -38,11 +66,16 @@ class Navbar extends Component {
 
     render() {
         return (
-            <div className="root">
-                <AppBar position="static">
+            <React.Fragment>
+                <AppBar position="static" className="root">
                     <Toolbar>
                         { this.props.isLoggedIn
-                            ?   <IconButton onClick={this.toggleDrawer(true)} className="menuButton" color="inherit" aria-label="Menu">
+                            ?   <IconButton
+                                    onClick={this.toggleDrawer(true)}
+                                    className="menuButton"
+                                    color="inherit"
+                                    aria-label="Menu"
+                                >
                                     <MenuIcon />
                                 </IconButton>
                             : null
@@ -51,9 +84,11 @@ class Navbar extends Component {
                         <Typography className="flex" variant="title" color="inherit">
                             Beacons
                         </Typography>
+                        
                         { this.props.isLoggedIn
                             ? <Button onClick={this.onLogout} color="inherit">Logout</Button>
-                            : null }
+                            : null
+                        }
                     </Toolbar>
                 </AppBar>
                         
@@ -66,32 +101,11 @@ class Navbar extends Component {
                         className="topNavContainer"
                     >
                         <div className="list">
-                            <List className="topNav">
-                                <ListItem button={true} component={Link} to="/map">
-                                    <ListItemIcon>
-                                        <MapIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Map" />
-                                </ListItem>
-                                <ListItem button={true} component={Link} to="/friends">
-                                    <ListItemIcon>
-                                        <FriendIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Friends" />
-                                </ListItem>
-                            </List>
-                            <List>
-                                <ListItem button={true} component={Link} to="/settings">
-                                    <ListItemIcon>
-                                        <SettingsIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Settings" />
-                                </ListItem>
-                            </List>
+                            <Navigation />
                         </div>
                     </div>
                 </Drawer>
-            </div>
+            </React.Fragment>
         )
     }
 }
