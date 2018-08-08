@@ -81,13 +81,13 @@ class Navbar extends Component {
                             : null
                         }
                         
-                        <Typography className="flex" variant="title" color="inherit">
+                        <Typography component={Link} to="/" className="flex" variant="title" color="inherit">
                             Beacons
                         </Typography>
                         
                         { this.props.isLoggedIn
                             ? <Button onClick={this.onLogout} color="inherit">Logout</Button>
-                            : null
+                            : <React.Fragment><Button component={Link} to="/login" color="inherit">Login</Button> or <Button component={Link} to="/register" color="inherit">Register</Button></React.Fragment>
                         }
                     </Toolbar>
                 </AppBar>
