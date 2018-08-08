@@ -27,7 +27,7 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Navigation isLoggedIn={this.state.isLoggedIn} />
                 <Switch>
                     <Route exact path="/" component={Home} />
@@ -36,7 +36,7 @@ class App extends Component {
                     <Route exact path="/login" component={Login} />
                     <Route path="*" component={NotFound} />
                 </Switch>
-            </div>
+            </React.Fragment>
             
         );
     }
