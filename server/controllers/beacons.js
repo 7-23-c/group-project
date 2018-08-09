@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
 
 BeaconController.createNewBeacon = function(req, res, next) {
-    var token = req.headers.authorization.split(' ')[1];
+    if (req.headers && req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+    }
 
     jwt.verify(token, jwtSecret, function(err, decoded) {
         if (err) {
@@ -33,10 +35,12 @@ BeaconController.createNewBeacon = function(req, res, next) {
 }
 
 BeaconController.findAllBeacons = (req, res, next) => {
-    var token = req.headers.authorization.split(' ')[1];
+    if (req.headers && req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+    }
 
     jwt.verify(token, jwtSecret, function(err, decoded){
-        Beacon.find({created_by: decoded.id})
+        Beacon.find({created_by: decoded.id}).populate('created_by', 'username')
         .then(beacons => {
             res.json({ beacons: beacons });
         })
@@ -49,24 +53,33 @@ BeaconController.findAllBeacons = (req, res, next) => {
 };
 
 BeaconController.findOneBeacon = (req, res, next) => {
-    Beacon.findById(req.params.id)
-    .then(beacon => {
-        if(!beacon) {
-            return res.status(404).json({
-                error: "Beacon not found."
-            });            
-        }
-        res.json({ beacon: beacon });
-    })
-    .catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).json({
-                error: "Beacon not found."
-            });                
-        }
-        return res.status(500).json({
-            error: "Error retrieving Beacon."
-        });
+    if (req.headers && req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+    }
+
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+        Beacon.findById(req.params.id)
+            .then(beacon => {
+                if(!beacon) {
+                    return res.status(404).json({
+                        error: "Beacon not found."
+                    });            
+                } else if (beacon.id === decoded.id) {
+                    return res.json({ error: 'Unauthorized Access.'});
+                } else {
+                    res.json({ beacon: beacon });
+                }
+            })
+            .catch(err => {
+                if(err.kind === 'ObjectId') {
+                    return res.status(404).json({
+                        error: "Beacon not found."
+                    });                
+                }
+                return res.status(500).json({
+                    error: "Error retrieving Beacon."
+                });
+            });
     });
 };
 
