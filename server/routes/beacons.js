@@ -15,4 +15,7 @@ BeaconController.findOneBeacon(req, res, next));
 router.put('/beacons/:id', (req, res, next) =>
 BeaconController.updateBeacon(req, res, next) );
 
+router.delete('/beacons/:id', (req, res, next) =>
+BeaconController.deleteBeacon(req, res, next));
+
 module.exports = router;

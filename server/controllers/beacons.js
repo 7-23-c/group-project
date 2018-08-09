@@ -86,7 +86,7 @@ BeaconController.findOneBeacon = (req, res, next) => {
                     return res.status(404).json({
                         error: "Beacon not found."
                     });            
-                } else if (beacon.id === decoded.id) {
+                } else if (beacon.created_by.toString() !== decoded.id) {
                     return res.json({ error: 'Unauthorized Access.'});
                 } else {
                     res.json({ beacon: beacon });
@@ -151,16 +151,24 @@ BeaconController.updateBeacon = (req, res, next) => {
 };
 
 BeaconController.deleteBeacon = function(req, res, next) {
-    Beacon.findById(req.params.id, function(err, beacon) {
-        if (err) {
-            return res.json({ error: 'Something unexpected happened.' });
-        }
-
-        beacon.remove(function(err) {
+    if (req.headers && req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+    }
+    
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+        Beacon.findById(req.params.id, function(err, beacon) {
             if (err) {
                 return res.json({ error: 'Something unexpected happened.' });
+            } else if (beacon.created_by.toString() !== decoded.id) {
+                return res.json({ error: 'Unauthorized Access.'});
+            } else {
+                beacon.remove(function(err) {
+                    if (err) {
+                        return res.json({ error: 'Something unexpected happened.' });
+                    }
+                    return res.json({ success: 'Beacon deleted successfully!' });
+                });
             }
-            return res.json({ success: 'Beacon deleted successfully!' });
         });
     });
 }
