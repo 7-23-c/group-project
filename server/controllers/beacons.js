@@ -12,7 +12,9 @@ BeaconController.createNewBeacon = function(req, res, next) {
         if (err) {
             return res.json({ error: 'An error occurred while saving the Beacon.' });
         } else {
-            var beacon = new Beacon({
+            var errors = [];
+
+            var newBeacon = new Beacon({
                 name: req.body.name || "Untitled Beacon", 
                 location: {
                     longitude: req.body.longitude,
@@ -20,16 +22,36 @@ BeaconController.createNewBeacon = function(req, res, next) {
                 },
                 created_by: decoded.id
             });
-            
-            beacon.save()
-                .then(data => {
-                    res.json({ success: 'Beacon created successfully!' });
-                })
-                .catch(err => {
-                    res.status(500).json({
-                        error: 'An error occurred while saving the Beacon.'
+
+            newBeacon = req.body.name || 'Untitled Beacon';
+
+            if (!req.body.latitude) {
+                errors.push('Latitude is required.');
+            } else {
+                beacon.location.latitude = req.body.latitude;
+            }
+
+            if (!req.body.longitude) {
+                errors.push('Longitude is required.');
+            } else {
+                beacon.location.longitude = req.body.longitude;
+            }
+
+            beacon.description = req.body.description || 'No description set yet.';
+
+            if (errors.length === 0) {
+                return res.json({ errors: errors });
+            } else {
+                beacon.save()
+                    .then(data => {
+                        res.json({ success: 'Beacon created successfully!' });
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            error: 'An error occurred while saving the Beacon.'
+                        });
                     });
-                });
+            }
         }
     });
 }
@@ -84,31 +106,57 @@ BeaconController.findOneBeacon = (req, res, next) => {
 };
 
 BeaconController.updateBeacon = (req, res, next) => {
-    // Find beacon and update it with the request body
-    Beacon.findByIdAndUpdate(req.params.id, {
-        name: req.body.title || "Untitled Beacon",
-        location: {
-            longitude: req.body.longitude,
-            latitude: req.body.latitude
-        }
-    }, {new: true})
-    .then(beacon => {
-        if(!beacon) {
-            return res.status(404).json({
-                error: "Beacon not found. "
+    if (req.headers && req.headers.authorization) {
+        var token = req.headers.authorization.split(' ')[1];
+    }
+
+    jwt.verify(token, jwtSecret, function(err, decoded) {
+        if (err) {
+            return res.json({ error: 'Error updating beacon.' });
+        } else {
+            Beacon.findById(decoded.id)
+            .then(beacon => {
+                if(!beacon) {
+                    return res.status(404).json({
+                        error: "Beacon not found. "
+                    });
+                } else {
+                    if (req.body.name) {
+                        beacon.name = req.body.name;
+                    }
+
+                    if (req.body.latitude) {
+                        beacon.location.latitude = req.body.latitude;
+                    }
+
+                    if (req.body.longitude) {
+                        beacon.location.longitude = req.body.longitude;
+                    }
+
+                    if (req.body.description) {
+                        beacon.description = req.body.description;
+                    }
+
+                    beacon.save()
+                    .then(data => {
+                        res.json({ success: 'Beacon updated successfully!'});
+                    })
+                    .catch(err => {
+                        res.json({ error: 'Error updating beacon.'});
+                    })
+                }
+            })
+            .catch(err => {
+                if(err.kind === 'ObjectId') {
+                    return res.status(404).json({
+                        error: "Beacon not found."
+                    });                
+                }
+                return res.status(500).json({
+                    error: "Error updating beacon."
+                });
             });
         }
-        res.json({ beacon: beacon });
-    })
-    .catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).json({
-                error: "Beacon not found."
-            });                
-        }
-        return res.status(500).json({
-            error: "Error updating beacon."
-        });
     });
 };
 
