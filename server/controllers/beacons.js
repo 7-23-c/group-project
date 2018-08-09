@@ -93,11 +93,6 @@ BeaconController.findOneBeacon = (req, res, next) => {
                 }
             })
             .catch(err => {
-                if(err.kind === 'ObjectId') {
-                    return res.status(404).json({
-                        error: "Beacon not found."
-                    });                
-                }
                 return res.status(500).json({
                     error: "Error retrieving Beacon."
                 });
@@ -138,20 +133,15 @@ BeaconController.updateBeacon = (req, res, next) => {
                     }
 
                     beacon.save()
-                    .then(data => {
-                        res.json({ success: 'Beacon updated successfully!'});
-                    })
-                    .catch(err => {
-                        res.json({ error: 'Error updating beacon.'});
-                    })
+                        .then(data => {
+                            res.json({ success: 'Beacon updated successfully!'});
+                        })
+                        .catch(err => {
+                            res.json({ error: 'Error updating beacon.'});
+                        })
                 }
             })
             .catch(err => {
-                if(err.kind === 'ObjectId') {
-                    return res.status(404).json({
-                        error: "Beacon not found."
-                    });                
-                }
                 return res.status(500).json({
                     error: "Error updating beacon."
                 });
