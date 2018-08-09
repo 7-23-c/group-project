@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 // import custom components
 import App from './App';
+import Friends from './Pages/Friends';
 
 // import css
 import './index.css';
