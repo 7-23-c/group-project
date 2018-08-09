@@ -16,3 +16,11 @@
     font-family: 'Kaushan Script', cursive;
     font-size: 2em;
 }
+
+.hero .badge {
+    height: 60px;
+}
+
+.hero .badge.app-store {
+    margin-right: 15px;
+}
