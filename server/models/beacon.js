@@ -6,7 +6,7 @@ const beaconSchema = new mongoose.Schema({
     name: String,
     location: {
         latitude: Number,
-        longitutde: Number
+        longitude: Number
     },
     created_by: {
         type: mongoose.Schema.Types.ObjectId,

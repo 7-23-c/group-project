@@ -4,14 +4,14 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
 
 BeaconController.createNewBeacon = function(req, res, next) {
-    var token = req.header.authorization.split(' ')[1];
+    var token = req.headers.authorization.split(' ')[1];
 
     jwt.verify(token, jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'An error occurred while trying to create the beacon.' });
+            return res.json({ error: 'An error occurred while saving the Beacon.' });
         } else {
             var beacon = new Beacon({
-                name: req.body.title || "Untitled Beacon", 
+                name: req.body.name || "Untitled Beacon", 
                 location: {
                     longitude: req.body.longitude,
                     latitude: req.body.latitude
@@ -33,7 +33,7 @@ BeaconController.createNewBeacon = function(req, res, next) {
 }
 
 BeaconController.findAllBeacons = (req, res, next) => {
-    var token = req.header.authorization.split(' ')[1];
+    var token = req.headers.authorization.split(' ')[1];
 
     jwt.verify(token, jwtSecret, function(err, decoded){
         Beacon.find({created_by: decoded.id})
