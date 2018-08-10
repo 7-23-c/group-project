@@ -1,8 +1,13 @@
+
+// import react components
 import React, { Component } from "react";
-import "./Registration.css";
-import RegistrationForm from "../Components/RegistrationForm";
 import { Redirect } from 'react-router-dom';
 
+// import custom components
+import RegistrationForm from "../Components/RegistrationForm";
+
+// import css
+import "./Registration.css";
 
 class Registration extends Component {
     state = {

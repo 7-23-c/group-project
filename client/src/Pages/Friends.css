@@ -1,0 +1,39 @@
+
+.Friends {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: #31b0e2;
+    min-height: 100vh;
+}
+
+.Friends-only-Header {
+    font-size: 3em;
+    color: white;
+}
+
+.Friends-only-List {
+    border:  solid skyblue ;
+    border-radius: 5px 5px 0 0;
+    background-color: skyblue;
+    font-size: 30px;
+    box-sizing: border-box;
+    max-width: 100%;
+    color: white;
+    width: 400px;
+}
+.Pending-only-Header {
+    font-size: 3em;
+    color: white;
+}
+.Pending-only-List {
+    border:  solid skyblue ;
+    border-radius: 5px 5px 0 0;
+    background-color: skyblue;
+    font-size: 30px;
+    box-sizing: border-box;
+    max-width: 100%;
+    color: white;
+    width: 400px;
+}
