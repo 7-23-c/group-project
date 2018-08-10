@@ -7,10 +7,9 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const logger = require('morgan');
 const app = express();
-const dbConfig = require('./server/config/database');
 
 // runs our database configuration
-dbConfig();
+require('./server/config/database')();
 
 // PRODUCTION ONLY
 app.use(express.static(path.join(__dirname, 'client/build')));
