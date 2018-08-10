@@ -1,6 +1,7 @@
 const friendsController = new Object();
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/settings').jwtSecret;
+const extractJwt = require('../helpers/extract');
 const User = require('../models/user');
 
 friendsController.getFriends = function(req, res, next) {
