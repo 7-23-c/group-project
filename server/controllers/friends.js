@@ -7,7 +7,7 @@ const User = require('../models/user');
 friendsController.getFriends = function(req, res, next) {    
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'Something unexpected happened. Please try again.'})
+            return res.status(500).json({ error: 'An unknown error occurred.'})
         } else {
             User.findById(decoded.id, 'friends').populate('friends.friend_id', 'username').exec(function(err, user) {
                 if (err) {
