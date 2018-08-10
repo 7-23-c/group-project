@@ -3,7 +3,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
+const jwtSecret = require('./settings').jwtSecret;
 
 passport.use('local-registration', new LocalStrategy({
     usernameField: 'email',

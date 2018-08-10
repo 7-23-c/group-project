@@ -1,48 +1,40 @@
 const BeaconController = new Object();
 const Beacon = require('../models/beacon');
 const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
+const jwtSecret = require('../config/settings').jwtSecret;
+const extractJwt = require('../helpers/extract');
 
 BeaconController.createNewBeacon = function(req, res, next) {
-    if (req.headers && req.headers.authorization) {
-        var token = req.headers.authorization.split(' ')[1];
-    }
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.json({ error: 'An error occurred while saving the Beacon.' });
         } else {
             var errors = [];
 
-            var newBeacon = new Beacon({
-                name: req.body.name || "Untitled Beacon", 
-                location: {
-                    longitude: req.body.longitude,
-                    latitude: req.body.latitude
-                },
-                created_by: decoded.id
-            });
+            var newBeacon = new Beacon();
 
-            newBeacon = req.body.name || 'Untitled Beacon';
+            newBeacon.name = req.body.name || 'Untitled Beacon';
 
             if (!req.body.latitude) {
                 errors.push('Latitude is required.');
             } else {
-                beacon.location.latitude = req.body.latitude;
+                newBeacon.location.latitude = req.body.latitude;
             }
 
             if (!req.body.longitude) {
                 errors.push('Longitude is required.');
             } else {
-                beacon.location.longitude = req.body.longitude;
+                newBeacon.location.longitude = req.body.longitude;
             }
 
-            beacon.description = req.body.description || 'No description set yet.';
+            newBeacon.created_by = decoded.id;
 
-            if (errors.length === 0) {
+            newBeacon.description = req.body.description || 'No description set yet.';
+
+            if (errors.length > 0) {
                 return res.json({ errors: errors });
             } else {
-                beacon.save()
+                newBeacon.save()
                     .then(data => {
                         res.json({ success: 'Beacon created successfully!' });
                     })
@@ -57,11 +49,7 @@ BeaconController.createNewBeacon = function(req, res, next) {
 }
 
 BeaconController.findAllBeacons = (req, res, next) => {
-    if (req.headers && req.headers.authorization) {
-        var token = req.headers.authorization.split(' ')[1];
-    }
-
-    jwt.verify(token, jwtSecret, function(err, decoded){
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
         Beacon.find({created_by: decoded.id}).populate('created_by', 'username')
         .then(beacons => {
             res.json({ beacons: beacons });
@@ -75,11 +63,7 @@ BeaconController.findAllBeacons = (req, res, next) => {
 };
 
 BeaconController.findOneBeacon = (req, res, next) => {
-    if (req.headers && req.headers.authorization) {
-        var token = req.headers.authorization.split(' ')[1];
-    }
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id)
             .then(beacon => {
                 if(!beacon) {
@@ -101,11 +85,7 @@ BeaconController.findOneBeacon = (req, res, next) => {
 };
 
 BeaconController.updateBeacon = (req, res, next) => {
-    if (req.headers && req.headers.authorization) {
-        var token = req.headers.authorization.split(' ')[1];
-    }
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.json({ error: 'Error updating beacon.' });
         } else {
@@ -150,12 +130,8 @@ BeaconController.updateBeacon = (req, res, next) => {
     });
 };
 
-BeaconController.deleteBeacon = function(req, res, next) {
-    if (req.headers && req.headers.authorization) {
-        var token = req.headers.authorization.split(' ')[1];
-    }
-    
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+BeaconController.deleteBeacon = function(req, res, next) {    
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id, function(err, beacon) {
             if (err) {
                 return res.json({ error: 'Something unexpected happened.' });
