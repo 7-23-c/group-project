@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Registration from './Components/Registration';
-import Login from './Components/Login';
-import Home from './Components/Home';
-import NotFound from './Components/NotFound';
-import Dashboard from './Components/Dashboard';
-import Logout from './Components/Logout';
+import Registration from './Pages/Registration';
+import Login from './Pages/Login';
+import Home from './Pages/Home';
+import NotFound from './Pages/NotFound';
+import Dashboard from './Pages/Dashboard';
+import Logout from './Pages/Logout';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 

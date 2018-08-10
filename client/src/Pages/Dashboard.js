@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import Navigation from '../Components/Navbar';
 
 class Dashboard extends Component {
     render() {
@@ -7,7 +8,9 @@ class Dashboard extends Component {
             return <Redirect to='/login' />
         } else {
             return (
-                <h1>Dashboard</h1>
+                <div>
+                    <Navigation />
+                </div>
             )
         }
     }
