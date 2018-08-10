@@ -68,7 +68,7 @@ class Navbar extends Component {
 
     onLogout = () => {
         localStorage.removeItem('token');
-        window.location = '/login';
+        window.location = '/';
     }
 
     render() {
@@ -88,13 +88,13 @@ class Navbar extends Component {
                             : null
                         }
                         
-                        <Typography component={Link} to="/" className="flex" variant="title" color="inherit">
+                        <Typography style={{fontFamily: 'Kaushan Script, cursive'}} component={Link} to="/" className="flex" variant="title" color="inherit">
                             Beacons
                         </Typography>
                         
                         { this.props.isLoggedIn
                             ? <Button onClick={this.onLogout} color="inherit">Logout</Button>
-                            : <React.Fragment><Button component={Link} to="/login" color="inherit">Login</Button> or <Button component={Link} to="/register" color="inherit">Register</Button></React.Fragment>
+                            : <React.Fragment><Button component={Link} to="/" color="inherit">Login</Button> or <Button component={Link} to="/register" color="inherit">Register</Button></React.Fragment>
                         }
                     </Toolbar>
                 </AppBar>

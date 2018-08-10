@@ -5,6 +5,7 @@
 .flex {
     flex-grow: 1;
     text-decoration: none;
+    font-family: 'Kaushan Script', cursive;
 }
 
 .menuButton {
