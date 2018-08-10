@@ -4,10 +4,8 @@ const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 const User = require('../models/user');
 
-friendsController.getFriends = function(req, res, next) {
-    var token = req.headers.authorization.split(' ')[1];
-    
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+friendsController.getFriends = function(req, res, next) {    
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.json({ error: 'Something unexpected happened. Please try again.'})
         } else {
@@ -29,9 +27,7 @@ friendsController.getFriends = function(req, res, next) {
 }
 
 friendsController.addFriend = function(req, res, next) {
-    var token = req.headers.authorization.split(' ')[1];
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.json({ error: 'Something unexpected happened. Please try again.' });
         } else {
@@ -80,9 +76,7 @@ friendsController.addFriend = function(req, res, next) {
 }
 
 friendsController.removeFriend = function(req, res, next) {
-    var token = req.headers.authorization.split(' ')[1];
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.json({ error: 'Something unexpected happened. Please try again.' });
         } else {
@@ -104,9 +98,7 @@ friendsController.removeFriend = function(req, res, next) {
 }
 
 friendsController.acceptFriend = function(req, res, next) {
-    var token = req.headers.authorization.split(' ')[1];
-
-    jwt.verify(token, jwtSecret, function(err, decoded) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         User.findById(decoded.id, function(err, user) {
             var myFriend = user.friends.filter(friend => friend.friend_id === req.params.id);
             
