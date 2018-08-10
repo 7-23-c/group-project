@@ -119,20 +119,23 @@ BeaconController.updateBeacon = (req, res, next) => {
 
 BeaconController.deleteBeacon = function(req, res, next) {    
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
-        Beacon.findById(req.params.id, function(err, beacon) {
-            if (err) {
-                return res.json({ error: 'Something unexpected happened.' });
-            } else if (beacon.created_by.toString() !== decoded.id) {
-                return res.json({ error: 'Unauthorized Access.'});
-            } else {
-                beacon.remove(function(err) {
-                    if (err) {
-                        return res.json({ error: 'Something unexpected happened.' });
-                    }
-                    return res.json({ success: 'Beacon deleted successfully!' });
-                });
-            }
-        });
+        Beacon.findById(req.params.id)
+            .then(beacon => {
+                if (beacon.created_by.toString() !== decoded.id) {
+                    return res.status(403).json({ error: 'Unauthorized Access.'});
+                } else {
+                    beacon.remove()
+                        .then(data => {
+                            return res.status(200).json({ success: 'Beacon deleted successfully!' });
+                        })
+                        .catch(err => {
+                            return res.status(500).json({ error: 'Something unexpected happened.' });
+                        })
+                }
+            })
+            .catch(err => {
+                return res.status(500).json({ error: 'Something unexpected happened.' });
+            })
     });
 }
 
