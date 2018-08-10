@@ -22,3 +22,5 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
+
+** Note: This branch is focused on the Friends react component. Hence, the Friends component will appear when this program has started. Uncomment the Browser element to run this program in full. 
