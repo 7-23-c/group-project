@@ -93,7 +93,7 @@ class RegistrationForm extends Component {
                 } else if (res.data.message === 'Missing credentials') {
                     console.log(res.data.message);
                 } else {
-                    window.location = '/login';
+                    window.location = '/';
                 }
             })
             .catch(function(err) {
