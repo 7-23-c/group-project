@@ -1,7 +1,12 @@
+// import react components
 import React, { Component } from "react";
-import "./Login.css";
-import LoginForm from "./LoginForm";
 import { Redirect } from 'react-router-dom';
+
+// import custom components
+import LoginForm from "../Components/LoginForm";
+
+// import css
+import "./Login.css";
 
 class Login extends Component {
     state = {
@@ -19,7 +24,7 @@ class Login extends Component {
 
     render() {
         if (localStorage.getItem('token') !== null) {
-            return <Redirect to='/dashboard' />
+            return <Redirect to='/map' />
         } else {
             return (
                 <div className="Login">
