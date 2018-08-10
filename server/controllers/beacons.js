@@ -7,10 +7,9 @@ const extractJwt = require('../helpers/extract');
 BeaconController.createNewBeacon = function(req, res, next) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'An error occurred while saving the Beacon.' });
+            return res.status(500).json({ error: 'An unknown error occurred.' });
         } else {
             var errors = [];
-
             var newBeacon = new Beacon();
 
             newBeacon.name = req.body.name || 'Untitled Beacon';
@@ -36,12 +35,10 @@ BeaconController.createNewBeacon = function(req, res, next) {
             } else {
                 newBeacon.save()
                     .then(data => {
-                        res.json({ success: 'Beacon created successfully!' });
+                        return res.status(200).json({ success: 'Beacon created successfully!' });
                     })
                     .catch(err => {
-                        res.status(500).json({
-                            error: 'An error occurred while saving the Beacon.'
-                        });
+                        return res.status(500).json({ error: 'An unknown error occurred.' });
                     });
             }
         }
@@ -51,14 +48,12 @@ BeaconController.createNewBeacon = function(req, res, next) {
 BeaconController.findAllBeacons = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
         Beacon.find({created_by: decoded.id}).populate('created_by', 'username')
-        .then(beacons => {
-            res.json({ beacons: beacons });
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: "An error occurred while retrieving beacons."
+            .then(beacons => {
+                return res.status(200).json({ beacons: beacons });
+            })
+            .catch(err => {
+                return res.status(500).json({ error: 'An unknown error occurred.' });
             });
-        });
     });
 };
 
@@ -67,19 +62,15 @@ BeaconController.findOneBeacon = (req, res, next) => {
         Beacon.findById(req.params.id)
             .then(beacon => {
                 if(!beacon) {
-                    return res.status(404).json({
-                        error: "Beacon not found."
-                    });            
+                    return res.status(404).json({ error: 'Beacon not found.' });            
                 } else if (beacon.created_by.toString() !== decoded.id) {
-                    return res.json({ error: 'Unauthorized Access.'});
+                    return res.status(403).json({ error: 'Unauthorized Access.'});
                 } else {
-                    res.json({ beacon: beacon });
+                    return res.status(200).json({ beacon: beacon });
                 }
             })
             .catch(err => {
-                return res.status(500).json({
-                    error: "Error retrieving Beacon."
-                });
+                return res.status(500).json({ error: 'An unknown error occurred.' });
             });
     });
 };
@@ -87,14 +78,12 @@ BeaconController.findOneBeacon = (req, res, next) => {
 BeaconController.updateBeacon = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'Error updating beacon.' });
+            return res.status(500).json({ error: 'An unknown error occurred.' });
         } else {
             Beacon.findById(decoded.id)
             .then(beacon => {
                 if(!beacon) {
-                    return res.status(404).json({
-                        error: "Beacon not found. "
-                    });
+                    return res.status(404).json({ error: 'Beacon not found.' });
                 } else {
                     if (req.body.name) {
                         beacon.name = req.body.name;
@@ -114,17 +103,15 @@ BeaconController.updateBeacon = (req, res, next) => {
 
                     beacon.save()
                         .then(data => {
-                            res.json({ success: 'Beacon updated successfully!'});
+                            return res.status(200).json({ success: 'Beacon updated successfully!'});
                         })
                         .catch(err => {
-                            res.json({ error: 'Error updating beacon.'});
+                            return res.status(500).json({ error: 'An unknown error occurred.'});
                         })
                 }
             })
             .catch(err => {
-                return res.status(500).json({
-                    error: "Error updating beacon."
-                });
+                return res.status(500).json({ error: "An unknown error occurred." });
             });
         }
     });
