@@ -12,11 +12,15 @@ function Authorize(req, res, next) {
     
     jwt.verify(token, jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'Something unexpected happen. Please try again.'})
+            return res.status(500).json({
+                error: 'Something unexpected happen.'
+            })
         } else if (decoded.id === id) {
             return next();
         } else {
-            return res.json({ error: 'Unauthorized Access.'});
+            return res.status(403).json({
+                error: 'Unauthorized Access.'
+            });
         }
     });
 }
