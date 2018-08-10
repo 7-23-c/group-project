@@ -12,57 +12,74 @@ require('../config/passport');
 UserController.createNewUser = function(req, res, next) {
     passport.authenticate('local-registration', function(err, user, info) {
         if (err) {
-            return res.json(info);
+            return res.status(500).json(info);
         }
         if (!user) {
-            return res.json(info)
+            return res.status(400).json(info)
         }
-        return res.json(info);
+        return res.status(201).json(info);
     })(req, res, next);
 }
 
 UserController.updateUser = function(req, res, next) {
-    User.findById(req.params.id, function(err, user) {
-        if (err) {
-            return res.json({ error: 'Unable to update user at this time.' })
-        }
-        if (!user) {
-            return res.json({ error: 'Unable to update user at this time.' })
-        }
-
-        // start saving updated user details
-        if (req.body.email) {
-            user.local.email = req.body.email;
-        }
-        if (req.body.username) {
-            user.username = req.body.username;
-        }
-        if (req.body.password) {
-            user.local.password = user.generateHash(req.body.password);
-        }
-
-        user.save(function(err) {
-            if (err) {
-                return res.json({ error: 'Unable to update user at this time.' });
+    User.findById(req.params.id)
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({
+                    error: 'Unable to find a user with given information.'
+                })
             }
-            return res.json({ success: 'User updated successfully!' });
-        });
-    });
+
+            // start saving updated user details
+            if (req.body.email) {
+                user.local.email = req.body.email;
+            }
+            if (req.body.username) {
+                user.username = req.body.username;
+            }
+            if (req.body.password) {
+                user.local.password = user.generateHash(req.body.password);
+            }
+
+            user.save()
+                .then(data => {
+                    return res.status(204).json({
+                        success: 'User updated successfully!'
+                    });
+                })
+                .catch(err => {
+                    return res.status(500).json({
+                        error: 'Something unexpected happened.'
+                    });
+                })    
+        })
+        .catch(err => {
+            return res.status(500).json({
+                error: 'Something unexpected happened.'
+            })
+        })
 }
 
 UserController.deleteUser = function(req, res, next) {
-    User.findById(req.params.id, function(err, user) {
-        if (err) {
-            return res.json({ error: 'Something unexpected happened.' });
-        }
-
-        user.remove(function(err) {
-            if (err) {
-                return res.json({ error: 'Unable to delete user at this time.' });
-            }
-            return res.json({ success: 'User deleted successfully!' });
-        });
-    });
+    User.findById(req.params.id)
+        .then(user => {
+            user.remove()
+                .then(data => {
+                    return res.status(204).json({
+                        success: 'User deleted successfully!'
+                    });
+                })
+                .catch(err => {
+                    return res.status(500).json({
+                        error: 'Something unexpected happened.'
+                    });
+                })
+        })
+        .catch(err => {
+            return res.status(500).json({
+                error: 'Something unexpected happened.'
+            });
+        })
 }
 
 module.exports = UserController;

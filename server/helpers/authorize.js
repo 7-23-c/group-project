@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const jwtSecret = require('../config/settings').jwtSecret;
 /*
 * Helper :: Authorize
 *
@@ -9,15 +9,18 @@ const jwt = require('jsonwebtoken');
 function Authorize(req, res, next) {
     var id = req.params.id;
     var token = req.headers.authorization.split(' ')[1];
-    var jwtSecret = process.env.JWT_SECRET || process.env.JWT_SECRET_DEV;
     
     jwt.verify(token, jwtSecret, function(err, decoded) {
         if (err) {
-            return res.json({ error: 'Something unexpected happen. Please try again.'})
+            return res.status(500).json({
+                error: 'Something unexpected happen.'
+            })
         } else if (decoded.id === id) {
             return next();
         } else {
-            return res.json({ error: 'Unauthorized Access.'});
+            return res.status(403).json({
+                error: 'Unauthorized Access.'
+            });
         }
     });
 }
