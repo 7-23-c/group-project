@@ -159,7 +159,7 @@ class RegistrationForm extends Component {
                     size="medium"
                     fullWidth={true}
                 >Register</Button>
-                <div>Already have an account? <Link to="/login">Login!</Link></div>
+                <div>Already have an account? <Link to="/">Login!</Link></div>
             </form>
         );
     }
