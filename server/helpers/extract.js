@@ -10,6 +10,4 @@ function Extract(req) {
     }
 }
 
-Extract('Bearer kj;lj324234lkj;lasdf');
-
 module.exports = Extract;
