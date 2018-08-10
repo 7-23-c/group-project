@@ -1,3 +1,9 @@
+/*
+* Helper :: Extract
+*
+* 
+* Extracts the JSON Web Token from the Authorization Bearer header
+*/
 function Extract(req) {
     if (!req.headers) {
         return null;
