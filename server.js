@@ -29,7 +29,7 @@ app.disable('x-powered-by');
 app.use('/', [
     require('./server/routes/users'),
     require('./server/routes/beacons'),
-    require('./server/routes/friends')
+    require('./server/routes/friends'),
     require('./server/routes/tokens')
 ]);
 
