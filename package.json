@@ -16,6 +16,7 @@
     "npm": "5.7.1"
   },
   "dependencies": {
+    "aws-sdk": "^2.291.0",
     "bcrypt": "^3.0.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
@@ -24,6 +25,8 @@
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.6",
     "morgan": "^1.9.0",
+    "multer": "^1.3.1",
+    "multer-s3": "^2.7.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
