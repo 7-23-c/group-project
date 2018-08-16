@@ -25,10 +25,16 @@ const upload = multer({
     })
 });
 
+// retrieve a single image with a presigned url
 router.get('/images/:id', (req, res, next) =>
 imageController.getSingleImage(req, res, next));
 
+// upload an image
 router.post('/images', confirmUserIsValid, upload.single('image'), (req, res, next) =>
 imageController.uploadImage(req, res, next));
+
+// delete an image
+router.delete('/images/:id', (req, res, next) =>
+imageController.deleteImage(req, res, next));
 
 module.exports = router;
