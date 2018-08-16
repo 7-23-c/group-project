@@ -1,18 +1,27 @@
-const finalhandler = require('finalhandler');
-const http = require('http');
-const  logger = require('morgan');
- 
-// create "middleware"
+function Logger(error, type) {
+	  if (type === 'info') {
+		  return console.info(error);
+	  } else if (type === 'log') {
+		  return console.log(error);
+    }else if (type === 'warn'){
+      return console.warn(error);
+    }else{
+      return console.error("An error has occurred!");
+    }
+}
 
-function Logger(req, res, next) {
-    var done = finalhandler(req, res, next)
-  logger(req, res, function (err) {
-    if (err) return done(err)
- 
-    // respond to request
-    res.setHeader('content-type', 'text/plain')
-    res.end('hello, world!')
-  })
-};
+Logger("This is a test error", "info"); 
+Logger("This is a test Message", "log");
+Logger("This is a warning error", "warn");
 
-module.export = Logger
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
