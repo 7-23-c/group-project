@@ -7,14 +7,14 @@ import './Map.css';
 
 class Map extends Component {
     render() {
-        const googleMap = withGoogleMap(props => (
+        const Googlemap = withGoogleMap(props => (
             <GoogleMap defaultCenter = { { lat: 40.756795, ln: -73.954298 } } defaultZoom = { 13 }>
             </GoogleMap>
         ));
 
         return (
             <div>
-                <googleMap containerElement={ <div style={ { height: '500px', width:'500px' } } /> }
+                <Googlemap containerElement={ <div style={ { height: '500px', width:'500px' } } /> }
                     mapElement={ <div style={{ height: '100%' }}/>}
                 />
             </div>
