@@ -1,5 +1,5 @@
 // module imports
-// require('dotenv').config(); // DEVELOPMENT ONLY
+require('dotenv').config(); // DEVELOPMENT ONLY
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -15,7 +15,7 @@ require('./server/config/database')();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
-// app.use(logger('dev')); // DEVELOPMENT ONLY
+app.use(logger('dev')); // DEVELOPMENT ONLY
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
