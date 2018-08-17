@@ -10,7 +10,7 @@
 
 import React, { Component } from "react";
 import Axios from 'axios';
-import './Friends.css';
+// import './Friends.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';

@@ -14,6 +14,7 @@ const beaconSchema = new mongoose.Schema({
     },
     description: String,
     images: [{
+        _id: false,
         image_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Image'

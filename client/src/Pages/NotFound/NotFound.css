@@ -1,6 +1,6 @@
 .NotFound {
     min-height: calc(100vh - 64px);
-    background-image: url('../Images/closed.jpg');
+    background-image: url('../../Images/closed.jpg');
     background-size: cover;
     background-position: center;
 }
