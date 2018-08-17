@@ -3,15 +3,14 @@ const jwt = require('jsonwebtoken');
 const aws = require('aws-sdk');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
-const awsConfig = require('../config/aws');
 const User = require('../models/user');
 const Image = require('../models/image');
 const Beacon = require('../models/beacon');
 
 aws.config.update({
-    secretAccessKey: awsConfig.aws_secret_access_key,
-    accessKeyId: awsConfig.aws_access_key_id,
-    region: awsConfig.region
+    secretAccessKey: process.env.AWS_SECRET || process.env.aws_secret_access_key,
+    accessKeyId: process.env.AWS_ACCESS_KEY || process.env.aws_access_key_id,
+    region: process.env.AWS_REGION || process.env.region
 });
 const s3 = new aws.S3();
 
