@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 
 // import custom components
-import LoginForm from "../Components/LoginForm";
+import LoginForm from "../../Components/LoginForm/LoginForm";
 
 // import css
 import "./Login.css";
