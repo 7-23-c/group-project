@@ -15,7 +15,7 @@ require('./server/config/database')();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
-// app.use(logger('dev')); // DEVELOPMENT ONLY
+// app.use(logger('combined')); // DEVELOPMENT ONLY
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -29,6 +29,7 @@ app.use('/', [
     require('./server/routes/users'),
     require('./server/routes/beacons'),
     require('./server/routes/friends'),
+    require('./server/routes/images'),
     require('./server/routes/tokens')
 ]);
 

@@ -38,6 +38,7 @@ class LoginForm extends Component {
                 throw new Error('Invalid Username or Password');
             } else {
                 localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user', JSON.stringify(res.data.user));
                 window.location = '/map';
             }
         })

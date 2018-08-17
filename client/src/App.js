@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // import pages
-import Registration from './Pages/Registration';
-import Login from './Pages/Login';
-import NotFound from './Pages/NotFound';
-import Map from './Pages/Map';
+import Registration from './Pages/Registration/Registration';
+import Login from './Pages/Login/Login';
+import NotFound from './Pages/NotFound/NotFound';
+import Map from './Pages/Map/Map';
+import Settings from './Pages/Settings/Settings';
 
 // import custom components
-import Navigation from './Components/Navbar';
-import PrivateRoute from './Components/PrivateRoute';
+import Navigation from './Components/Navbar/Navbar';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 // import css
 import './App.css';
@@ -39,6 +40,7 @@ class App extends Component {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/register" component={Registration} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/map" component={Map} />
+                    <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/settings" component={Settings} />
                     <Route path="*" component={NotFound} />
                 </Switch>
             </React.Fragment>

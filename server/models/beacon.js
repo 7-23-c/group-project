@@ -12,7 +12,20 @@ const beaconSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    description: String
+    description: String,
+    images: [{
+        _id: false,
+        image_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Image'
+        }
+    }]
+},
+{
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
+    }
 });
 
 // create the model for beacon and expose it to our app
