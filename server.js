@@ -12,7 +12,7 @@ const app = express();
 require('./server/config/database')();
 
 // PRODUCTION ONLY
-app.use(express.static(path.join(__dirname, 'client/build')));
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
 app.use(logger('dev')); // DEVELOPMENT ONLY
@@ -33,9 +33,9 @@ app.use('/', [
 ]);
 
 // PRODUCTION ONLY
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+// });
 
 // Development mode port
 const port = process.env.PORT || 5000;
