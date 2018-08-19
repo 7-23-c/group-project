@@ -7,6 +7,7 @@ import Registration from './Pages/Registration';
 import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 import Map from './Pages/Map';
+import Friends from './Pages/Friends';
 
 // import custom components
 import Navigation from './Components/Navbar';
@@ -39,7 +40,9 @@ class App extends Component {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/register" component={Registration} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/map" component={Map} />
+                    <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/friends" component={Friends} />
                     <Route path="*" component={NotFound} />
+
                 </Switch>
             </React.Fragment>
             

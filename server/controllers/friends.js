@@ -39,25 +39,41 @@ friendsController.addFriend = function(req, res, next) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
-                error: 'Something unexpected happened.'
+                error: 'Something unexpected happened.1'
             });
         } else {
             User.findById(decoded.id)
-                .then(user => {
-                    var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
                 
+                .then(user => {
+                    console.log("///////// USER Details ///////")
+                    console.log( user);
+                    console.log("I want to get rid of this id,right? : " +"user._id " + user._id)
+                    delete user._id;
+                    console.log("user._id after delete is: " + user._id);
+                    console.log("//////// END OF USER ////////");
+
+                    console.log("///////// USER Details ///////")
+                    console.log(user);
+                    console.log("//////// END OF USER ////////");
+                    var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
                     if (friendAdded.length > 0) {
+
                         return res.status(400).json({
                             error: 'You\'ve already sent this user a friend request.'
                         });
                     } else {
+                        console.log("Friend I want to add:");
+                        console.log("User.findById: " + req.params.id);
+                        //console.log(req.params.id);
                         User.findById(req.params.id)
-                            .then(user => {
+                        
+
+                            .then(friend => {
+                                console.log("friend.id: " + friend.id)
                                 var newFriendSender = {
                                     friend_id: friend.id,
                                     sender: true
                                 };
-
                                 var newFriend = {
                                     friend_id: user.id
                                 };
@@ -66,7 +82,9 @@ friendsController.addFriend = function(req, res, next) {
                                 friend.friends.push(newFriend);
 
                                 user.save()
+                                
                                     .then(data => {
+                                        //console.log("friend: " + friend)
                                         friend.save()
                                             .then(data => {
                                                 return res.status(201).json({
@@ -74,27 +92,33 @@ friendsController.addFriend = function(req, res, next) {
                                                 });
                                             })
                                             .catch(err => {
+                                                console.log(err);
+
                                                 return res.status(500).json({
-                                                    error: 'Something unexpected happened.'
+                                                    error: 'Something unexpected happened.2'
                                                 });
                                             })
                                     })
                                     .catch(err => {
+                                        console.log(err);
+
                                         return res.status(500).json({
-                                            error: 'Something unexpected happened.'
+                                            error: 'Something unexpected happened.3'
                                         });
                                     })
                             })
                             .catch(err => {
+                                console.log(err);
                                 return res.status(500).json({
-                                    error: 'Something unexpected happened.'
+                                    error: 'Something unexpected happened.4'
+                                    //error: err
                                 });
                             })
                     }
                 })
                 .catch(err => {
                     return res.status(500).json({
-                        error: 'Something unexpected happened.'
+                        error: 'Something unexpected happened.5'
                     });
                 })
         }
