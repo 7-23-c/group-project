@@ -47,7 +47,7 @@ class App extends Component {
                     <Route exact path="/register" component={Registration} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/map" component={Map} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/settings" component={Settings} />
-                    <Route path="*" component={NotFound} />
+                    <Route path="*" component={() => <NotFound isLoggedIn={this.state.isLoggedIn} />} />
                 </Switch>
             </React.Fragment>
             
