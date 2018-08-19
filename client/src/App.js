@@ -42,7 +42,7 @@ class App extends Component {
                 }
                 
                 <Switch>
-                    <Route exact path="/" component={Home} />
+                    <Route exact path="/" component={() => <Home isLoggedIn={this.state.isLoggedIn}/>} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Registration} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/map" component={Map} />
