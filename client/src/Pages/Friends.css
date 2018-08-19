@@ -28,7 +28,10 @@
     margin-left: 50px;
     font-size: 30px;
 }
-
+.pendingItem{
+    margin-left: 50px;
+    font-size: 30px;
+}
 .Pending-only-Header {
     font-size: 3em;
     color: white;
@@ -37,7 +40,7 @@
     border:  solid skyblue ;
     border-radius: 5px 5px 0 0;
     background-color: skyblue;
-    font-size: 30px;
+    font-size: 17.5px;
     box-sizing: border-box;
     max-width: 100%;
     color: white;
