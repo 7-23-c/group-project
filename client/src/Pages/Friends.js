@@ -22,9 +22,6 @@ import AddIcon from '@material-ui/icons/Add';
 //friends list:
 
 //ComponentDidMount()
-var token = localStorage.getItem('token');
-console.log("the token is: " + token);
-
 
 //};
 
@@ -67,49 +64,72 @@ class Friends extends Component {
     onSubmit = e => {
         e.preventDefault();
         const id_of_john = "5b73678b434bad64409d382c";
-        const URLPost = '/friends/' + id_of_john;
+        const id_of_seymour = "5b73683a434bad64409d382d";
+        const id_of_michael = "5b736897434bad64409d382e";
+
+        const URLPost = '/friends/' + id_of_michael;
         console.log("Add button pressed!");
         //send the URL 
-        Axios.post(URLPost,
-            {
-                headers: {
-                    //send the jsonwebtoken
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
+        // Axios.post(URLPost,
+        //     {
+        //         headers: {
+        //             //send the jsonwebtoken
+        //             Authorization: 'Bearer ' + localStorage.getItem('token')
+        //         }
 
-            })
-            // .then(res => {
-            //     console.log(JSON.stringify(res));
-            // })
-            //error
-            .catch(err => {
-                console.log("this err is: " + err)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        //     })
+        //     // .then(res => {
+        //     //     console.log(JSON.stringify(res));
+        //     // })
+        //     //error
+        //     .catch(err => {
+        //         console.log("this err is: " + err)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     });
+        //send the URL without axios:
 
- 
-    };
+        //const data = { headers: {Authorization: 'Bearer ' + localStorage.getItem('token')} };
+
+        fetch(URLPost, {
+            method: 'POST', // or 'PUT' 
+            headers: {
+                //send the jsonwebtoken
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
+        };
 
     render() {
-        //const friends = ["Friend #1", "Friend #2", "Friend #3", "Friend #4"];
+        const friends = ["Friend #1", "Friend #2", "Friend #3", "Friend #4"];
         // const friends = this.state.friends;
-        const friends = [];
+        //const friends = [];
 
-        const listFriends = friends.map(friend => (
-            <List >
-                <ListItem button >
-                    <ListItemText primary={friend} />
-                </ListItem>
-            </List>)
-        )
-            ;
+
+        const listFriends = friends.map( (friend,index) => {
+            return(
+                <List key={index}>
+                        <ListItem button >
+                            <li  >{friend} </li>
+                        </ListItem>
+                </List>
+            )
+        });
+
         const FriendsList = props => (
             <div className="Friends-only-List">
                 {props.friends}
             </div>
         );
+
+
+        
+
+
+
         //console.log("the state of the object is: " + this.state.friends);
 
 
@@ -119,6 +139,7 @@ class Friends extends Component {
                     Friends
                     <div className="Friends-only-List">
                         <FriendsList friends={listFriends} />
+                        {console.log(listFriends)}
                         <Button onClick={e => this.onSubmit(e)} variant="fab" color="primary" aria-label="Add" className="addButton">
                             <AddIcon />
                             {/* <RegistrationForm onChange={fields => this.onChange(fields)} /> */}
