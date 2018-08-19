@@ -23,6 +23,12 @@
     color: white;
     width: 400px;
 }
+
+.friendItem{
+    margin-left: 50px;
+    font-size: 30px;
+}
+
 .Pending-only-Header {
     font-size: 3em;
     color: white;

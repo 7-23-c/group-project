@@ -17,6 +17,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 //friends list:
@@ -104,7 +107,7 @@ class Friends extends Component {
         };
 
     render() {
-        const friends = ["Friend #1", "Friend #2", "Friend #3", "Friend #4"];
+        const friends = ["Friend#1", "Friend#2", "Friend#3", "Friend#4"];
         // const friends = this.state.friends;
         //const friends = [];
 
@@ -112,8 +115,11 @@ class Friends extends Component {
         const listFriends = friends.map( (friend,index) => {
             return(
                 <List key={index}>
-                        <ListItem button >
-                            <li  >{friend} </li>
+                    <ListItem button  >
+                        <IconButton aria-label="Delete">
+                            <DeleteIcon className="deleteIcon" />
+                        </IconButton>
+                        <li class="friendItem">{friend} </li>
                         </ListItem>
                 </List>
             )
@@ -142,7 +148,6 @@ class Friends extends Component {
                         {console.log(listFriends)}
                         <Button onClick={e => this.onSubmit(e)} variant="fab" color="primary" aria-label="Add" className="addButton">
                             <AddIcon />
-                            {/* <RegistrationForm onChange={fields => this.onChange(fields)} /> */}
                         </Button>
                     </div>
 
