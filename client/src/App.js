@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // import pages
+import Home from './Pages/Home/Home';
 import Registration from './Pages/Registration/Registration';
 import Login from './Pages/Login/Login';
 import NotFound from './Pages/NotFound/NotFound';
@@ -35,9 +36,14 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
-                <Navigation isLoggedIn={this.state.isLoggedIn} />
+                { this.state.isLoggedIn
+                ?   <Navigation isLoggedIn={this.state.isLoggedIn} />
+                :   null
+                }
+                
                 <Switch>
-                    <Route exact path="/" component={Login} />
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Registration} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/map" component={Map} />
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/settings" component={Settings} />
