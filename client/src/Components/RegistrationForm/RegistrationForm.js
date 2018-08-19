@@ -93,7 +93,7 @@ class RegistrationForm extends Component {
                 } else if (res.data.message === 'Missing credentials') {
                     console.log(res.data.message);
                 } else {
-                    window.location = '/';
+                    window.location = '/login';
                 }
             })
             .catch(function(err) {
@@ -159,7 +159,8 @@ class RegistrationForm extends Component {
                     size="medium"
                     fullWidth={true}
                 >Register</Button>
-                <div>Already have an account? <Link to="/">Login!</Link></div>
+                <div>Already have an account? <Link to="/login">Login!</Link></div>
+                <div>Or <Link to="/">Go Home</Link></div>
             </form>
         );
     }

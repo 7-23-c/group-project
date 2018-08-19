@@ -79,6 +79,7 @@ class LoginForm extends Component {
                     fullWidth={true}
                 >Login</Button>
                 <div>Don't have an account yet? <Link to="/register">Create one!</Link></div>
+                <div>Or <Link to="/">Go Home</Link></div>
             </form>
         );
     }
