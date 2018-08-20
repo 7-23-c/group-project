@@ -16,41 +16,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 // import icons
 import MenuIcon from '@material-ui/icons/Menu';
-import MapIcon from '@material-ui/icons/Map';
+import MapIcon from '@material-ui/icons/LocationOn';
 import FriendIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/SettingsRounded';
 
 // import css
 import './Navbar.css';
-
-const Navigation = () => {
-    return (
-        <React.Fragment>
-            <List className="topNav">
-                <ListItem button={true} component={Link} to="/map">
-                    <ListItemIcon>
-                        <MapIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Map" />
-                </ListItem>
-                <ListItem button={true} component={Link} to="/friends">
-                    <ListItemIcon>
-                        <FriendIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Friends" />
-                </ListItem>
-            </List>
-            <List>
-                <ListItem button={true} component={Link} to="/settings">
-                    <ListItemIcon>
-                        <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Settings" />
-                </ListItem>
-            </List>
-        </React.Fragment>
-    )
-}
 
 class Navbar extends Component {
     constructor(props) {
@@ -89,7 +60,7 @@ class Navbar extends Component {
                             : null
                         }
                         
-                        <Typography style={{fontFamily: 'Kaushan Script, cursive'}} component={Link} to="/" className="flex" variant="title" color="inherit">
+                        <Typography style={{fontFamily: 'Kaushan Script, cursive'}} component={Link} to="/map" className="flex" variant="title" color="inherit">
                             Beacons
                         </Typography>
                         
@@ -116,6 +87,35 @@ class Navbar extends Component {
             </React.Fragment>
         )
     }
+}
+
+const Navigation = () => {
+    return (
+        <React.Fragment>
+            <List className="topNav">
+                <ListItem button={true} component={Link} to="/map">
+                    <ListItemIcon>
+                        <MapIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Map" />
+                </ListItem>
+                <ListItem button={true} component={Link} to="/friends">
+                    <ListItemIcon>
+                        <FriendIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Friends" />
+                </ListItem>
+            </List>
+            <List>
+                <ListItem button={true} component={Link} to="/settings">
+                    <ListItemIcon>
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" />
+                </ListItem>
+            </List>
+        </React.Fragment>
+    )
 }
 
 export default Navbar;

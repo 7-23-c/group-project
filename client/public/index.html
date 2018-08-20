@@ -7,14 +7,32 @@
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto:300,400,500" rel="stylesheet">
-    
+    <noscript>
+      <link rel="stylesheet" href="/stylesheets/style.css">
+    </noscript>
     <title>Beacons</title>
   </head>
   <body>
     <noscript>
-      You need to enable JavaScript to run this app.
+      <nav class="main-navigation">
+        <div class="brand">
+            <a href="/">Beacons</a>
+        </div>
+        <div class="error">
+          <p>It looks like you have javascript disabled,</p>
+          <p>For the best experience, please re-enable javascript.</p>
+        </div>
+      </nav>
+
+      <section class="main">
+          <div class="overlay">
+              <div>
+                  <h1>Experience a New Way to Share Memories</h1>
+                  <a href="/"><img class="badge" src="/images/app-store-badge.svg" alt="Get the app on the app store."></a>
+                  <a href="/"><img class="badge" src="/images/play-store-badge.svg" alt="Get the app on the play store."></a>
+              </div>
+          </div>
+      </section>
     </noscript>
     <div id="app"></div>
   </body>
