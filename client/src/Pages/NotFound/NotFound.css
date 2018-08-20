@@ -6,13 +6,17 @@
 }
 
 .NotFound div {
-    min-height: calc(100vh - 64px);;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.NotFound.LoggedIn div {
+    min-height: calc(100vh - 64px);
 }
 
 .NotFound span {
