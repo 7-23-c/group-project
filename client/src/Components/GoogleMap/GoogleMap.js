@@ -1,5 +1,6 @@
 import React from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import BeaconIcon from '../../Images/beacon-pin.svg';
 
 const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -12,6 +13,13 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
       fullscreenControl: false,
     }}
   >
+
+  <Marker
+    position={{ lat: props.lat, lng: props.lng }}
+    icon={require('../../Images/user-pin.svg')}
+    title="Your Current Position"
+  />
+
   </GoogleMap>
 ));
 
