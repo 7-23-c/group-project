@@ -18,6 +18,13 @@ class Map extends Component {
                     long: pos.coords.longitude
                 });
             }, null, { enableHighAccuracy: true });
+
+            navigator.geolocation.watchPosition((pos) => {
+                this.setState({
+                    lat: pos.coords.latitude,
+                    long: pos.coords.longitude
+                });
+            }, null, { enableHighAccuracy: true });
         }
     }
 

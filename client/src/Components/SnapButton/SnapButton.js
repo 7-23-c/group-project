@@ -36,7 +36,6 @@ class SnapButton extends React.Component {
                     className="FABMENU"
                     style={{ position: 'absolute', bottom: '25px', right: '-10px' }}
                 /><FAB
-                    onClick={this.openCamera}
                     color="secondary"
                     variant="fab"
                     children={<FaCamera />}
