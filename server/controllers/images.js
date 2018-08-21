@@ -99,10 +99,10 @@ imageController.uploadImage = function(req, res, next) {
                 })
         } else if (req.body && req.file) {
             var newBeacon = new Beacon();
-            newBeacon.name = '';
-            newBeacon.location.latitude = req.body.latitude;
-            newBeacon.location.longitude = req.body.longitude;
-            newBeacon.description = '';
+            newBeacon.name = 'No Title Set';
+            newBeacon.location.coordinates.push(req.body.longitude)
+            newBeacon.location.coordinates.push(req.body.latitude);
+            newBeacon.description = 'No Description Set';
             newBeacon.created_by = decoded.id;
 
             newBeacon.save()
