@@ -24,7 +24,7 @@ class SnapButton extends React.Component {
                     onClick={this.capturePhoto}
                     style={{ position: "absolute", bottom: "10px", left: "50%", transform: "translateX(-50%)" }}
                 />
-                <input type="file" hidden={true} ref={this.inputRef} accept="image/*" capture="camera" />
+                <input onChange={e => this.props.createBeacon(e, this.inputRef.current)} type="file" hidden={true} ref={this.inputRef} accept="image/*" capture="camera" />
             </React.Fragment>
         )
     }
