@@ -28,8 +28,24 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
         icon={require('../../Images/user-pin.svg')}
         title="Your Current Position"
     />
-    <SnapButton />
-  </GoogleMap>
+    
+    { props.beacons.length > 0
+    ? props.beacons.map((beacon, key) => {
+        return <Marker
+                    key={key}
+                    position={{
+                        lat: beacon.location.coordinates[1],
+                        lng: beacon.location.coordinates[0]
+                    }}
+                    icon={require('../../Images/beacon-pin.svg')}
+                    title={beacon.name}
+                />
+    })
+    : null
+    }
+
+    <SnapButton createBeacon={props.createBeacon} />
+    </GoogleMap>
 ));
 
 export default GoogleMapComponent;
