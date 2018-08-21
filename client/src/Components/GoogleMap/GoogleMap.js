@@ -1,6 +1,6 @@
 import React from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
-import BeaconIcon from '../../Images/beacon-pin.svg';
+// import BeaconIcon from '../../Images/beacon-pin.svg';
 import SnapButton from '../SnapButton/SnapButton';
 import './GoogleMap.css';
 

@@ -3,19 +3,16 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // import pages
-import Home from './Pages/Home/Home';
-import Registration from './Pages/Registration/Registration';
-import Login from './Pages/Login/Login';
-import NotFound from './Pages/NotFound/NotFound';
-import Map from './Pages/Map/Map';
-import Settings from './Pages/Settings/Settings';
+import Home from '../Home/Home';
+import Registration from '../Registration/Registration';
+import Login from '../Login/Login';
+import NotFound from '../NotFound/NotFound';
+import Map from '../Map/Map';
+import Settings from '../Settings/Settings';
 
 // import custom components
-import Navigation from './Components/Navbar/Navbar';
-import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-
-// import css
-import './App.css';
+import Navigation from '../../Components/Navbar/Navbar';
+import PrivateRoute from '../../Components/PrivateRoute/PrivateRoute';
 
 class App extends Component {
     constructor(props) {
