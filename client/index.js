@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 // import custom components
-import App from './App/App';
+import App from './Main/App/App';
 
 ReactDOM.render(
     <BrowserRouter>
