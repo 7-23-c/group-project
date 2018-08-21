@@ -4,6 +4,10 @@
     flex-direction: column;
     justify-content: center;
     position: relative;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    max-width: 120px;
 }
 
 .FABMENU:first-child {

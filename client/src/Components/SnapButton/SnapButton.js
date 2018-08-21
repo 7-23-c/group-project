@@ -11,6 +11,11 @@ class SnapButton extends React.Component {
         this.state = {
             toggled: false,
         }
+        this.inputRef = React.createRef();
+    }
+
+    capturePhoto = () => {
+        this.inputRef.current.click();
     }
 
     toggleMenu = () => {
@@ -36,6 +41,7 @@ class SnapButton extends React.Component {
                     variant="fab"
                     children={<FaCamera />}
                     className="FABMENU"
+                    onClick={this.capturePhoto}
                     style={{ position: 'absolute', bottom: '25px', left: '5px' }}
                 /></div>
                     : null }
@@ -46,6 +52,7 @@ class SnapButton extends React.Component {
                     children={<FaPlus />}
                     style={{ position: 'absolute' }}
                 />
+                <input type="file" hidden={true} ref={this.inputRef} accept="image/*" capture="camera" />
             </div>
         )
     }
