@@ -16,16 +16,16 @@ BeaconController.createNewBeacon = function(req, res, next) {
 
             newBeacon.name = req.body.name || 'Untitled Beacon';
 
-            if (!req.body.latitude) {
-                errors.push('Latitude is required.');
-            } else {
-                newBeacon.location.latitude = req.body.latitude;
-            }
-
             if (!req.body.longitude) {
                 errors.push('Longitude is required.');
             } else {
-                newBeacon.location.longitude = req.body.longitude;
+                newBeacon.location.coordinates.push(req.body.longitude);
+            }
+
+            if (!req.body.latitude) {
+                errors.push('Latitude is required.');
+            } else {
+                newBeacon.location.coordinates.push(req.body.latitude);
             }
 
             newBeacon.created_by = decoded.id;
@@ -68,6 +68,31 @@ BeaconController.findAllBeacons = (req, res, next) => {
             });
     });
 };
+
+BeaconController.findNearbyBeacons = (req, res, next) => {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
+        Beacon.find({
+            created_by: decoded.id,
+            location: {
+                $near: {
+                    $geometry: {
+                        type: 'Point',
+                        coordinates: [req.query.longitude, req.query.latitude]
+                      },
+                      $maxDistance: 200
+                }
+            },
+        })
+        .then(beacons => {
+            return res.status(200).json({
+                beacons: beacons
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    });
+}
 
 BeaconController.findOneBeacon = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {

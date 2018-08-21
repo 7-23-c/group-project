@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const beaconSchema = new mongoose.Schema({ 
     name: String,
     location: {
-        latitude: Number,
-        longitude: Number
+        type: { type: String, default: 'Point' },
+        coordinates: [Number]
     },
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
