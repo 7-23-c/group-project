@@ -15,6 +15,7 @@ import Beacon from '../Pages/Beacon/Beacon';
 import Navigation from '../Components/Navbar/Navbar';
 import PrivateRoute from '../Components/PrivateRoute/PrivateRoute';
 
+// import css
 import './App.css';
 
 class App extends Component {

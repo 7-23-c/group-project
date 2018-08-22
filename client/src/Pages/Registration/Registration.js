@@ -1,6 +1,6 @@
 // import react components
 import React from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 // import custom components
 import RegistrationForm from "../../Components/RegistrationForm/RegistrationForm";
@@ -16,6 +16,7 @@ class Registration extends React.Component {
             return (
                 <div className="Registration">
                     <div className="Registration-header">
+                        <Link to="/" className="Logo"><h1>Beacons</h1></Link>
                         <h2>Welcome new user!</h2>
                     </div>
                     <RegistrationForm />
