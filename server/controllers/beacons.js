@@ -79,7 +79,7 @@ BeaconController.findNearbyBeacons = (req, res, next) => {
                         type: 'Point',
                         coordinates: [req.query.longitude, req.query.latitude]
                       },
-                      $maxDistance: 400
+                      $maxDistance: 200
                 }
             },
         })
