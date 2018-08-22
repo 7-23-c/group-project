@@ -9,19 +9,6 @@ import LoginForm from "../../Components/LoginForm/LoginForm";
 import "./Login.css";
 
 class Login extends React.Component {
-    state = {
-        fields: {}
-    };
-    //onChange stuff goes here:
-    onChange = update => {
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                ...update
-            }
-        });
-    };
-
     render() {
         if (localStorage.getItem('token') !== null) {
             return <Redirect to='/map' />
@@ -29,10 +16,9 @@ class Login extends React.Component {
             return (
                 <div className="Login">
                     <div className="Login-header">
-                        <h1>Login</h1>
                         <h2>Welcome Back!</h2>
                     </div>
-                    <LoginForm onChange={fields => this.onChange(fields)} />
+                    <LoginForm />
                 </div>
             );
         }

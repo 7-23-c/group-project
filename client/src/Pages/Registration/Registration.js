@@ -9,19 +9,6 @@ import RegistrationForm from "../../Components/RegistrationForm/RegistrationForm
 import "./Registration.css";
 
 class Registration extends React.Component {
-    state = {
-        fields: {}
-    };
-    //onChange stuff goes here:
-    onChange = update => {
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                ...update
-            }
-        });
-    };
-
     render() {
         if (localStorage.getItem('token') !== null) {
             return <Redirect to='/dashboard' />
@@ -29,10 +16,9 @@ class Registration extends React.Component {
             return (
                 <div className="Registration">
                     <div className="Registration-header">
-                        <h1>Registration</h1>
                         <h2>Welcome new user!</h2>
                     </div>
-                    <RegistrationForm onChange={fields => this.onChange(fields)} />
+                    <RegistrationForm />
                 </div>
             );
         }

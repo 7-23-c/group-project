@@ -5,29 +5,31 @@ import { Link } from 'react-router-dom';
 // import components
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Progress from '@material-ui/core/LinearProgress/LinearProgress';
 import Axios from 'axios';
 
 // import css
 import './RegistrationForm.css';
 
 class RegistrationForm extends Component {
-
-    // initialize state:
-    state = {
-        first_name: "",
-        first_name_error: "",
-        last_name: "",
-        last_name_error: "",
-        username: "",
-        username_error: "",
-        email: "",
-        email_error: "",
-        password: "",
-        password_error: ""
-    };
+    constructor() {
+        super();
+        this.state = {
+            first_name: "",
+            first_name_error: "",
+            last_name: "",
+            last_name_error: "",
+            username: "",
+            username_error: "",
+            email: "",
+            email_error: "",
+            password: "",
+            password_error: "",
+            loading: false,
+        }
+    }
 
     change = e => {
-        this.props.onChange({ [e.target.name]: e.target.value });
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -80,6 +82,9 @@ class RegistrationForm extends Component {
         e.preventDefault();
 
         if (this.validate() === false) {
+            this.setState({
+                loading: true,
+            });
             Axios.post('/users', {
                 fName: this.state.first_name,
                 lName: this.state.last_name,
@@ -87,12 +92,21 @@ class RegistrationForm extends Component {
                 email: this.state.email,
                 password: this.state.password
             })
-            .then(function(res) {
+            .then(res => {
                 if (res.data.errors) {
+                    this.setState({
+                        loading: false,
+                    });
                     console.log(res.data.errors);
                 } else if (res.data.message === 'Missing credentials') {
+                    this.setState({
+                        loading: false,
+                    });
                     console.log(res.data.message);
                 } else {
+                    this.setState({
+                        loading: false,
+                    });
                     window.location = '/login';
                 }
             })
@@ -105,6 +119,10 @@ class RegistrationForm extends Component {
     render() {
         return (
             <form className="RegistrationForm">
+                { this.state.loading
+                    ?   <Progress />
+                    :   null
+                }
                 <TextField
                     name="first_name"
                     label="First Name"
@@ -153,14 +171,24 @@ class RegistrationForm extends Component {
                 />
                 <Button
                     type="submit"
-                    label="Submit"
+                    label="Create Account"
                     onClick={e => this.onSubmit(e)}
                     variant="contained"
                     size="medium"
+                    color="primary"
                     fullWidth={true}
-                >Register</Button>
-                <div>Already have an account? <Link to="/login">Login!</Link></div>
-                <div>Or <Link to="/">Go Home</Link></div>
+                >Create Account</Button>
+
+                <hr />
+
+                <Button
+                    label="Login"
+                    onClick={() => window.location = "/login"}
+                    variant="contained"
+                    size="medium"
+                    color="secondary"
+                    fullWidth={true}
+                >Login</Button>
             </form>
         );
     }
