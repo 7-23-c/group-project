@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 // import images
 import AppStoreBadge from '../../Images/app-store-badge.svg';
 import PlayStoreBadge from '../../Images/play-store-badge.svg';
+import InAppPreview from '../../Images/InAppPreview.png';
 
 // import css
 import './Home.css';
