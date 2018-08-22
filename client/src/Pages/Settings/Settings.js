@@ -1,6 +1,10 @@
 // import react components
 import React from 'react';
+
+// import components
 import Axios from 'axios';
+
+// import css
 import './Settings.css';
 
 class Settings extends React.Component {

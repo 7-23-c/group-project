@@ -37,21 +37,29 @@ class App extends Component {
         return (
             <React.Fragment>
                 { this.state.isLoggedIn
-                ?   <Navigation isLoggedIn={this.state.isLoggedIn} />
-                :   null
+                    ?   <Navigation isLoggedIn={this.state.isLoggedIn} />
+                    :   null
                 }
                 
                 <Switch>
-                    <Route exact path="/" component={() => <Home isLoggedIn={this.state.isLoggedIn}/>} />
+                    <Route exact path="/"
+                    component={() => <Home isLoggedIn={this.state.isLoggedIn}/>} />
+
                     <Route exact path="/login" component={Login} />
+
                     <Route exact path="/register" component={Registration} />
-                    <PrivateRoute isLoggedIn={this.state.isLoggedIn} exact path="/map" component={Map} />
+
+                    <PrivateRoute
+                    isLoggedIn={this.state.isLoggedIn}
+                    exact path="/map" component={Map} />
+
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} exact path="/settings" component={Settings} />
+
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} path="/beacon/:id" component={Beacon} />
+
                     <Route path="*" component={() => <NotFound isLoggedIn={this.state.isLoggedIn} />} />
                 </Switch>
             </React.Fragment>
-            
         );
     }
 }

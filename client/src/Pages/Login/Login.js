@@ -1,5 +1,5 @@
 // import react components
-import React, { Component } from "react";
+import React from "react";
 import { Redirect } from 'react-router-dom';
 
 // import custom components
@@ -8,7 +8,7 @@ import LoginForm from "../../Components/LoginForm/LoginForm";
 // import css
 import "./Login.css";
 
-class Login extends Component {
+class Login extends React.Component {
     state = {
         fields: {}
     };

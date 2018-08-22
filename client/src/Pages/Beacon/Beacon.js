@@ -1,6 +1,11 @@
+// import react components
 import React from 'react';
+
+// import components
+import Progress from '@material-ui/core/CircularProgress/CircularProgress';
 import Axios from 'axios';
 
+// import css
 import './Beacon.css';
 
 class Beacon extends React.Component {
@@ -66,7 +71,11 @@ class Beacon extends React.Component {
 
     render() {
         if (!this.state.ready) {
-            return <h1>Loading Beacon...</h1>
+            return (
+                <div className="Progress">
+                    <Progress size={80} />
+                </div>
+            )
         }
 
         let date = new Date(this.state.beacon.created_at);
