@@ -1,6 +1,5 @@
 // import react components
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
 
 // import components
 import TextField from "@material-ui/core/TextField";
