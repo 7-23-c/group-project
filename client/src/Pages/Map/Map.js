@@ -18,9 +18,9 @@ class Map extends Component {
             modalIsOpen: false,
             imageUpload: '',
             imageDescription: '',
-            imageForUpload: null
+            imageForUpload: null,
+            ready: false,
         }
-        this.pos = undefined;
         this.watch = undefined;
         this.beaconTimer = undefined;
 
@@ -42,7 +42,8 @@ class Map extends Component {
             navigator.geolocation.getCurrentPosition((pos) => {
                 this.setState({
                     lat: pos.coords.latitude,
-                    long: pos.coords.longitude
+                    long: pos.coords.longitude,
+                    ready: true,
                 });
                 this.startTimer();
             }, null, { enableHighAccuracy: true, maximumAge: 0 });
@@ -127,6 +128,10 @@ class Map extends Component {
     }
 
     render() {
+        if (!this.state.ready) {
+            return null;
+        }
+
         return (
             <React.Fragment>
                 <Modal
