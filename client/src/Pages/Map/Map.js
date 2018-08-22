@@ -208,7 +208,7 @@ class Map extends React.Component {
                     </Button>
                 </Modal>
                 <GoogleMapComponent 
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkU8bb3zs9fjyDTW7fJqzD3P-gaSc_rU4"
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYern8-eaxuw153-3rlyRrxaqgtd07_eg"
                     loadingElement={<div style={{ height: 'calc(100vh - 64px)' }} />}
                     containerElement={<div style={{ height: 'calc(100vh - 64px)' }} />}
                     mapElement={<div style={{ height: 'calc(100vh - 64px)' }} />}
