@@ -84,6 +84,8 @@ BeaconController.findNearbyBeacons = (req, res, next) => {
             },
         })
         .then(beacons => {
+            res.set('Cache-Control', 'max-age=0');
+
             return res.status(200).json({
                 beacons: beacons
             });
@@ -97,12 +99,13 @@ BeaconController.findNearbyBeacons = (req, res, next) => {
 BeaconController.findOneBeacon = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id)
+        .populate('created_by', 'name.first name.last')
             .then(beacon => {
                 if(!beacon) {
                     return res.status(404).json({
                         error: 'Beacon not found.'
                     });            
-                } else if (beacon.created_by.toString() !== decoded.id) {
+                } else if (beacon.created_by.id.toString() !== decoded.id) {
                     return res.status(403).json({
                         error: 'Unauthorized Access.'
                     });
