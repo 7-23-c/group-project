@@ -1,0 +1,23 @@
+.Beacon {
+    max-width: 960px;
+    min-height: calc(100vh - 64px);
+    margin: 0 auto;
+    background-color: #969696;
+    padding: 15px 5px;
+}
+
+.Beacon h3 {
+    margin-top: 0;
+}
+
+.Beacon h3, .Beacon h4, .Beacon h5 {
+    text-align: center;
+}
+
+.Beacon .images img {
+    border: 2px solid #222222;
+    padding: 5px;
+    max-width: 300px;
+    height: auto;
+    background-color: #FFFFFF;
+}

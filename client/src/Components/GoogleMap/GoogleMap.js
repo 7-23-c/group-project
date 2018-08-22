@@ -1,6 +1,5 @@
 import React from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
-// import BeaconIcon from '../../Images/beacon-pin.svg';
 import SnapButton from '../SnapButton/SnapButton';
 import './GoogleMap.css';
 
@@ -8,7 +7,7 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
     <GoogleMap
         className="GoogleMap"
         defaultZoom={props.defaultZoom}
-        center={{
+        defaultCenter={{
             lat: props.lat,
             lng: props.lng
         }}
@@ -39,6 +38,7 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
                     }}
                     icon={require('../../Images/beacon-pin.svg')}
                     title={beacon.name}
+                    onClick={() => window.location = `/beacon/${beacon._id}`}
                 />
     })
     : null

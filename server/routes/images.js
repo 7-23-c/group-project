@@ -24,6 +24,9 @@ const upload = multer({
     })
 });
 
+router.get('/images', (req, res, next) =>
+imageController.getImages(req, res, next));
+
 // retrieve a single image with a presigned url
 router.get('/images/:id', (req, res, next) =>
 imageController.getSingleImage(req, res, next));
