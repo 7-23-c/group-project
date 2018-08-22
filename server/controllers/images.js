@@ -49,6 +49,42 @@ imageController.getSingleImage = function(req, res, next) {
     });
 }
 
+imageController.getImages = function(req, res, next) {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
+        var arr = JSON.parse(req.query.images);
+        var len = arr.length;
+        var urls = [];
+
+        for (let i = 0; i < len; i++) {
+            Image.findById(arr[i])
+            .then(image => {
+                if (image.created_by.toString() === decoded.id) {
+                    let myBucket = 'beacons-images'
+                    let myKey = image.key
+                    let signedUrlExpireSeconds = 60 * 20
+
+                    let url = s3.getSignedUrl('getObject', {
+                        Bucket: myBucket,
+                        Key: myKey,
+                        Expires: signedUrlExpireSeconds
+                    });
+
+                    urls.push(url);
+
+                    if ((i + 1) === len) {
+                        return res.status(200).json({
+                            image_urls: urls
+                        });
+                    }
+                }                
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+    })
+}
+
 imageController.uploadImage = function(req, res, next) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
