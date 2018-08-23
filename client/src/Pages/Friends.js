@@ -52,7 +52,7 @@ class Friends extends Component{
         const my_id = "5b75f9d4a3ea5469678a7914";
 
 
-        const URLPost = '/friends/' + id_of_michael;
+        const URLPost = '/friends/' + id_of_john;
         console.log("Add button pressed!");
 
 
@@ -67,36 +67,33 @@ class Friends extends Component{
             .then(response => console.log('Success:', response))
     };
 
-    onDelete = e => {
-        const id_of_john = "5b73678b434bad64409d382c";
-        const id_of_seymour = "5b73683a434bad64409d382d";
-        const id_of_michael = "5b736897434bad64409d382e";
-        const URLPost = '/friends/' + "5b73683a434bad64409d382d";
-
-
+    onDelete = (e, friend) => {
         e.preventDefault();
-
-        console.log("Delete Button Pressed!");
+        const URLPost = '/friends/' + friend._id;
 
         fetch(URLPost, {
-            method: 'Delete'
+            method: 'Delete',
+            headers: {
+                //send the jsonwebtoken
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
 
-        }).then(response => response.json());
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
     }
 
-    onAccept = e => {
-
+    onAccept = (e, pending) => {
+        e.preventDefault();
         const id_of_john = "5b73678b434bad64409d382c";
         const id_of_seymour = "5b73683a434bad64409d382d";
         const id_of_michael = "5b736897434bad64409d382e";
 
-        const URLPost = '/friends/' + id_of_seymour;
+        const URLPost = '/friends/' + pending._id;
 
-
-        e.preventDefault();
         //accept Friend
         fetch(URLPost, {
-            method: 'PUT', // or 'PUT' 
+            method: 'PUT',
             headers: {
                 //send the jsonwebtoken
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -104,15 +101,13 @@ class Friends extends Component{
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => console.log('Success:', response));
-
-        console.log("Pending Friend has been added!");
     }
 
     render(){
         var { isLoaded, friends, pendings } = this.state;
 
         if (!isLoaded) {
-            return( <div>
+            return (<div className="Friends-only-Header">
                 Loading...
             </div>
             );
@@ -122,22 +117,26 @@ class Friends extends Component{
                     <div className="Friends">
                         <div className="Friends-only-Header">
                             Friends
-                            {friends.map( (friend, index) => (
+                            {friends.length == 0 ?
+
+                            <ul className="pendingItem"> No current friends </ul> :
+
+                            friends.map( (friend, index) => (
                             <List key={index}>
                                 <ListItem button  >
-                                    <IconButton onClick={e => this.onDelete(e)} aria-label="Delete">
+                                    <IconButton onClick={(e) => this.onDelete(e, friend)} aria-label="Delete">
                                         <DeleteIcon className="deleteIcon" />
                                     </IconButton>
                                     <li className="friendItem">{friend.username} </li>
                                 </ListItem>
                             </List>
-                            
                             ))}
                         <Button onClick={e => this.onSubmit(e)} variant="fab" color="primary" aria-label="Add" className="addButton">
                             <AddIcon />
                         </Button>
-                    
                         </div>
+                        <br></br>
+
 
                         <div className="Pending-only-Header">
                             Pending
@@ -148,7 +147,7 @@ class Friends extends Component{
                                 pendings.map( (pending, index) => (
                                     <List key={index}>
                                         <ListItem button  >
-                                            <Button onClick={e => this.onAccept(e)} color="primary" aria-label="Add">
+                                            <Button onClick={ (e) => this.onAccept(e, pending)} color="primary" aria-label="Add">
                                                 <AddIcon />
                                             </Button>
                                             <li className="pendingItem">
