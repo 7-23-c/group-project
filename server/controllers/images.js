@@ -53,14 +53,15 @@ imageController.getImages = function(req, res, next) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         var arr = JSON.parse(req.query.images);
         var len = arr.length;
-        var urls = [];
 
-        for (let i = 0; i < len; i++) {
-            Image.findById(arr[i])
-            .then(image => {
-                if (image.created_by.toString() === decoded.id) {
+        Image.find({ '_id': { $in: arr } })
+        .then(image => {
+            var urls = [];
+
+            for (let i = 0; i < len; i++) {
+                if (image[i].created_by.toString() === decoded.id) {
                     let myBucket = 'beacons-images'
-                    let myKey = image.key
+                    let myKey = image[i].key
                     let signedUrlExpireSeconds = 60 * 20
 
                     let url = s3.getSignedUrl('getObject', {
@@ -70,18 +71,19 @@ imageController.getImages = function(req, res, next) {
                     });
 
                     urls.push(url);
+                    continue;
+                }
+            }
 
-                    if ((i + 1) === len) {
-                        return res.status(200).json({
-                            image_urls: urls
-                        });
-                    }
-                }                
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
+            return res.status(200).json({
+                image_urls: urls
+            });
+        })
+        .catch(err => {
+            return res.status(500).json({
+                error: 'An unknown error occurred.'
+            });
+        })
     })
 }
 
