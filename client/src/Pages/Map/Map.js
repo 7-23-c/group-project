@@ -4,10 +4,13 @@ import Modal from 'react-modal';
 
 // import components
 import Axios from 'axios';
-import TextField from '@material-ui/core/TextField/TextField';
-import Button from '@material-ui/core/Button/Button';
-import Progress from '@material-ui/core/CircularProgress/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Progress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 // import custom components
 import GoogleMapComponent from '../../Components/GoogleMap/GoogleMap';
@@ -34,7 +37,8 @@ class Map extends React.Component {
             lastLocation: {
                 lat: undefined,
                 long: undefined,
-            }
+            },
+            snackOpen: false,
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
@@ -139,6 +143,10 @@ class Map extends React.Component {
         })
         .then(res => {
             this.closeModal();
+            this.setState({
+                snackOpen: true,
+            });
+            this.getNearbyBeacons(true);
         })
         .catch(err => {
             console.log(err);
@@ -150,7 +158,7 @@ class Map extends React.Component {
         this.beaconTimer = setInterval(this.getNearbyBeacons, 10000);
     }
 
-    getNearbyBeacons() {
+    getNearbyBeacons(reset = false) {
         let { lat, long } = this.state.lastLocation;
         let currentLat = this.state.lat;
         let currentLong = this.state.long;
@@ -177,7 +185,7 @@ class Map extends React.Component {
             .catch(err => {
                 console.log(err);
             })
-        } else if ( currentLat > (lat + 1) || currentLong > (long + 1)) {
+        } else if ( reset || currentLat > (lat + 1) || currentLong > (long + 1)) {
             console.log('getting location');
             this.setState({
                 lastLocation: {
@@ -204,6 +212,15 @@ class Map extends React.Component {
             return;
         }
     }
+
+    snackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ snackOpen: false });
+    };
+    
 
     render() {
         if (!this.state.ready) {
@@ -261,6 +278,29 @@ class Map extends React.Component {
                     beacons={this.state.beacons}
                     createBeacon={this.createBeacon}
                 />
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snackOpen}
+                    autoHideDuration={6000}
+                    onClose={this.snackClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Image Uploaded</span>}
+                    action={[
+                        <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        onClick={this.snackClose}
+                        >
+                            <CloseIcon />
+                        </IconButton>,
+                    ]}
+                    />
             </React.Fragment>
         )
     }
