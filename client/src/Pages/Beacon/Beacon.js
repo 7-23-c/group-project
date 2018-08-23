@@ -1,8 +1,11 @@
 // import react components
 import React from 'react';
+import Modal from 'react-modal';
 
 // import components
-import Progress from '@material-ui/core/CircularProgress/CircularProgress';
+import Progress from '@material-ui/core/CircularProgress';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 import Axios from 'axios';
 
 // import css
@@ -88,9 +91,9 @@ class Beacon extends React.Component {
 
         let images = this.state.images.map((image, key) => {
             return (
-                <div key={key} className="image-container">
+                <GridListTile key={key} cols={1}>
                     <img src={image} alt="" />
-                </div>
+                </GridListTile>
             )
         })
 
@@ -100,7 +103,9 @@ class Beacon extends React.Component {
                 <h4>{this.state.beacon.description}</h4>
                 <h5>Created On: {fullDate} by {created_by.name.first} {created_by.name.last}</h5>
                 <div className="images">
-                    {images}
+                    <GridList cellHeight={160} cols={3}>
+                        {images}
+                    </GridList>
                 </div>
             </div>
         )
