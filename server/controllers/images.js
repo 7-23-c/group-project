@@ -53,14 +53,15 @@ imageController.getImages = function(req, res, next) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         var arr = JSON.parse(req.query.images);
         var len = arr.length;
-        var urls = [];
 
-        for (let i = 0; i < len; i++) {
-            Image.findById(arr[i])
-            .then(image => {
-                if (image.created_by.toString() === decoded.id) {
+        Image.find({ '_id': { $in: arr } })
+        .then(image => {
+            var images = [];
+
+            for (let i = 0; i < len; i++) {
+                if (image[i].created_by.toString() === decoded.id) {
                     let myBucket = 'beacons-images'
-                    let myKey = image.key
+                    let myKey = image[i].key
                     let signedUrlExpireSeconds = 60 * 20
 
                     let url = s3.getSignedUrl('getObject', {
@@ -69,19 +70,24 @@ imageController.getImages = function(req, res, next) {
                         Expires: signedUrlExpireSeconds
                     });
 
-                    urls.push(url);
+                    images.push({
+                        url: url,
+                        description: image[i].description,
+                        alt: image[i].alt
+                    });
+                    continue;
+                }
+            }
 
-                    if ((i + 1) === len) {
-                        return res.status(200).json({
-                            image_urls: urls
-                        });
-                    }
-                }                
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
+            return res.status(200).json({
+                images: images
+            });
+        })
+        .catch(err => {
+            return res.status(500).json({
+                error: 'An unknown error occurred.'
+            });
+        })
     })
 }
 
@@ -136,17 +142,17 @@ imageController.uploadImage = function(req, res, next) {
                         })
                 } else {
                     var newBeacon = new Beacon();
-                    newBeacon.name = 'No Title Set';
+                    newBeacon.name =  req.body.beaconTitle || 'No Title Set';
                     newBeacon.location.coordinates.push(req.body.longitude)
                     newBeacon.location.coordinates.push(req.body.latitude);
-                    newBeacon.description = 'No Description Set';
+                    newBeacon.description = req.body.beaconDescription || 'No Description Set';
                     newBeacon.created_by = decoded.id;
 
                     newBeacon.save()
                         .then(beacon => {
                             var newImage = new Image();
                             newImage.description = req.body.description || '';
-                            newImage.alt = req.body.alt || '';
+                            newImage.alt = req.body.description || '';
                             newImage.beacon = beacon.id;
                             newImage.created_by = decoded.id;
                             newImage.key = req.file.key;

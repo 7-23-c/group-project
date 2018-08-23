@@ -4,10 +4,14 @@ import Modal from 'react-modal';
 
 // import components
 import Axios from 'axios';
-import TextField from '@material-ui/core/TextField/TextField';
-import Button from '@material-ui/core/Button/Button';
-import Progress from '@material-ui/core/CircularProgress/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Progress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Collapse from '@material-ui/core/Collapse';
 
 // import custom components
 import GoogleMapComponent from '../../Components/GoogleMap/GoogleMap';
@@ -28,13 +32,17 @@ class Map extends React.Component {
             modalIsOpen: false,
             imageUpload: '',
             imageDescription: '',
+            beaconDescription: '',
+            beaconTitle: '',
             imageForUpload: null,
             ready: false,
             beaconQuery: false,
             lastLocation: {
                 lat: undefined,
                 long: undefined,
-            }
+            },
+            snackOpen: false,
+            expanded: false,
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
@@ -85,7 +93,8 @@ class Map extends React.Component {
         this.input = undefined;
         this.setState({
             modalIsOpen: false,
-            beaconQuery: false
+            beaconQuery: false,
+            expanded: false
         });
     }
 
@@ -116,7 +125,7 @@ class Map extends React.Component {
     // change our image description
     handleChange(e) {
         this.setState({
-            imageDescription: e.target.value
+            [e.target.name]: e.target.value
         });
     }
 
@@ -128,6 +137,8 @@ class Map extends React.Component {
         const formData = new FormData();
         formData.append('image', this.state.imageForUpload);
         formData.append('description', this.state.imageDescription);
+        formData.append('beaconDescription', this.state.beaconDescription);
+        formData.append('beaconTitle', this.state.beaconTitle);
         formData.append('latitude', this.state.lat);
         formData.append('longitude', this.state.long);
 
@@ -139,6 +150,10 @@ class Map extends React.Component {
         })
         .then(res => {
             this.closeModal();
+            this.setState({
+                snackOpen: true,
+            });
+            this.getNearbyBeacons(true);
         })
         .catch(err => {
             console.log(err);
@@ -150,13 +165,12 @@ class Map extends React.Component {
         this.beaconTimer = setInterval(this.getNearbyBeacons, 10000);
     }
 
-    getNearbyBeacons() {
+    getNearbyBeacons(reset = false) {
         let { lat, long } = this.state.lastLocation;
         let currentLat = this.state.lat;
         let currentLong = this.state.long;
 
         if (this.state.lastLocation.lat === undefined && this.state.lastLocation.long === undefined) {
-            console.log('getting location');
             this.setState({
                 lastLocation: {
                     lat: this.state.lat,
@@ -177,8 +191,7 @@ class Map extends React.Component {
             .catch(err => {
                 console.log(err);
             })
-        } else if ( currentLat > (lat + 1) || currentLong > (long + 1)) {
-            console.log('getting location');
+        } else if ( reset || currentLat > (lat + 1) || currentLong > (long + 1)) {
             this.setState({
                 lastLocation: {
                     lat: this.state.lat,
@@ -200,16 +213,27 @@ class Map extends React.Component {
                 console.log(err);
             })
         } else {
-            console.log('have not moved enough. not requesting server.');
             return;
         }
     }
+
+    snackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ snackOpen: false });
+    };
+    
 
     render() {
         if (!this.state.ready) {
             return (
                 <div className="Progress">
-                    <Progress size={80} />
+                    <div className="loader">
+                        <Progress size={80} />
+                        <h3>Loading Map</h3>
+                    </div>
                 </div>
             );
         }
@@ -226,7 +250,7 @@ class Map extends React.Component {
                         ?   <LinearProgress />
                         :   null
                     }
-                    <h2>Upload an Image</h2>
+                    <h2>Upload An Image</h2>
                     <img alt="placeholder" src={this.state.imageUpload} width="200" height="auto" />
                     <TextField
                         multiline={true}
@@ -235,20 +259,52 @@ class Map extends React.Component {
                         label="Description"
                         rows={4}
                         onChange={this.handleChange}
+                        name="imageDescription"
                     />
                     <Button
-                        onClick={this.closeModal}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        title="Create Beacon"
-                        variant="flat"
+                        onClick={() => this.setState({ expanded: !this.state.expanded })}
+                        variant="text"
                         color="primary"
-                        onClick={this.createTheBeacon}
+                        fullWidth="true"
                     >
-                        Create Beacon
+                        Change Beacon Information
                     </Button>
+                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                        <h3>Beacon</h3>
+                        <TextField
+                            fullWidth={true}
+                            type="text"
+                            label="Title"
+                            name="beaconTitle"
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            multiline={true}
+                            rows={4}
+                            fullWidth={true}
+                            type="text"
+                            label="Description"
+                            name="beaconDescription"
+                            onChange={this.handleChange}
+                        />
+                    </Collapse>
+                    <div className="ModalFooter">
+                        <Button
+                            onClick={this.closeModal}
+                            variant="contained"
+                            color="secondary"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            title="Create Beacon"
+                            variant="contained"
+                            color="primary"
+                            onClick={this.createTheBeacon}
+                        >
+                            Upload Image
+                        </Button>
+                    </div>
                 </Modal>
                 <GoogleMapComponent 
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYern8-eaxuw153-3rlyRrxaqgtd07_eg"
@@ -261,6 +317,29 @@ class Map extends React.Component {
                     beacons={this.state.beacons}
                     createBeacon={this.createBeacon}
                 />
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snackOpen}
+                    autoHideDuration={6000}
+                    onClose={this.snackClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Image Uploaded</span>}
+                    action={[
+                        <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        onClick={this.snackClose}
+                        >
+                            <CloseIcon />
+                        </IconButton>,
+                    ]}
+                    />
             </React.Fragment>
         )
     }
