@@ -4,26 +4,21 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  background-color: #31b0e2;
+  background-color: #00A4D7;
   min-height: 100vh;
 }
 
 .Registration-header {
-  border: solid skyblue ;
   border-radius: 5px 5px 0 0;
-  background-color: skyblue;
+  background-color: #FFFFFF;
   box-sizing: border-box;
   max-width: 100%;
-  padding: 20px;
-  color: white;
-  width: 500px;
+  padding: 40px 20px 10px 20px;
+  color: #222222;
+  width: 350px;
 }
-
-.Registration-header h1 {
-  margin-top: 5px;
-}
-
 
 .Registration-header h2 {
-  margin-bottom: 5px;
+  color: #F5037C;
+  margin: 0;
 }

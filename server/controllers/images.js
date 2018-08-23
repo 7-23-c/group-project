@@ -91,62 +91,26 @@ imageController.uploadImage = function(req, res, next) {
             return res.status(500).json({
                 'error': 'An unknown error occurred.'
             });
-        } else if (req.body && req.file && req.body.beaconId) {
-            Beacon.findById(req.body.beaconId)
-                .then(beacon => {
-                    var newImage = new Image();
-                    newImage.description = req.body.description || '';
-                    newImage.alt = req.body.alt || '';
-                    newImage.beacon = req.body.beaconId;
-                    newImage.created_by = decoded.id;
-                    newImage.key = req.file.key;
-                    
-                    newImage.save()
-                        .then(image => {
-                            var file = {
-                                image_id: image.id
-                            };
-
-                            beacon.images.push(file);
-
-                            beacon.save()
-                                .then(data => {
-                                    return res.status(200).json({
-                                        'success': 'Image uploaded successfully!',
-                                        'beacon': 'Pushed image to beacon.'
-                                    });
-                                })
-                                .catch(err => {
-                                    return res.status(500).json({
-                                        'error': 'An unknown error occurred.'
-                                    });
-                                })
-                        })
-                        .catch(err => {
-                            return res.status(500).json({
-                                'error': 'An unknown error occurred.'
-                            });
-                        })
-                })
-                .catch(err => {
-                    return res.status(500).json({
-                        'error': 'An unknown error occurred.'
-                    });
-                })
         } else if (req.body && req.file) {
-            var newBeacon = new Beacon();
-            newBeacon.name = 'No Title Set';
-            newBeacon.location.coordinates.push(req.body.longitude)
-            newBeacon.location.coordinates.push(req.body.latitude);
-            newBeacon.description = 'No Description Set';
-            newBeacon.created_by = decoded.id;
-
-            newBeacon.save()
-                .then(beacon => {
+            Beacon.find({
+                created_by: decoded.id,
+                location: {
+                    $near: {
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [req.body.longitude, req.body.latitude]
+                          },
+                          $maxDistance: 10
+                    }
+                },
+            })
+            .limit(1)
+            .then(beacons => {
+                if (beacons.length > 0) {
                     var newImage = new Image();
                     newImage.description = req.body.description || '';
                     newImage.alt = req.body.alt || '';
-                    newImage.beacon = beacon.id;
+                    newImage.beacon = beacons[0].id;
                     newImage.created_by = decoded.id;
                     newImage.key = req.file.key;
 
@@ -156,9 +120,9 @@ imageController.uploadImage = function(req, res, next) {
                                 image_id: image.id
                             };
 
-                            beacon.images.push(image);
+                            beacons[0].images.push(image);
 
-                            beacon.save()
+                            beacons[0].save()
                                 .then(data => {
                                     return res.status(200).json({
                                         'success': 'Image uploaded successfully!'
@@ -170,17 +134,56 @@ imageController.uploadImage = function(req, res, next) {
                                     });
                                 })
                         })
+                } else {
+                    var newBeacon = new Beacon();
+                    newBeacon.name = 'No Title Set';
+                    newBeacon.location.coordinates.push(req.body.longitude)
+                    newBeacon.location.coordinates.push(req.body.latitude);
+                    newBeacon.description = 'No Description Set';
+                    newBeacon.created_by = decoded.id;
+
+                    newBeacon.save()
+                        .then(beacon => {
+                            var newImage = new Image();
+                            newImage.description = req.body.description || '';
+                            newImage.alt = req.body.alt || '';
+                            newImage.beacon = beacon.id;
+                            newImage.created_by = decoded.id;
+                            newImage.key = req.file.key;
+
+                            newImage.save()
+                                .then(image => {
+                                    var image = {
+                                        image_id: image.id
+                                    };
+
+                                    beacon.images.push(image);
+
+                                    beacon.save()
+                                        .then(data => {
+                                            return res.status(200).json({
+                                                'success': 'Image uploaded successfully!'
+                                            });
+                                        })
+                                        .catch(err => {
+                                            return res.status(500).json({
+                                                'error': 'An unknown error occurred.'
+                                            });
+                                        })
+                                })
+                                .catch(err => {
+                                    return res.status(500).json({
+                                        'error': 'An unknown error occurred.'
+                                    });
+                                })
+                        })
                         .catch(err => {
                             return res.status(500).json({
                                 'error': 'An unknown error occurred.'
                             });
                         })
-                })
-                .catch(err => {
-                    return res.status(500).json({
-                        'error': 'An unknown error occurred.'
-                    });
-                })
+                }
+            })
         } else {
             return res.status(500).json({
                 'error': 'An unknown error occurred.'

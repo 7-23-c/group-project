@@ -4,6 +4,10 @@
 
 .flex {
     flex-grow: 1;
+}
+
+.flex a {
+    display: inline-block;
     text-decoration: none;
     font-family: 'Kaushan Script', cursive;
 }

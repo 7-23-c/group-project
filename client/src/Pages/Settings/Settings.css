@@ -6,15 +6,3 @@
 .Settings>div {
     width: 960px;
 }
-
-.Settings button {
-    background-color: #ff4242;
-    border: 2px solid #b90202;
-    color: #ffffff;
-    padding: 5px 15px;
-    transition: 0.1s ease-in-out;
-}
-
-.Settings button:hover {
-    background-color: #b90202;
-}
