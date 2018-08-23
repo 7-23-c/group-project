@@ -6,6 +6,8 @@ import Modal from 'react-modal';
 import Progress from '@material-ui/core/CircularProgress';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Axios from 'axios';
 
 // import css
@@ -18,9 +20,14 @@ class Beacon extends React.Component {
             ready: false,
             beacon: {},
             imagesToFetch: [],
-            images: []
+            images: [],
+            modalIsOpen: false,
+            imagePreview: '',
         }
         this.getPresignedUrls = this.getPresignedUrls.bind(this);
+        this.preview = this.preview.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentWillMount() {
@@ -40,6 +47,10 @@ class Beacon extends React.Component {
             console.log(err);
         })
     }
+
+    openModal() { this.setState({ modalIsOpen: true }); }
+    
+    closeModal() { this.setState({ modalIsOpen: false }); }
 
     getPresignedUrls() {
         let len = this.state.beacon.images.length
@@ -72,6 +83,13 @@ class Beacon extends React.Component {
         })
     }
 
+    preview(src) {
+        this.setState({
+            imagePreview: src
+        });
+        this.openModal();
+    }
+
     render() {
         if (!this.state.ready) {
             return (
@@ -92,13 +110,26 @@ class Beacon extends React.Component {
         let images = this.state.images.map((image, key) => {
             return (
                 <GridListTile key={key} cols={1}>
-                    <img src={image} alt="" />
+                    <img onClick={() => this.preview(image)} src={image} alt="" />
                 </GridListTile>
             )
         })
 
         return (
             <div className="Beacon">
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                    contentLabel="Preview Image"
+                >
+                    <img alt="placeholder" src={this.state.imagePreview}  width="100%" height="auto"/>
+                    <Button
+                        onClick={this.closeModal}
+                    >
+                        Close
+                    </Button>
+                </Modal>
                 <h3>{this.state.beacon.name}</h3>
                 <h4>{this.state.beacon.description}</h4>
                 <h5>Created On: {fullDate} by {created_by.name.first} {created_by.name.last}</h5>
@@ -111,5 +142,18 @@ class Beacon extends React.Component {
         )
     }
 }
+
+const customStyles = {
+    content : {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        maxWidth: '500px',
+        maxHeight: '100vh'
+    }
+};
 
 export default Beacon;
