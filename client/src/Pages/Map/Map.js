@@ -180,7 +180,7 @@ class Map extends React.Component {
                     contentLabel="Create New Beacon"
                 >
                     { this.state.beaconQuery
-                        ?   <LinearProgress fullWidth={true} />
+                        ?   <LinearProgress />
                         :   null
                     }
                     <h2>Upload an Image</h2>
