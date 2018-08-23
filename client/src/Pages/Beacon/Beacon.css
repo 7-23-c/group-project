@@ -22,6 +22,10 @@
     background-color: #FFFFFF;
 }
 
+img.modalImage {
+    border: 1px solid #222222;
+}
+
 .Beacon .images img:hover {
     cursor: pointer;
 }

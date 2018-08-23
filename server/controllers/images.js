@@ -56,7 +56,7 @@ imageController.getImages = function(req, res, next) {
 
         Image.find({ '_id': { $in: arr } })
         .then(image => {
-            var urls = [];
+            var images = [];
 
             for (let i = 0; i < len; i++) {
                 if (image[i].created_by.toString() === decoded.id) {
@@ -70,13 +70,17 @@ imageController.getImages = function(req, res, next) {
                         Expires: signedUrlExpireSeconds
                     });
 
-                    urls.push(url);
+                    images.push({
+                        url: url,
+                        description: image[i].description,
+                        alt: image[i].alt
+                    });
                     continue;
                 }
             }
 
             return res.status(200).json({
-                image_urls: urls
+                images: images
             });
         })
         .catch(err => {
@@ -148,7 +152,7 @@ imageController.uploadImage = function(req, res, next) {
                         .then(beacon => {
                             var newImage = new Image();
                             newImage.description = req.body.description || '';
-                            newImage.alt = req.body.alt || '';
+                            newImage.alt = req.body.description || '';
                             newImage.beacon = beacon.id;
                             newImage.created_by = decoded.id;
                             newImage.key = req.file.key;

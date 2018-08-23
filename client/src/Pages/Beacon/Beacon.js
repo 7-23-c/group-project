@@ -22,6 +22,7 @@ class Beacon extends React.Component {
             images: [],
             modalIsOpen: false,
             imagePreview: '',
+            imageDescription: '',
         }
         this.getPresignedUrls = this.getPresignedUrls.bind(this);
         this.preview = this.preview.bind(this);
@@ -52,6 +53,7 @@ class Beacon extends React.Component {
     closeModal() { this.setState({ modalIsOpen: false }); }
 
     getPresignedUrls() {
+        console.log(this.state.beacon);
         let len = this.state.beacon.images.length
         for(let i = 0; i < len; i++) {
             let imageId = this.state.beacon.images[i].image_id;
@@ -74,7 +76,7 @@ class Beacon extends React.Component {
         .then(res => {
             this.setState({
                 ready: true,
-                images: res.data.image_urls
+                images: res.data.images
             })
         })
         .catch(err => {
@@ -82,9 +84,10 @@ class Beacon extends React.Component {
         })
     }
 
-    preview(src) {
+    preview(src, desc) {
         this.setState({
-            imagePreview: src
+            imagePreview: src,
+            imageDescription: desc
         });
         this.openModal();
     }
@@ -109,7 +112,7 @@ class Beacon extends React.Component {
         let images = this.state.images.map((image, key) => {
             return (
                 <GridListTile key={key} cols={1}>
-                    <img onClick={() => this.preview(image)} src={image} alt="" />
+                    <img onClick={() => this.preview(image.url, image.description)} src={image.url} alt={image.alt} />
                 </GridListTile>
             )
         })
@@ -122,9 +125,12 @@ class Beacon extends React.Component {
                     style={customStyles}
                     contentLabel="Preview Image"
                 >
-                    <img alt="placeholder" src={this.state.imagePreview}  width="100%" height="auto"/>
+                    <img alt="placeholder" className="modalImage" src={this.state.imagePreview}  width="100%" height="auto"/>
+                    <p>{this.state.imageDescription}</p>
                     <Button
                         onClick={this.closeModal}
+                        color="secondary"
+                        variant="contained"
                     >
                         Close
                     </Button>

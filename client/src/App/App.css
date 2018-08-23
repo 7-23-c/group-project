@@ -13,6 +13,13 @@ body {
     min-height: calc(100vh - 64px);
 }
 
+.Progress .loader {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .Logo {
     text-decoration: none;
     color: #1FC0B8;

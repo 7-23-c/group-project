@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Collapse from '@material-ui/core/Collapse';
 
 // import custom components
 import GoogleMapComponent from '../../Components/GoogleMap/GoogleMap';
@@ -39,6 +40,7 @@ class Map extends React.Component {
                 long: undefined,
             },
             snackOpen: false,
+            expanded: false,
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
@@ -89,7 +91,8 @@ class Map extends React.Component {
         this.input = undefined;
         this.setState({
             modalIsOpen: false,
-            beaconQuery: false
+            beaconQuery: false,
+            expanded: false
         });
     }
 
@@ -224,7 +227,10 @@ class Map extends React.Component {
         if (!this.state.ready) {
             return (
                 <div className="Progress">
-                    <Progress size={80} />
+                    <div className="loader">
+                        <Progress size={80} />
+                        <h3>Loading Map</h3>
+                    </div>
                 </div>
             );
         }
@@ -241,7 +247,7 @@ class Map extends React.Component {
                         ?   <LinearProgress />
                         :   null
                     }
-                    <h2>Upload an Image</h2>
+                    <h2>Upload An Image</h2>
                     <img alt="placeholder" src={this.state.imageUpload} width="200" height="auto" />
                     <TextField
                         multiline={true}
@@ -252,18 +258,45 @@ class Map extends React.Component {
                         onChange={this.handleChange}
                     />
                     <Button
-                        onClick={this.closeModal}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        title="Create Beacon"
-                        variant="flat"
+                        onClick={() => this.setState({ expanded: !this.state.expanded })}
+                        variant="text"
                         color="primary"
-                        onClick={this.createTheBeacon}
+                        fullWidth="true"
                     >
-                        Create Beacon
+                        Change Beacon Information
                     </Button>
+                    <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                        <h3>Beacon</h3>
+                        <TextField
+                            fullWidth={true}
+                            type="text"
+                            label="Title"
+                        />
+                        <TextField
+                            multiline={true}
+                            rows={4}
+                            fullWidth={true}
+                            type="text"
+                            label="Description"
+                        />
+                    </Collapse>
+                    <div className="ModalFooter">
+                        <Button
+                            onClick={this.closeModal}
+                            variant="contained"
+                            color="secondary"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            title="Create Beacon"
+                            variant="contained"
+                            color="primary"
+                            onClick={this.createTheBeacon}
+                        >
+                            Upload Image
+                        </Button>
+                    </div>
                 </Modal>
                 <GoogleMapComponent 
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYern8-eaxuw153-3rlyRrxaqgtd07_eg"
