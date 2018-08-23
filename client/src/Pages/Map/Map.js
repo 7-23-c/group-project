@@ -32,6 +32,8 @@ class Map extends React.Component {
             modalIsOpen: false,
             imageUpload: '',
             imageDescription: '',
+            beaconDescription: '',
+            beaconTitle: '',
             imageForUpload: null,
             ready: false,
             beaconQuery: false,
@@ -123,7 +125,7 @@ class Map extends React.Component {
     // change our image description
     handleChange(e) {
         this.setState({
-            imageDescription: e.target.value
+            [e.target.name]: e.target.value
         });
     }
 
@@ -135,6 +137,8 @@ class Map extends React.Component {
         const formData = new FormData();
         formData.append('image', this.state.imageForUpload);
         formData.append('description', this.state.imageDescription);
+        formData.append('beaconDescription', this.state.beaconDescription);
+        formData.append('beaconTitle', this.state.beaconTitle);
         formData.append('latitude', this.state.lat);
         formData.append('longitude', this.state.long);
 
@@ -167,7 +171,6 @@ class Map extends React.Component {
         let currentLong = this.state.long;
 
         if (this.state.lastLocation.lat === undefined && this.state.lastLocation.long === undefined) {
-            console.log('getting location');
             this.setState({
                 lastLocation: {
                     lat: this.state.lat,
@@ -256,6 +259,7 @@ class Map extends React.Component {
                         label="Description"
                         rows={4}
                         onChange={this.handleChange}
+                        name="imageDescription"
                     />
                     <Button
                         onClick={() => this.setState({ expanded: !this.state.expanded })}
@@ -271,6 +275,8 @@ class Map extends React.Component {
                             fullWidth={true}
                             type="text"
                             label="Title"
+                            name="beaconTitle"
+                            onChange={this.handleChange}
                         />
                         <TextField
                             multiline={true}
@@ -278,6 +284,8 @@ class Map extends React.Component {
                             fullWidth={true}
                             type="text"
                             label="Description"
+                            name="beaconDescription"
+                            onChange={this.handleChange}
                         />
                     </Collapse>
                     <div className="ModalFooter">

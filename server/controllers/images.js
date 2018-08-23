@@ -142,10 +142,10 @@ imageController.uploadImage = function(req, res, next) {
                         })
                 } else {
                     var newBeacon = new Beacon();
-                    newBeacon.name = 'No Title Set';
+                    newBeacon.name =  req.body.beaconTitle || 'No Title Set';
                     newBeacon.location.coordinates.push(req.body.longitude)
                     newBeacon.location.coordinates.push(req.body.latitude);
-                    newBeacon.description = 'No Description Set';
+                    newBeacon.description = req.body.beaconDescription || 'No Description Set';
                     newBeacon.created_by = decoded.id;
 
                     newBeacon.save()
