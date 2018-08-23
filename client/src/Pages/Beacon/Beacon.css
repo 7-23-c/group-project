@@ -1,5 +1,8 @@
 .Beacon {
     color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     max-width: 960px;
     min-height: calc(100vh - 64px);
     margin: 0 auto;
@@ -15,22 +18,17 @@
     text-align: center;
 }
 
-.Beacon .images {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.Beacon .images .image-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.Beacon .images img {
-    border: 2px solid #222222;
-    padding: 5px;
-    max-width: 300px;
+.Beacon img {
+    display: block;
+    width: 100%;
     height: auto;
     background-color: #FFFFFF;
+}
+
+img.modalImage {
+    border: 1px solid #222222;
+}
+
+.Beacon .images img:hover {
+    cursor: pointer;
 }

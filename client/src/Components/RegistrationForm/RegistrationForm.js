@@ -6,6 +6,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Progress from '@material-ui/core/LinearProgress/LinearProgress';
 import Axios from 'axios';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 
 // import css
 import './RegistrationForm.css';
@@ -25,7 +29,9 @@ class RegistrationForm extends Component {
             password: "",
             password_error: "",
             loading: false,
+            show: false,
         }
+        this.showPassword = this.showPassword.bind(this);
     }
 
     change = e => {
@@ -115,6 +121,12 @@ class RegistrationForm extends Component {
         }
     };
 
+    showPassword() {
+        this.setState({
+            show: !this.state.show
+        })
+    }
+
     render() {
         return (
             <form className="RegistrationForm">
@@ -163,10 +175,25 @@ class RegistrationForm extends Component {
                     label="Password"
                     value={this.state.password}
                     onChange={e => this.change(e)}
-                    type="password"
+                    type={ this.state.show
+                            ?   "text"
+                            :   "password"
+                        }
                     error={this.state.password_error.length > 0 ? true : false}
                     helperText={this.state.password_error}
                     fullWidth={true}
+                    InputProps={{
+                        endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Toggle password visibility"
+                            onClick={this.showPassword}
+                          >
+                            {this.state.show ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                        )
+                      }}
                 />
                 <Button
                     type="submit"
