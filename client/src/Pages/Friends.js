@@ -1,13 +1,3 @@
-// Stuff to do:
-// this component will show a list of "friends" the user is with.
-// this component will show a list of "pending friends" of the userInfo
-
-// this component will manage the list: update, delete, ... 
-
-//Stuff to import:
-//  friends from the user
-//  pending friends from the user
-
 import React, { Component } from "react";
 import Axios from 'axios';
 import './Friends.css';
@@ -21,57 +11,50 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+class Friends extends Component{
 
+    constructor(props){
 
-//ComponentDidMount()
+        super(props);
 
-//};
-       // this.setState({
-        //     fields: {
-        //         ...this.state.fields,
-        //         ...update
-        //     }
-        // });
+        this.state = {
+            items : [],
+            friends: [],
+            pendings: [],
+            isLoaded: false,
+        }
+    }
 
-class Friends extends Component {
-    
-    //state:
-    state = {
-        friends: {},
-        pending: {}
-    };
-    //onChange stuff goes here:
+    componentDidMount(){
+        fetch('/friends/', {
+            method: 'GET',
+            headers: {
+                //send the jsonwebtoken
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+            })
+            .then(res => res.json())
+            .then(res => {
+
+                this.setState({ 
+                    
+                    friends: res.friends,
+                    pendings: res.pending,
+                    isLoaded: true,
+                })
+            });
+    }
     onSubmit = e => {
         e.preventDefault();
         const id_of_john = "5b73678b434bad64409d382c";
         const id_of_seymour = "5b73683a434bad64409d382d";
         const id_of_michael = "5b736897434bad64409d382e";
+        const my_id = "5b75f9d4a3ea5469678a7914";
 
 
         const URLPost = '/friends/' + id_of_michael;
         console.log("Add button pressed!");
-        //send the URL 
-        // Axios.post(URLPost,
-        //     {
-        //         headers: {
-        //             //send the jsonwebtoken
-        //             Authorization: 'Bearer ' + localStorage.getItem('token')
-        //         }
 
-        //     })
-        //     // .then(res => {
-        //     //     console.log(JSON.stringify(res));
-        //     // })
-        //     //error
-        //     .catch(err => {
-        //         console.log("this err is: " + err)
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     });
-        //send the URL without axios:
-
-        //const data = { headers: {Authorization: 'Bearer ' + localStorage.getItem('token')} };
 
         fetch(URLPost, {
             method: 'POST', // or 'PUT' 
@@ -81,101 +64,104 @@ class Friends extends Component {
             }
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response))
+    };
+
+    onDelete = e => {
+        const id_of_john = "5b73678b434bad64409d382c";
+        const id_of_seymour = "5b73683a434bad64409d382d";
+        const id_of_michael = "5b736897434bad64409d382e";
+        const URLPost = '/friends/' + "5b73683a434bad64409d382d";
+
+
+        e.preventDefault();
+
+        console.log("Delete Button Pressed!");
+
+        fetch(URLPost, {
+            method: 'Delete'
+
+        }).then(response => response.json());
+    }
+
+    onAccept = e => {
+
+        const id_of_john = "5b73678b434bad64409d382c";
+        const id_of_seymour = "5b73683a434bad64409d382d";
+        const id_of_michael = "5b736897434bad64409d382e";
+
+        const URLPost = '/friends/' + id_of_seymour;
+
+
+        e.preventDefault();
+        //accept Friend
+        fetch(URLPost, {
+            method: 'PUT', // or 'PUT' 
+            headers: {
+                //send the jsonwebtoken
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
             .then(response => console.log('Success:', response));
-        };
-        onDelete = e => {
-            e.preventDefault();
-            console.log("Delete Button Pressed!");
-        }
-        onAccept = e => {
-            e.preventDefault();
-            console.log("Pending Friend has been added!");
-        }
 
-    render() {
-// FRIENDS ***************************************************
+        console.log("Pending Friend has been added!");
+    }
 
-       // const friends = ["Friend#1", "Friend#2", "Friend#3", "Friend#4"];
-        // const friends = this.state.friends;
-        const friends = [];
+    render(){
+        var { isLoaded, friends, pendings } = this.state;
 
-        const listFriends = friends.map( (friend,index) => {
-            return(
-                <List key={index}>
-                    <ListItem button  >
-                        <IconButton onClick={e => this.onDelete(e)}  aria-label="Delete">
-                            <DeleteIcon className="deleteIcon" />
-                        </IconButton>
-                        <li className="friendItem">{friend} </li>
-                        </ListItem>
-                </List>
-            )
-        });
-
-        const FriendsList = props => (
-            <div className="Friends-only-List">
-                {props.friends}
+        if (!isLoaded) {
+            return( <div>
+                Loading...
             </div>
-        );
-// END OF FRIENDS ***************************************************
-
-// PENDING FRIENDS ***************************************************
-
-//Pending Friends list:
-    //const pendingFriends = ["Pending #1", "Pending #2", "Pending #3","Pending #4"];
-    const pendingFriends = [];
-    
-    const listPendingFriends = pendingFriends.map( (pendingFriend,index) => {
-        return(
-        <List key = {index}>
-            <ListItem button >
-                    <Button   onClick={e => this.onAccept(e)}  color="primary" aria-label="Add">
-                        <AddIcon />
-                    </Button>
-                    <li className = "pendingItem"> {pendingFriend} </li>
-                {/* <ListItemText primary={pendingFriend} /> */}
-            </ListItem>
-        </List>
-    )
-    });
-
-    const PendingFriendsList = props => (
-        <div className="Pending-only-List" key={props.pendingFriends.id} >
-            {props.pendingFriends}
-        </div>
-
-    );
-// END OF PENDING FRIENDS ***************************************************
-
-
-        //console.log("the state of the object is: " + this.state.friends);
-
-        return (
-            <div className="Friends">
-                <div className="Friends-only-Header">
-                    Friends
-                    <div className="Friends-only-List">
-                        <FriendsList friends={listFriends} />
+            );
+        }
+        else{
+            return (
+                    <div className="Friends">
+                        <div className="Friends-only-Header">
+                            Friends
+                            {friends.map( (friend, index) => (
+                            <List key={index}>
+                                <ListItem button  >
+                                    <IconButton onClick={e => this.onDelete(e)} aria-label="Delete">
+                                        <DeleteIcon className="deleteIcon" />
+                                    </IconButton>
+                                    <li className="friendItem">{friend.username} </li>
+                                </ListItem>
+                            </List>
+                            
+                            ))}
                         <Button onClick={e => this.onSubmit(e)} variant="fab" color="primary" aria-label="Add" className="addButton">
                             <AddIcon />
                         </Button>
-                    </div>
-
-                </div>
-                <div className="Pending-Friends">
-                    <div className="Pending-only-Header">
-                        Pending
-                        <div className="Pending-only-List">
-                            <PendingFriendsList pendingFriends={listPendingFriends}  />
-                            {}
-                            {/* {this.state.repos ? <p>Number of repos: {this.state.repos}</p> : <p>Please enter a username.</p>} */}
-                            {this.state.pendingFriends ? <p> Pending Friend #1 </p> : <p> No Pending Requests </p>}
+                    
                         </div>
-                    </div>
-                </div>
-            </div>
-        );
+
+                        <div className="Pending-only-Header">
+                            Pending
+                            {pendings.length == 0 ?
+                            
+                                <ul className ="pendingItem"> No Pending Requests </ul> :
+                            
+                                pendings.map( (pending, index) => (
+                                    <List key={index}>
+                                        <ListItem button  >
+                                            <Button onClick={e => this.onAccept(e)} color="primary" aria-label="Add">
+                                                <AddIcon />
+                                            </Button>
+                                            <li className="pendingItem">
+                                                {pending.username} 
+                                            </li>
+                                        </ListItem>
+                                    </List>
+                                ))
+                        }   
+                        </div>
+                    </div> 
+            );
+        }
     }
 }
-
 export default Friends;

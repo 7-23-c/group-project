@@ -176,6 +176,7 @@ friendsController.acceptFriend = function(req, res, next) {
 
                                     friend.save()
                                         .then(data => {
+                                            console.log("it went here!");
                                             return res.status(204).json({
                                                 success: 'Accepted friend request.'
                                             });
