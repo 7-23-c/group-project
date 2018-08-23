@@ -4,55 +4,6 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 
-BeaconController.createNewBeacon = function(req, res, next) {
-    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
-        if (err) {
-            return res.status(500).json({
-                error: 'An unknown error occurred.'
-            });
-        } else {
-            var errors = [];
-            var newBeacon = new Beacon();
-
-            newBeacon.name = req.body.name || 'Untitled Beacon';
-
-            if (!req.body.longitude) {
-                errors.push('Longitude is required.');
-            } else {
-                newBeacon.location.coordinates.push(req.body.longitude);
-            }
-
-            if (!req.body.latitude) {
-                errors.push('Latitude is required.');
-            } else {
-                newBeacon.location.coordinates.push(req.body.latitude);
-            }
-
-            newBeacon.created_by = decoded.id;
-
-            newBeacon.description = req.body.description || 'No description set yet.';
-
-            if (errors.length > 0) {
-                return res.status(400).json({
-                    errors: errors
-                });
-            } else {
-                newBeacon.save()
-                    .then(data => {
-                        return res.status(201).json({
-                            success: 'Beacon created successfully!'
-                        });
-                    })
-                    .catch(err => {
-                        return res.status(500).json({
-                            error: 'An unknown error occurred.'
-                        });
-                    });
-            }
-        }
-    });
-}
-
 BeaconController.findAllBeacons = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
         Beacon.find({created_by: decoded.id}).populate('created_by', 'username')

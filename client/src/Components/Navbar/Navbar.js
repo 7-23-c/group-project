@@ -60,9 +60,11 @@ class Navbar extends Component {
                             : null
                         }
                         
-                        <Typography style={{fontFamily: 'Kaushan Script, cursive'}} component={Link} to="/map" className="flex" variant="title" color="inherit">
-                            Beacons
-                        </Typography>
+                        <div className="flex">
+                            <Typography style={{fontFamily: 'Kaushan Script, cursive'}} component={Link} to="/map"  variant="title" color="inherit">
+                                Beacons
+                            </Typography>
+                        </div>
                         
                         { this.props.isLoggedIn
                             ? <Button onClick={this.onLogout} color="inherit">Logout</Button>

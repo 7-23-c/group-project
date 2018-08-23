@@ -1,6 +1,13 @@
+// import react components
 import React from 'react';
+
+// import components
 import FAB from '@material-ui/core/Button/Button';
+
+// import icons
 import FaCamera from 'react-icons/lib/fa/camera';
+
+// import css
 import './SnapButton.css';
 
 class SnapButton extends React.Component {

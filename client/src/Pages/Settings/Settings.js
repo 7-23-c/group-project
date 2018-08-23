@@ -1,6 +1,11 @@
 // import react components
 import React from 'react';
+
+// import components
 import Axios from 'axios';
+import Button from '@material-ui/core/Button/Button';
+
+// import css
 import './Settings.css';
 
 class Settings extends React.Component {
@@ -38,7 +43,12 @@ class Settings extends React.Component {
                     <h3>Username: {this.user.username}</h3>
                     <h3>Email: {this.user.email}</h3>
                     <h3>Account Created: {this.user.accountCreated}</h3>
-                    <button onClick={this.deleteAccount}>Delete Account</button>
+                    <Button
+                        label="Delete Account"
+                        onClick={this.deleteAccount}
+                        variant="contained"
+                        color="secondary"
+                    >Delete Account</Button>
                 </div>
             </div>
         )

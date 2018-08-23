@@ -1,26 +1,27 @@
 // import react components
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
 
 // import components
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Progress from '@material-ui/core/LinearProgress/LinearProgress';
 import Axios from 'axios';
 
 // import css
 import './LoginForm.css';
 
 class LoginForm extends Component {
-
-    // initialize state:
-    state = {
-        email: "",
-        password: "",
-        error: ""
-    };
+    constructor() {
+        super();
+        this.state = {
+            email: "",
+            password: "",
+            error: "",
+            loading: false,
+        }
+    }
 
     change = e => {
-        this.props.onChange({ [e.target.name]: e.target.value });
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -28,23 +29,29 @@ class LoginForm extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        
+        this.setState({
+            loading: true,
+        });
         Axios.post('/token', {
             email: this.state.email,
             password: this.state.password
         })
-        .then(function(res) {
+        .then(res => {
             if (!res.data.token) {
                 throw new Error('Invalid Username or Password');
             } else {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('user', JSON.stringify(res.data.user));
+                this.setState({
+                    loading: false,
+                });
                 window.location = '/map';
             }
         })
         .catch(err => {
             this.setState({
-                error: 'Invalid Username or Password'
+                error: 'Invalid Username or Password',
+                loading: false,
             });
         })
     };
@@ -52,7 +59,14 @@ class LoginForm extends Component {
     render() {
         return (
             <form className="LoginForm">
-            {this.state.error.length > 0 ? <div className="error">{this.state.error}</div> : null}
+            { this.state.loading
+                ?   <Progress />
+                :   null
+            }
+            { this.state.error.length > 0
+                ?   <div className="error">{this.state.error}</div>
+                :   null
+            }
                 <TextField
                     name="email"
                     label="Email"
@@ -75,11 +89,21 @@ class LoginForm extends Component {
                     label="Login"
                     onClick={e => this.onSubmit(e)}
                     variant="contained"
+                    color="primary"
                     size="medium"
                     fullWidth={true}
                 >Login</Button>
-                <div>Don't have an account yet? <Link to="/register">Create one!</Link></div>
-                <div>Or <Link to="/">Go Home</Link></div>
+
+                <hr />
+
+                <Button
+                    label="Create an Account"
+                    variant="contained"
+                    color="secondary"
+                    size="medium"
+                    fullWidth={true}
+                    onClick={() => window.location = "/register"}
+                >Create an Account</Button>
             </form>
         );
     }

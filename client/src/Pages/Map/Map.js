@@ -1,14 +1,24 @@
-import React, { Component } from 'react';
-import GoogleMapComponent from '../../Components/GoogleMap/GoogleMap';
+// import react components
+import React from 'react';
 import Modal from 'react-modal';
-import Axios from 'axios';
 
+// import components
+import Axios from 'axios';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
+import Progress from '@material-ui/core/CircularProgress/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 
+// import custom components
+import GoogleMapComponent from '../../Components/GoogleMap/GoogleMap';
+
+// import css
+import './Map.css';
+
+// set up our modal
 Modal.setAppElement('#app')
 
-class Map extends Component {
+class Map extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -20,20 +30,30 @@ class Map extends Component {
             imageDescription: '',
             imageForUpload: null,
             ready: false,
+            beaconQuery: false,
+            lastLocation: {
+                lat: undefined,
+                long: undefined,
+            }
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
+        this.input = undefined
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.createTheBeacon = this.createTheBeacon.bind(this);
         this.getNearbyBeacons = this.getNearbyBeacons.bind(this);
+        this.createBeacon = this.createBeacon.bind(this);
     }
 
     componentWillUnmount() {
+        // clear gps tracking
         navigator.geolocation.clearWatch(this.watch);
+        // clear beacon tracking
         clearInterval(this.beaconTimer);
+        // reset the timer
         this.beaconTimer = undefined;
     }
 
@@ -59,8 +79,17 @@ class Map extends Component {
 
     openModal() { this.setState({ modalIsOpen: true }); }
     
-    closeModal() { this.setState({ modalIsOpen: false }); }
+    closeModal() {
+        // clear the value of the input
+        this.input.value = '';
+        this.input = undefined;
+        this.setState({
+            modalIsOpen: false,
+            beaconQuery: false
+        });
+    }
 
+    // used to read the file contens of images and display a preview
     getImageContents(e) {
         var reader = new FileReader();
         reader.onload = () => {
@@ -71,21 +100,31 @@ class Map extends Component {
         reader.readAsDataURL(e.target.files[0]);
     }
 
-    createBeacon = (e, input) => {
+    // opens up our modal and gets the image preview
+    createBeacon(e, input) {
+        if (input.value === '') {
+            return;
+        }
+        this.input = input;
         this.setState({
-            imageForUpload: e.target.files[0]
+            imageForUpload: e.target.files[0],
         });
         this.getImageContents(e);
         this.openModal();
     }
 
+    // change our image description
     handleChange(e) {
         this.setState({
             imageDescription: e.target.value
         });
     }
 
+    // submit the beacon to the server
     createTheBeacon() {
+        this.setState({
+            beaconQuery: true
+        });
         const formData = new FormData();
         formData.append('image', this.state.imageForUpload);
         formData.append('description', this.state.imageDescription);
@@ -112,24 +151,67 @@ class Map extends Component {
     }
 
     getNearbyBeacons() {
-        Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => {
+        let { lat, long } = this.state.lastLocation;
+        let currentLat = this.state.lat;
+        let currentLong = this.state.long;
+
+        if (this.state.lastLocation.lat === undefined && this.state.lastLocation.long === undefined) {
+            console.log('getting location');
             this.setState({
-                beacons: res.data.beacons
+                lastLocation: {
+                    lat: this.state.lat,
+                    long: this.state.long,
+                }
+            });
+
+            Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             })
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(res => {
+                this.setState({
+                    beacons: res.data.beacons
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        } else if ( currentLat > (lat + 1) || currentLong > (long + 1)) {
+            console.log('getting location');
+            this.setState({
+                lastLocation: {
+                    lat: this.state.lat,
+                    long: this.state.long
+                }
+            });
+
+            Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(res => {
+                this.setState({
+                    beacons: res.data.beacons
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        } else {
+            console.log('have not moved enough. not requesting server.');
+            return;
+        }
     }
 
     render() {
         if (!this.state.ready) {
-            return null;
+            return (
+                <div className="Progress">
+                    <Progress size={80} />
+                </div>
+            );
         }
 
         return (
@@ -140,6 +222,10 @@ class Map extends Component {
                     style={customStyles}
                     contentLabel="Create New Beacon"
                 >
+                    { this.state.beaconQuery
+                        ?   <LinearProgress />
+                        :   null
+                    }
                     <h2>Upload an Image</h2>
                     <img alt="placeholder" src={this.state.imageUpload} width="200" height="auto" />
                     <TextField
@@ -165,7 +251,7 @@ class Map extends Component {
                     </Button>
                 </Modal>
                 <GoogleMapComponent 
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkU8bb3zs9fjyDTW7fJqzD3P-gaSc_rU4"
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYern8-eaxuw153-3rlyRrxaqgtd07_eg"
                     loadingElement={<div style={{ height: 'calc(100vh - 64px)' }} />}
                     containerElement={<div style={{ height: 'calc(100vh - 64px)' }} />}
                     mapElement={<div style={{ height: 'calc(100vh - 64px)' }} />}

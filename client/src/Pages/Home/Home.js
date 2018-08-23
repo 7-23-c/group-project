@@ -1,9 +1,12 @@
+// import react components
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+// import images
 import AppStoreBadge from '../../Images/app-store-badge.svg';
 import PlayStoreBadge from '../../Images/play-store-badge.svg';
 
+// import css
 import './Home.css';
 
 class Home extends React.Component {
