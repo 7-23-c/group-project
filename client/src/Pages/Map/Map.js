@@ -186,7 +186,6 @@ class Map extends React.Component {
                 console.log(err);
             })
         } else if ( reset || currentLat > (lat + 1) || currentLong > (long + 1)) {
-            console.log('getting location');
             this.setState({
                 lastLocation: {
                     lat: this.state.lat,
@@ -208,7 +207,6 @@ class Map extends React.Component {
                 console.log(err);
             })
         } else {
-            console.log('have not moved enough. not requesting server.');
             return;
         }
     }
