@@ -1,6 +1,6 @@
 // import react components
-import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { Redirect, Link } from 'react-router-dom';
 
 // import custom components
 import LoginForm from "../../Components/LoginForm/LoginForm";
@@ -8,20 +8,7 @@ import LoginForm from "../../Components/LoginForm/LoginForm";
 // import css
 import "./Login.css";
 
-class Login extends Component {
-    state = {
-        fields: {}
-    };
-    //onChange stuff goes here:
-    onChange = update => {
-        this.setState({
-            fields: {
-                ...this.state.fields,
-                ...update
-            }
-        });
-    };
-
+class Login extends React.Component {
     render() {
         if (localStorage.getItem('token') !== null) {
             return <Redirect to='/map' />
@@ -29,10 +16,10 @@ class Login extends Component {
             return (
                 <div className="Login">
                     <div className="Login-header">
-                        <h1>Login</h1>
-                        <h2>Welcome Back!</h2>
+                        <Link to="/" className="Logo"><h1>Beacons</h1></Link>
+                        <h2>Welcome back!</h2>
                     </div>
-                    <LoginForm onChange={fields => this.onChange(fields)} />
+                    <LoginForm />
                 </div>
             );
         }

@@ -1,11 +1,10 @@
 .RegistrationForm {
   text-align: center;
-  border: 25px solid skyblue;
   border-radius: 0 0 5px 5px;
   box-sizing: border-box;
-  padding: 3em 2em;
+  padding: 0 40px 40px 40px;
   max-width: 100%;
-  width: 500px;
+  width: 350px;
   background-color: #FFFFFF;
 }
 
@@ -14,3 +13,6 @@
   margin-bottom: 16px;
 }
 
+.RegistrationForm hr {
+  margin: 5px 0;
+}
