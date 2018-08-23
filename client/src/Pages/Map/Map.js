@@ -30,7 +30,11 @@ class Map extends React.Component {
             imageDescription: '',
             imageForUpload: null,
             ready: false,
-            beaconQuery: false
+            beaconQuery: false,
+            lastLocation: {
+                lat: undefined,
+                long: undefined,
+            }
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
@@ -147,19 +151,58 @@ class Map extends React.Component {
     }
 
     getNearbyBeacons() {
-        Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(res => {
+        let { lat, long } = this.state.lastLocation;
+        let currentLat = this.state.lat;
+        let currentLong = this.state.long;
+
+        if (this.state.lastLocation.lat === undefined && this.state.lastLocation.long === undefined) {
+            console.log('getting location');
             this.setState({
-                beacons: res.data.beacons
+                lastLocation: {
+                    lat: this.state.lat,
+                    long: this.state.long,
+                }
+            });
+
+            Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             })
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(res => {
+                this.setState({
+                    beacons: res.data.beacons
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        } else if ( currentLat > (lat + 1) || currentLong > (long + 1)) {
+            console.log('getting location');
+            this.setState({
+                lastLocation: {
+                    lat: this.state.lat,
+                    long: this.state.long
+                }
+            });
+
+            Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(res => {
+                this.setState({
+                    beacons: res.data.beacons
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        } else {
+            console.log('have not moved enough. not requesting server.');
+            return;
+        }
     }
 
     render() {
