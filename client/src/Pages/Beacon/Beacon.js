@@ -87,7 +87,11 @@ class Beacon extends React.Component {
         let { created_by } = this.state.beacon;
 
         let images = this.state.images.map((image, key) => {
-            return <img key={key} src={image} alt="" />
+            return (
+                <div key={key} className="image-container">
+                    <img src={image} alt="" />
+                </div>
+            )
         })
 
         return (

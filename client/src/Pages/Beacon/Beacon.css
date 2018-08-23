@@ -1,8 +1,9 @@
 .Beacon {
+    color: #FFFFFF;
     max-width: 960px;
     min-height: calc(100vh - 64px);
     margin: 0 auto;
-    background-color: #969696;
+    background-color: #00A4D7;
     padding: 15px 5px;
 }
 
@@ -12,6 +13,18 @@
 
 .Beacon h3, .Beacon h4, .Beacon h5 {
     text-align: center;
+}
+
+.Beacon .images {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.Beacon .images .image-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .Beacon .images img {
