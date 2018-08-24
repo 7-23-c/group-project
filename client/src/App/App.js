@@ -10,6 +10,7 @@ import NotFound from '../Pages/NotFound/NotFound';
 import Map from '../Pages/Map/Map';
 import Settings from '../Pages/Settings/Settings';
 import Beacon from '../Pages/Beacon/Beacon';
+import Beacons from '../Pages/Beacons/Beacons';
 
 // import custom components
 import Navigation from '../Components/Navbar/Navbar';
@@ -53,6 +54,10 @@ class App extends Component {
                     <PrivateRoute
                     isLoggedIn={this.state.isLoggedIn}
                     exact path="/map" component={Map} />
+
+                    <PrivateRoute
+                    isLoggedIn={this.state.isLoggedIn}
+                    exact path="/beacons" component={Beacons}/>
 
                     <PrivateRoute isLoggedIn={this.state.isLoggedIn} exact path="/settings" component={Settings} />
 

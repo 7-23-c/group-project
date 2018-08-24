@@ -1,0 +1,11 @@
+.BeaconList {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.BeaconList div {
+    max-width: 800px;
+    margin: 0 auto;
+    flex-grow: 1;
+}

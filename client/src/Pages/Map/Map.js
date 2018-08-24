@@ -178,7 +178,7 @@ class Map extends React.Component {
                 }
             });
 
-            Axios.get(`/beacons?latitude=${this.state.lat}&longitude=${this.state.long}`, {
+            Axios.get(`/nearby?latitude=${this.state.lat}&longitude=${this.state.long}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
