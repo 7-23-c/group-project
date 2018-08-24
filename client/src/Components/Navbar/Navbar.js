@@ -19,6 +19,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/LocationOn';
 import FriendIcon from '@material-ui/icons/People';
 import SettingsIcon from '@material-ui/icons/SettingsRounded';
+import CameraIcon from '@material-ui/icons/CameraAlt';
 
 // import css
 import './Navbar.css';
@@ -106,6 +107,12 @@ const Navigation = () => {
                         <FriendIcon />
                     </ListItemIcon>
                     <ListItemText primary="Friends" />
+                </ListItem>
+                <ListItem button={true} component={Link} to="/beacons">
+                    <ListItemIcon>
+                        <CameraIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Beacons" />
                 </ListItem>
             </List>
             <List>
