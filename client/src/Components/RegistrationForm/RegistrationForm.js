@@ -70,7 +70,7 @@ class RegistrationForm extends Component {
             errors.email_error = "Please enter a valid email address.";
         }
         //check the password length
-        if (this.state.password.length < 5) {
+        if (this.state.password.length <= 5) {
             isError = true;
             errors.password_error = "Must be greater than 5 characters."
         }

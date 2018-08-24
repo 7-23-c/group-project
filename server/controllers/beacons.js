@@ -6,7 +6,9 @@ const extractJwt = require('../helpers/extract');
 
 BeaconController.findAllBeacons = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
-        Beacon.find({created_by: decoded.id}).populate('created_by', 'username')
+        Beacon.find({created_by: decoded.id})
+            .limit(10)
+            //.populate('created_by', 'username')
             .then(beacons => {
                 return res.status(200).json({
                     beacons: beacons
