@@ -11,6 +11,9 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import User from '../Components/User';
+import UsersList from '../Components/UsersList';
+
 class Friends extends Component{
 
     constructor(props){
@@ -115,6 +118,7 @@ class Friends extends Component{
         else{
             return (
                     <div className="Friends">
+                    <UsersList />
                         <div className="Friends-only-Header">
                             Friends
                             {friends.length == 0 ?
