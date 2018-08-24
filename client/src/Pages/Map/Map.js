@@ -339,7 +339,7 @@ class Map extends React.Component {
                             <CloseIcon />
                         </IconButton>,
                     ]}
-                    />
+                />
             </React.Fragment>
         )
     }
