@@ -3,12 +3,16 @@ const router = express.Router();
 const UserController = require('../controllers/users');
 const Authorize = require('../helpers/authorize');
 
+// get a user's username and id to add them as a friend
+router.get('/users', (req, res, next) =>
+UserController.findUser(req, res, next));
+
 // create a new user
 router.post('/users', (req, res, next) =>
 UserController.createNewUser(req, res, next));
 
 // update a user
-router.put('/users/:id', Authorize, (req, res, next) =>
+router.put('/users', (req, res, next) =>
 UserController.updateUser(req, res, next));
 
 // delete a user

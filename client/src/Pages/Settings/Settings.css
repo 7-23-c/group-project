@@ -1,0 +1,12 @@
+.Settings {
+    display: flex;
+    justify-content: center;
+}
+
+.Settings>div {
+    width: 960px;
+}
+
+button {
+    margin-top: 15px;
+}

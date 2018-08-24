@@ -1,0 +1,18 @@
+.RegistrationForm {
+  text-align: center;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  padding: 0 40px 40px 40px;
+  max-width: 100%;
+  width: 350px;
+  background-color: #FFFFFF;
+}
+
+.RegistrationForm button {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.RegistrationForm hr {
+  margin: 5px 0;
+}

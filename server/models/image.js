@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({ 
     description: String,
+    key: String,
     alt: String,
     beacon: {
         type: mongoose.Schema.Types.ObjectId,

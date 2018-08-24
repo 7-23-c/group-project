@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto:300,400,500");
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.Progress {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 64px);
+}
+
+.Progress .loader {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Logo {
+    text-decoration: none;
+    color: #1FC0B8;
+    font-family: 'Kaushan Script', cursive;
+}
+
+.Logo h1 {
+    margin: 0 0 10px 0;
+}

@@ -1,0 +1,34 @@
+.Beacon {
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 960px;
+    min-height: calc(100vh - 64px);
+    margin: 0 auto;
+    background-color: #00A4D7;
+    padding: 15px 5px;
+}
+
+.Beacon h3 {
+    margin-top: 0;
+}
+
+.Beacon h3, .Beacon h4, .Beacon h5 {
+    text-align: center;
+}
+
+.Beacon img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background-color: #FFFFFF;
+}
+
+img.modalImage {
+    border: 1px solid #222222;
+}
+
+.Beacon .images img:hover {
+    cursor: pointer;
+}

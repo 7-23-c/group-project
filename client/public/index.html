@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto:300,400,500" rel="stylesheet">
-    
     <title>Beacons</title>
-  </head>
-  <body>
+</head>
+<body>
     <noscript>
-      You need to enable JavaScript to run this app.
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .noscript {
+                align-items: center;
+                display: flex;
+                font-family: sans-serif;
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            .noscript>div {
+                background-color: #d6d6d6;
+                max-width: 400px;
+                padding: 15px;
+            }
+        </style>
+        <div class="noscript">
+            <div>
+                <p>It looks like you have javascript disabled.</p>
+                <p>Our app only works with javascript enabled.</p>
+                <p>Please enable javascript for the best experience, or go <a href="/nojs">HERE</a>, if you'd like to view our landing page.</p>
+            </div>
+        </div>
     </noscript>
     <div id="app"></div>
-  </body>
+</body>
 </html>

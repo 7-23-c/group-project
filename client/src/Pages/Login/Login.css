@@ -1,0 +1,24 @@
+.Login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background-color: #00A4D7;
+  min-height: 100vh;
+}
+
+.Login-header {
+  border-radius: 5px 5px 0 0;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 40px 20px 10px 20px;
+  color: #222222;
+  width: 350px;
+}
+
+.Login-header h2 {
+  color: #F5037C;
+  margin: 0;
+}

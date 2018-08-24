@@ -85,9 +85,20 @@ passport.use('generate-token', new LocalStrategy({
                             error: 'Something unexpected happened. Please try again.'
                         })
                     }
-    
+                    
+
+                    var date = new Date(user.created_at);
+                    var userCreated = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
                     return done(null, user, {
-                        token: token
+                        token: token,
+                        user: {
+                            id: user.id,
+                            username: user.username,
+                            email: user.local.email,
+                            fName: user.name.first,
+                            lName: user.name.last,
+                            accountCreated: userCreated
+                        }
                     });
                 });
             })

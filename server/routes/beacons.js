@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const BeaconController = require('../controllers/beacons');
 
-router.post('/beacons', (req, res, next) =>
-BeaconController.createNewBeacon(req, res, next));
-
 router.get('/beacons', (req, res, next) =>
 BeaconController.findAllBeacons(req, res, next));
+
+router.get('/nearby', (req, res, next) =>
+BeaconController.findNearbyBeacons(req, res, next));
 
 router.get('/beacons/:id', (req, res, next) =>
 BeaconController.findOneBeacon(req, res, next));

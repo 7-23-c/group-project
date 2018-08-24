@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto:300,400,500");
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.main-navigation {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 0 24px;
+    width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    .main-navigation {
+        height: 54px;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .main-navigation {
+        height: 64px;
+    }
+}
+
+.main-navigation .brand {
+    flex-grow: 1;
+}
+
+.main-navigation .brand a {
+    font-size: 1.5rem;
+    font-family: 'Kaushan Script', cursive;
+    font-weight: 500;
+    text-decoration: none;
+    color: #f0f0f0;
+}
+
+.main-navigation .brand a:hover {
+    color: #FFFFFF;
+}
+
+.main-navigation ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-navigation ul li {
+    color: #f0f0f0;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.main-navigation ul li:last-child {
+    margin-right: 0;
+}
+
+.main-navigation ul li a {
+    color: #f0f0f0;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.main-navigation ul li a:hover {
+    color: #FFFFFF;
+}
+
+.main {
+    background-image: url('../images/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.main .overlay {
+    background-color: rgba(0,0,0, 0.3);
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Kaushan Script', cursive;
+    font-size: 2em;
+}
+
+.main .badge {
+    height: 60px;
+}

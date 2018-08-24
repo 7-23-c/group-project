@@ -4,58 +4,11 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 
-BeaconController.createNewBeacon = function(req, res, next) {
-    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
-        if (err) {
-            return res.status(500).json({
-                error: 'An unknown error occurred.'
-            });
-        } else {
-            var errors = [];
-            var newBeacon = new Beacon();
-
-            newBeacon.name = req.body.name || 'Untitled Beacon';
-
-            if (!req.body.latitude) {
-                errors.push('Latitude is required.');
-            } else {
-                newBeacon.location.latitude = req.body.latitude;
-            }
-
-            if (!req.body.longitude) {
-                errors.push('Longitude is required.');
-            } else {
-                newBeacon.location.longitude = req.body.longitude;
-            }
-
-            newBeacon.created_by = decoded.id;
-
-            newBeacon.description = req.body.description || 'No description set yet.';
-
-            if (errors.length > 0) {
-                return res.status(400).json({
-                    errors: errors
-                });
-            } else {
-                newBeacon.save()
-                    .then(data => {
-                        return res.status(201).json({
-                            success: 'Beacon created successfully!'
-                        });
-                    })
-                    .catch(err => {
-                        return res.status(500).json({
-                            error: 'An unknown error occurred.'
-                        });
-                    });
-            }
-        }
-    });
-}
-
 BeaconController.findAllBeacons = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
-        Beacon.find({created_by: decoded.id}).populate('created_by', 'username')
+        Beacon.find({created_by: decoded.id})
+            .limit(10)
+            //.populate('created_by', 'username')
             .then(beacons => {
                 return res.status(200).json({
                     beacons: beacons
@@ -69,15 +22,43 @@ BeaconController.findAllBeacons = (req, res, next) => {
     });
 };
 
+BeaconController.findNearbyBeacons = (req, res, next) => {
+    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
+        Beacon.find({
+            created_by: decoded.id,
+            location: {
+                $near: {
+                    $geometry: {
+                        type: 'Point',
+                        coordinates: [req.query.longitude, req.query.latitude]
+                      },
+                      $maxDistance: 50
+                }
+            },
+        })
+        .then(beacons => {
+            res.set('Cache-Control', 'max-age=0');
+
+            return res.status(200).json({
+                beacons: beacons
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    });
+}
+
 BeaconController.findOneBeacon = (req, res, next) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id)
+        .populate('created_by', 'name.first name.last')
             .then(beacon => {
                 if(!beacon) {
                     return res.status(404).json({
                         error: 'Beacon not found.'
                     });            
-                } else if (beacon.created_by.toString() !== decoded.id) {
+                } else if (beacon.created_by.id.toString() !== decoded.id) {
                     return res.status(403).json({
                         error: 'Unauthorized Access.'
                     });
