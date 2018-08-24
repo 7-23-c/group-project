@@ -45,16 +45,6 @@ friendsController.addFriend = function(req, res, next) {
             User.findById(decoded.id)
                 
                 .then(user => {
-                    console.log("///////// USER Details ///////")
-                    console.log( user);
-                    console.log("I want to get rid of this id,right? : " +"user._id " + user._id)
-                    delete user._id;
-                    console.log("user._id after delete is: " + user._id);
-                    console.log("//////// END OF USER ////////");
-
-                    console.log("///////// USER Details ///////")
-                    console.log(user);
-                    console.log("//////// END OF USER ////////");
                     var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
                     if (friendAdded.length > 0) {
 
@@ -62,14 +52,11 @@ friendsController.addFriend = function(req, res, next) {
                             error: 'You\'ve already sent this user a friend request.'
                         });
                     } else {
-                        console.log("Friend I want to add:");
-                        console.log("User.findById: " + req.params.id);
                         //console.log(req.params.id);
                         User.findById(req.params.id)
                         
 
                             .then(friend => {
-                                console.log("friend.id: " + friend.id)
                                 var newFriendSender = {
                                     friend_id: friend.id,
                                     sender: true
