@@ -56,7 +56,9 @@ class Beacons extends React.Component {
                 let year = date.getFullYear();
                 let fullDate = `${month}/${day}/${year}`;
                 return (
-                    <ListItem button={true} component={Link} to={`/beacon/${beacon._id}`}><ListItemText primary={beacon.name} secondary={fullDate} /></ListItem>
+                    <ListItem button={true} component={Link} to={`/beacon/${beacon._id}`}>
+                        <ListItemText primary={beacon.name} secondary={`${fullDate} - ${beacon.images.length} Images`} />
+                    </ListItem>
                 )
             });
 
