@@ -8,7 +8,7 @@ router.post('/users', (req, res, next) =>
 UserController.createNewUser(req, res, next));
 
 // update a user
-router.put('/users/:id', Authorize, (req, res, next) =>
+router.put('/users', (req, res, next) =>
 UserController.updateUser(req, res, next));
 
 // delete a user
