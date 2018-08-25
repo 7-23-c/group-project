@@ -265,7 +265,7 @@ class Map extends React.Component {
                         onClick={() => this.setState({ expanded: !this.state.expanded })}
                         variant="text"
                         color="primary"
-                        fullWidth="true"
+                        fullWidth={true}
                     >
                         Change Beacon Information
                     </Button>

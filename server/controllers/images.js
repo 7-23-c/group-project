@@ -1,9 +1,8 @@
-const imageController = new Object();
+const imageController = {};
 const jwt = require('jsonwebtoken');
 const aws = require('aws-sdk');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
-const User = require('../models/user');
 const Image = require('../models/image');
 const Beacon = require('../models/beacon');
 
@@ -15,14 +14,14 @@ aws.config.update({
 const s3 = new aws.S3();
 
 // begin methods
-imageController.getSingleImage = function(req, res, next) {
+imageController.getSingleImage = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Image.findById(req.params.id)
             .then(image => {
                 if (image.created_by.toString() === decoded.id) {
-                    var myBucket = 'beacons-images'
-                    var myKey = image.key
-                    var signedUrlExpireSeconds = 60 * 20
+                    var myBucket = 'beacons-images';
+                    var myKey = image.key;
+                    var signedUrlExpireSeconds = 60 * 20;
 
                     var url = s3.getSignedUrl('getObject', {
                         Bucket: myBucket,
@@ -41,15 +40,15 @@ imageController.getSingleImage = function(req, res, next) {
                     });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     'error': 'An unknown error occurred.'
                 });
-            })
+            });
     });
-}
+};
 
-imageController.getImages = function(req, res, next) {
+imageController.getImages = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         var arr = JSON.parse(req.query.images);
         var len = arr.length;
@@ -60,9 +59,9 @@ imageController.getImages = function(req, res, next) {
 
             for (let i = 0; i < len; i++) {
                 if (image[i].created_by.toString() === decoded.id) {
-                    let myBucket = 'beacons-images'
-                    let myKey = image[i].key
-                    let signedUrlExpireSeconds = 60 * 20
+                    let myBucket = 'beacons-images';
+                    let myKey = image[i].key;
+                    let signedUrlExpireSeconds = 60 * 20;
 
                     let url = s3.getSignedUrl('getObject', {
                         Bucket: myBucket,
@@ -83,15 +82,15 @@ imageController.getImages = function(req, res, next) {
                 images: images
             });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({
                 error: 'An unknown error occurred.'
             });
-        })
-    })
-}
+        });
+    });
+};
 
-imageController.uploadImage = function(req, res, next) {
+imageController.uploadImage = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -122,28 +121,28 @@ imageController.uploadImage = function(req, res, next) {
 
                     newImage.save()
                         .then(image => {
-                            var image = {
+                            var theImage = {
                                 image_id: image.id
                             };
 
-                            beacons[0].images.push(image);
+                            beacons[0].images.push(theImage);
 
                             beacons[0].save()
-                                .then(data => {
+                                .then(() => {
                                     return res.status(200).json({
                                         'success': 'Image uploaded successfully!'
                                     });
                                 })
-                                .catch(err => {
+                                .catch(() => {
                                     return res.status(500).json({
                                         'error': 'An unknown error occurred.'
                                     });
-                                })
-                        })
+                                });
+                        });
                 } else {
                     var newBeacon = new Beacon();
                     newBeacon.name =  req.body.beaconTitle || 'No Title Set';
-                    newBeacon.location.coordinates.push(req.body.longitude)
+                    newBeacon.location.coordinates.push(req.body.longitude);
                     newBeacon.location.coordinates.push(req.body.latitude);
                     newBeacon.description = req.body.beaconDescription || 'No Description Set';
                     newBeacon.created_by = decoded.id;
@@ -159,46 +158,46 @@ imageController.uploadImage = function(req, res, next) {
 
                             newImage.save()
                                 .then(image => {
-                                    var image = {
+                                    var theImage = {
                                         image_id: image.id
                                     };
 
-                                    beacon.images.push(image);
+                                    beacon.images.push(theImage);
 
                                     beacon.save()
-                                        .then(data => {
+                                        .then(() => {
                                             return res.status(200).json({
                                                 'success': 'Image uploaded successfully!'
                                             });
                                         })
-                                        .catch(err => {
+                                        .catch(() => {
                                             return res.status(500).json({
                                                 'error': 'An unknown error occurred.'
                                             });
-                                        })
+                                        });
                                 })
-                                .catch(err => {
+                                .catch(() => {
                                     return res.status(500).json({
                                         'error': 'An unknown error occurred.'
                                     });
-                                })
+                                });
                         })
-                        .catch(err => {
+                        .catch(() => {
                             return res.status(500).json({
                                 'error': 'An unknown error occurred.'
                             });
-                        })
+                        });
                 }
-            })
+            });
         } else {
             return res.status(500).json({
                 'error': 'An unknown error occurred.'
             });
         }
     });
-}
+};
 
-imageController.deleteImage = function(req, res, next) {
+imageController.deleteImage = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Image.findById(req.params.id)
             .then(image => {
@@ -206,31 +205,31 @@ imageController.deleteImage = function(req, res, next) {
                     s3.deleteObject({
                         Bucket: 'beacons-images',
                         Key: image.key
-                    }, function (err, data){
+                    }, function (err){
                         if (err) {
                             return res.status(500).json({
                                 'error': 'An unknown error occurred'
                             });
                         } else {
                             image.remove()
-                                .then(data => {
+                                .then(() => {
                                     return res.status(204);
                                 })
-                                .catch(err => {
+                                .catch(() => {
                                     return res.status(500).json({
                                         error: 'Something unexpected happened.'
                                     });
-                                })
+                                });
                         }
                     });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     'error': 'An unknown error occurred'
                 });
-            })
+            });
     });
-}
+};
 
 module.exports = imageController;

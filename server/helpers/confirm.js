@@ -7,7 +7,7 @@ function Confirm(req, res, next) {
         if (err) {
             return res.status(500).json({
                 error: 'Something unexpected happen.'
-            })
+            });
         } else if (decoded) {
             return next();
         } else {

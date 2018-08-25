@@ -1,5 +1,6 @@
 // import react components
-import React, { Component } from "react";
+import React from "react";
+import { Link } from 'react-router-dom';
 
 // import components
 import TextField from "@material-ui/core/TextField";
@@ -10,7 +11,7 @@ import Axios from 'axios';
 // import css
 import './LoginForm.css';
 
-class LoginForm extends Component {
+class LoginForm extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -94,6 +95,17 @@ class LoginForm extends Component {
                     fullWidth={true}
                 >Login</Button>
 
+                <Button
+                    variant="text"
+                    label="Forgot password?"
+                    fullWidth={true}
+                    size="medium"
+                    component={Link}
+                    to="/forgotpassword"
+                >
+                    Forgot Password?
+                </Button>
+
                 <hr />
 
                 <Button
@@ -102,7 +114,8 @@ class LoginForm extends Component {
                     color="secondary"
                     size="medium"
                     fullWidth={true}
-                    onClick={() => window.location = "/register"}
+                    component={Link}
+                    to="/register"
                 >Create an Account</Button>
             </form>
         );

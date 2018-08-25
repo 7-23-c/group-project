@@ -14,7 +14,7 @@ ReactDOM.render(
     <BrowserRouter>
         <div>
             <CssBaseline />
-            <App />
+            <App /> 
         </div>
     </BrowserRouter>,
 document.getElementById('app'));
