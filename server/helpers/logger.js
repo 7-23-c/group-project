@@ -1,19 +1,19 @@
 function Logger(error, type) {
     switch(type) {
         case 'info':
-            return console.info(error);
+            console.info(error);
             break;
         case 'log':
-            return console.debug(error);
+            console.debug(error);
             break;
         case 'warn':
-            return console.warn(error);
+            console.warn(error);
             break;
         case 'error':
-            return console.error(error);
+            console.error(error);
             break;
-        case default:
-            return console.log(error);
+        default:
+            console.log(error);
             break;
     }
 }

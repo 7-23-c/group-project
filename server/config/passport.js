@@ -47,22 +47,22 @@ passport.use('local-registration', new LocalStrategy({
                 newUser.username = req.body.username;
 
                 newUser.save()
-                    .then(data => {
+                    .then(() => {
                         return done(null, newUser, {
                             message: 'User created successfully!'
                         });
                     })
-                    .catch(err => {
+                    .catch(() => {
                         return done(null, false, {
                             error: 'Something unexpected happen. Please try again.'
                         });
-                    })
+                    });
             })
-            .catch(err => {
+            .catch(() => {
                 return done(null, false, {
                     error: 'Something unexpected happen. Please try again.'
                 });
-            })   
+            });
     }
 ));
 
@@ -83,7 +83,7 @@ passport.use('generate-token', new LocalStrategy({
                     if (err) {
                         return done(null, false, {
                             error: 'Something unexpected happened. Please try again.'
-                        })
+                        });
                     }
                     
 
@@ -102,11 +102,11 @@ passport.use('generate-token', new LocalStrategy({
                     });
                 });
             })
-            .catch(err => {
+            .catch(() => {
                 return done(null, false, {
                     error: 'Something unexpected happened. Please try again.'
                 });
-            })
+            });
     }
 ));
 
