@@ -39,25 +39,26 @@ friendsController.addFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
-                error: 'Something unexpected happened.'
+                error: 'Something unexpected happened.1'
             });
         } else {
             User.findById(decoded.id)
+                
                 .then(user => {
                     var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
-                
                     if (friendAdded.length > 0) {
+
                         return res.status(400).json({
                             error: 'You\'ve already sent this user a friend request.'
                         });
                     } else {
+                        //console.log(req.params.id);
                         User.findById(req.params.id)
                             .then(friend => {
                                 var newFriendSender = {
                                     friend_id: friend.id,
                                     sender: true
                                 };
-
                                 var newFriend = {
                                     friend_id: user.id
                                 };
@@ -75,26 +76,27 @@ friendsController.addFriend = function(req, res) {
                                             })
                                             .catch(() => {
                                                 return res.status(500).json({
-                                                    error: 'Something unexpected happened.'
+                                                    error: 'Something unexpected happened.2'
                                                 });
                                             });
                                     })
                                     .catch(() => {
                                         return res.status(500).json({
-                                            error: 'Something unexpected happened.'
+                                            error: 'Something unexpected happened.3'
                                         });
                                     });
                             })
                             .catch(() => {
                                 return res.status(500).json({
-                                    error: 'Something unexpected happened.'
+                                    error: 'Something unexpected happened.4'
+                                    //error: err
                                 });
                             });
                     }
                 })
                 .catch(() => {
                     return res.status(500).json({
-                        error: 'Something unexpected happened.'
+                        error: 'Something unexpected happened.5'
                     });
                 });
         }
