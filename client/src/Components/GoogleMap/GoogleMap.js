@@ -37,7 +37,6 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
                     return (
                         <React.Fragment key={key}>
                             <Circle
-                                key={key + 1}
                                 center={{
                                     lat: beacon.location.coordinates[1],
                                     lng: beacon.location.coordinates[0]
@@ -51,7 +50,6 @@ const GoogleMapComponent = withScriptjs(withGoogleMap((props) =>
                                 clickable={false}
                             />
                             <Marker
-                                key={key}
                                 position={{
                                     lat: beacon.location.coordinates[1],
                                     lng: beacon.location.coordinates[0]

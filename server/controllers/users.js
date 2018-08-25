@@ -1,9 +1,10 @@
-const UserController = new Object();
+const UserController = {};
 const passport = require('passport');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');
+const sendEmail = require('../helpers/emailer.js');
+const extractJwt = require('../helpers/extract.js');
 const jwtSecret = require('../config/settings').jwtSecret;
-const extractJwt = require('../helpers/extract');
+const jwt= require('jsonwebtoken');
 
 require('../config/passport');
 
@@ -18,13 +19,13 @@ UserController.createNewUser = function(req, res, next) {
             return res.status(500).json(info);
         }
         if (!user) {
-            return res.status(400).json(info)
+            return res.status(400).json(info);
         }
         return res.status(201).json(info);
     })(req, res, next);
-}
+};
 
-UserController.updateUser = function(req, res, next) {
+UserController.updateUser = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -36,7 +37,7 @@ UserController.updateUser = function(req, res, next) {
                 if (!user) {
                     return res.status(404).json({
                         error: 'Unable to find a user with given information.'
-                    })
+                    });
                 }
 
                 // start saving updated user details
@@ -51,49 +52,49 @@ UserController.updateUser = function(req, res, next) {
                 }
 
                 user.save()
-                    .then(data => {
+                    .then(() => {
                         return res.status(204).json({
                             success: 'User updated successfully!'
                         });
                     })
-                    .catch(err => {
+                    .catch(() => {
                         return res.status(500).json({
                             error: 'Something unexpected happened.'
                         });
-                    })    
+                    });
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'Something unexpected happened.'
-                })
-            })
+                });
+            });
         }
     });
-}
+};
 
-UserController.deleteUser = function(req, res, next) {
+UserController.deleteUser = function(req, res) {
     User.findById(req.params.id)
         .then(user => {
             user.remove()
-                .then(data => {
+                .then(() => {
                     return res.status(204).json({
                         success: 'User deleted successfully!'
                     });
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({
                         error: 'Something unexpected happened.'
                     });
-                })
+                });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({
                 error: 'Something unexpected happened.'
             });
-        })
-}
+        });
+};
 
-UserController.findUser = function(req, res, next) {
+UserController.findUser = function(req, res) {
     User.findOne({ 'username': req.query.username })
         .select('username')
         .then(user => {
@@ -101,11 +102,63 @@ UserController.findUser = function(req, res, next) {
                 user: user
             });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({
                 error: 'An unknown error occurred'
             });
+        });
+};
+
+//Password Reset
+UserController.forgotPassword = function(req, res){
+    const randomString = length => {
+        let text = "";
+        const possible = "abcdefghijklmnopqrstuvwxyz0123456789_-.";
+        for (let i = 0; i< length; i++) {
+            text+= possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    };
+        
+        User.findOne({'local.email': req.body.email})
+        .then(user => {
+            const token = randomString(40);
+            const emailData = {
+                to: user.local.email,
+                subject: "Beacon Password Reset Instructions",
+                text: `Please use the following link for instruction to reset your password: http://localhost:3000/resetpassword/${token}`,
+                html: `<p>Please use the link below for instruction to reset your password.</p><p>http://localhost:3000/resetpassword/${token}</p>`,
+            };
+            user.resetPassLink = token;
+            user.save()
+            .then(() => {
+                sendEmail(emailData);
+                console.log('sent');
+                return res.status(200).json({
+                    message: `Password reset email sent.`
+                });
+            });
         })
-}
+        .catch(() => {
+            console.log('something happened.')
+            return res.status(200).json({
+                message: `Password reset email sent.`
+            });
+        })
+};
+
+UserController.resetPassword = function(req, res){
+    const {resetToken, newPassword} = req.body;
+    if (!req.body) return res.status(400).json({message: 'No Request Body'});
+    User.findOne({'resetPassLink':resetToken})
+    .then(user => {
+        user.local.password = user.generateHash(newPassword);
+        user.resetPassLink = "";
+        user.save()
+        .then(() => {
+            return res.status(200).json({message: 'Password updated succesfully'});
+        });
+    });
+};
 
 module.exports = UserController;

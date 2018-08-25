@@ -1,6 +1,7 @@
 // module imports
 // require('dotenv').config(); // DEVELOPMENT ONLY
 const express = require('express');
+ /*jshint unused:false*/
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -15,10 +16,10 @@ require('./server/config/database')();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
-// app.use(logger('dev')); // DEVELOPMENT ONLY
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
+app.use(logger('dev')); // DEVELOPMENT ONLY
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use(passport.initialize());
 
@@ -40,6 +41,6 @@ app.get('*', (req, res) => {
 
 // Development mode port
 const port = process.env.PORT || 5000;
-app.listen(port)
+app.listen(port);
 
 module.exports = app;

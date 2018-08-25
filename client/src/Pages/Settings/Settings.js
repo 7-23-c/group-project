@@ -13,8 +13,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 
+
 // import css
 import './Settings.css';
+import { Avatar } from '@material-ui/core';
 
 class Settings extends React.Component {
     constructor() {
@@ -100,12 +102,19 @@ class Settings extends React.Component {
         return (
             <div className="Settings">
                 <div>
-                    <h1>Profile</h1>
+                    <div className="col">
+                        <Avatar className="letters-avatar">{this.user.fName.slice(0,1) + this.user.lName.slice(0,1)}</Avatar>
+                    </div>
+                    <div className="col">
+                       <span>Full Name <br/> <h3>{this.user.fName} {this.user.lName}</h3></span>
+                        <hr/>
+                        <span>Display Name <br/> <h3>{this.user.username}</h3></span> 
+                        <hr/>
+                        <span>Email Address <br/> <h3>{this.user.email}</h3></span> 
+                        <hr/>
+                        <span>Account Created <br/> <h3>{this.user.accountCreated}</h3></span>
+                    </div>
                     <hr />
-                    <h3>Name: {this.user.fName} {this.user.lName}</h3>
-                    <h3>Username: {this.user.username}</h3>
-                    <h3>Email: {this.user.email}</h3>
-                    <h3>Account Created: {this.user.accountCreated}</h3>
                     <Collapse
                         in={this.state.show}
                     >
@@ -179,5 +188,7 @@ class Settings extends React.Component {
         )
     }
 }
+
+
 
 export default Settings;
