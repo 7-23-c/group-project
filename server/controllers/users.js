@@ -1,9 +1,10 @@
 const UserController = new Object();
 const passport = require('passport');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');
+const sendEmail = require('../helpers/emailer.js');
+const extractJwt = require('../helpers/extract.js');
 const jwtSecret = require('../config/settings').jwtSecret;
-const extractJwt = require('../helpers/extract');
+const jwt= require('jsonwebtoken')
 
 require('../config/passport');
 
@@ -106,6 +107,49 @@ UserController.findUser = function(req, res, next) {
                 error: 'An unknown error occurred'
             });
         })
+}
+
+//Password Reset
+UserController.forgotPassword = function(req, res){
+    const randomString = length => {
+        let text = "";
+        const possible = "abcdefghijklmnopqrstuvwxyz0123456789_-.";
+        for (let i = 0; i< length; i++) {
+            text+= possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    }
+        
+        User.findOne({'local.email': req.body.email})
+        .then(user => {
+            const token = randomString(40);
+            const emailData = {
+                to: user.local.email,
+                subject: "Beacon Password Reset Instructions",
+                text: `Please use the following link for instruction to reset your password: http://localhost:5000/resetpass/${token}`,
+                html: `<p>Please use the link below for isntruction to reset your password.</p><p>http://localhost:5000/resetpass/${token}</p>`,
+            };
+            user.resetPassLink = token;
+            user.save()
+            .then(data => {
+                sendEmail(emailData);
+                return res.status(200).json({message: `Email has been sent to ${user.local.email}`});
+            })
+        })
+}
+
+UserController.resetPassword = function(req, res){
+    const {resetpasslink, newPassword} = req.body;
+    if (!req.body) return res.status(400).json({message: 'No Request Body'});
+    User.findOne({'resetPassLink':resetpasslink})
+    .then(user => {
+        user.local.password = user.generateHash(newPassword)
+        user.resetPassLink = ""
+        user.save()
+        .then(data => {
+            return res.status(200).json({message: 'Password updated succesfully'})
+        })
+    })
 }
 
 module.exports = UserController;
