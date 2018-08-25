@@ -11,8 +11,8 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import User from '../Components/User';
-import UsersList from '../Components/UsersList';
+//import User from '../Components/User';
+//import UsersList from '../Components/UsersList';
 
 class Friends extends Component{
 

@@ -13,6 +13,7 @@ import Beacon from '../Pages/Beacon/Beacon';
 import Beacons from '../Pages/Beacons/Beacons';
 import ForgotPassword from '../Pages/ForgotPassword/ForgotPassword';
 import ResetPassword from '../Pages/ResetPassword/ResetPassword';
+//import Friends from '../Pages/Friends/Friends';
 
 // import custom components
 import Navigation from '../Components/Navbar/Navbar';

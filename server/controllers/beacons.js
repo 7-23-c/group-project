@@ -66,7 +66,8 @@ BeaconController.findOneBeacon = (req, res) => {
                     });
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 return res.status(500).json({
                     error: 'An unknown error occurred.'
                 });

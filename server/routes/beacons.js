@@ -8,8 +8,8 @@ BeaconController.findAllBeacons(req, res, next));
 router.get('/nearby', (req, res, next) =>
 BeaconController.findNearbyBeacons(req, res, next));
 
-router.get('/beacons/:id', (req, res, next) =>
-BeaconController.findOneBeacon(req, res, next));
+router.get('/beacons/:id', (req, res) =>
+BeaconController.findOneBeacon(req, res));
 
 router.put('/beacons/:id', (req, res, next) =>
 BeaconController.updateBeacon(req, res, next) );
