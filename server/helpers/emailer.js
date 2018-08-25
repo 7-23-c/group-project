@@ -1,15 +1,15 @@
 const nodemailer = require('nodemailer');
 
-const defaultEmailData ={from: 'beaconinfo@gmail.com'};
+//const defaultEmailData ={from: 'beaconinfo@gmail.com'};
 
 
 const sendEmail = (emailData) => {
-    const completeEmailData = Object.assign(defaultEmailData, emailData);
+    //const completeEmailData = Object.assign(defaultEmailData, emailData);
     const transporter = nodemailer.createTransport('');
-    transporter.sendMail(emailData, function(err){
-        transporter.close()
-    })
-}
+    transporter.sendMail(emailData, function(){
+        transporter.close();
+    });
+};
 
 module.exports = sendEmail;
 
