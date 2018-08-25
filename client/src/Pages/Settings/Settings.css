@@ -1,10 +1,28 @@
 .Settings {
     display: flex;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
     justify-content: center;
+    flex-flow: column wrap;
+    align-content: stretch;
+    background: #f2f2f2;
+    width: 500px;
+    height: 630px;
+    border-radius: 5px;
+}
+
+.letters-avatar {
+    margin: 0 auto;
 }
 
 .Settings>div {
-    width: 960px;
+    margin: 0 auto;
+    width: 500px;
+}
+
+.col {
+    flex: 1 1;
 }
 
 button {
