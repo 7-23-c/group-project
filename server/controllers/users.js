@@ -126,22 +126,31 @@ UserController.forgotPassword = function(req, res){
             const emailData = {
                 to: user.local.email,
                 subject: "Beacon Password Reset Instructions",
-                text: `Please use the following link for instruction to reset your password: http://localhost:5000/resetpass/${token}`,
-                html: `<p>Please use the link below for isntruction to reset your password.</p><p>http://localhost:5000/resetpass/${token}</p>`,
+                text: `Please use the following link for instruction to reset your password: http://localhost:3000/resetpassword/${token}`,
+                html: `<p>Please use the link below for instruction to reset your password.</p><p>http://localhost:3000/resetpassword/${token}</p>`,
             };
             user.resetPassLink = token;
             user.save()
             .then(() => {
                 sendEmail(emailData);
-                return res.status(200).json({message: `Email has been sent to ${user.local.email}`});
+                console.log('sent');
+                return res.status(200).json({
+                    message: `Password reset email sent.`
+                });
             });
-        });
+        })
+        .catch(() => {
+            console.log('something happened.')
+            return res.status(200).json({
+                message: `Password reset email sent.`
+            });
+        })
 };
 
 UserController.resetPassword = function(req, res){
-    const {resetpasslink, newPassword} = req.body;
+    const {resetToken, newPassword} = req.body;
     if (!req.body) return res.status(400).json({message: 'No Request Body'});
-    User.findOne({'resetPassLink':resetpasslink})
+    User.findOne({'resetPassLink':resetToken})
     .then(user => {
         user.local.password = user.generateHash(newPassword);
         user.resetPassLink = "";

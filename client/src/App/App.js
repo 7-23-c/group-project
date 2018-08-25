@@ -11,6 +11,8 @@ import Map from '../Pages/Map/Map';
 import Settings from '../Pages/Settings/Settings';
 import Beacon from '../Pages/Beacon/Beacon';
 import Beacons from '../Pages/Beacons/Beacons';
+import ForgotPassword from '../Pages/ForgotPassword/ForgotPassword';
+import ResetPassword from '../Pages/ResetPassword/ResetPassword';
 
 // import custom components
 import Navigation from '../Components/Navbar/Navbar';
@@ -50,6 +52,10 @@ class App extends Component {
                     <Route exact path="/login" component={Login} />
 
                     <Route exact path="/register" component={Registration} />
+
+                    <Route exact path="/forgotpassword" component={ForgotPassword} />
+                    
+                    <Route exact path="/resetpassword/:token" component={ResetPassword} />
 
                     <PrivateRoute
                     isLoggedIn={this.state.isLoggedIn}

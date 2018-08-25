@@ -4,11 +4,11 @@ const UserController = require('../controllers/users');
 const Authorize = require('../helpers/authorize');
 
 //forgot password
-router.put('/users/forgotpass', (req, res) => 
+router.put('/users/forgotpassword', (req, res) => 
 UserController.forgotPassword(req, res));
 
 
-router.put('/users/resetpass', (req, res) => 
+router.put('/users/resetpassword', (req, res) => 
 UserController.resetPassword(req, res));
 
 // get a user's username and id to add them as a friend

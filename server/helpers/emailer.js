@@ -1,12 +1,18 @@
 const nodemailer = require('nodemailer');
 
-//const defaultEmailData ={from: 'beaconinfo@gmail.com'};
-
-
 const sendEmail = (emailData) => {
-    //const completeEmailData = Object.assign(defaultEmailData, emailData);
-    const transporter = nodemailer.createTransport('');
-    transporter.sendMail(emailData, function(){
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'cshorty1995@gmail.com',
+            pass: '!wzhGKe3&yF6'
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+    transporter.sendMail(emailData, function(err){
+        console.log(err);
         transporter.close();
     });
 };
