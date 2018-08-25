@@ -1,15 +1,15 @@
-const friendsController = new Object();
+const friendsController = {};
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 const User = require('../models/user');
 
-friendsController.getFriends = function(req, res, next) {    
+friendsController.getFriends = function(req, res) {    
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
                 error: 'An unknown error occurred.'
-            })
+            });
         } else {
             User.findById(decoded.id, 'friends').populate('friends.friend_id', 'username')
                 .then(user => {
@@ -26,16 +26,16 @@ friendsController.getFriends = function(req, res, next) {
                         pending: returnedPending
                     });
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({
                         error: 'Something unexpected happened.'
-                    })
-                })
+                    });
+                });
         }
     });
-}
+};
 
-friendsController.addFriend = function(req, res, next) {
+friendsController.addFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -52,7 +52,7 @@ friendsController.addFriend = function(req, res, next) {
                         });
                     } else {
                         User.findById(req.params.id)
-                            .then(user => {
+                            .then(friend => {
                                 var newFriendSender = {
                                     friend_id: friend.id,
                                     sender: true
@@ -66,42 +66,42 @@ friendsController.addFriend = function(req, res, next) {
                                 friend.friends.push(newFriend);
 
                                 user.save()
-                                    .then(data => {
+                                    .then(() => {
                                         friend.save()
-                                            .then(data => {
+                                            .then(() => {
                                                 return res.status(201).json({
                                                     success: 'Friend request sent.'
                                                 });
                                             })
-                                            .catch(err => {
+                                            .catch(() => {
                                                 return res.status(500).json({
                                                     error: 'Something unexpected happened.'
                                                 });
-                                            })
+                                            });
                                     })
-                                    .catch(err => {
+                                    .catch(() => {
                                         return res.status(500).json({
                                             error: 'Something unexpected happened.'
                                         });
-                                    })
+                                    });
                             })
-                            .catch(err => {
+                            .catch(() => {
                                 return res.status(500).json({
                                     error: 'Something unexpected happened.'
                                 });
-                            })
+                            });
                     }
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({
                         error: 'Something unexpected happened.'
                     });
-                })
+                });
         }
     });
-}
+};
 
-friendsController.removeFriend = function(req, res, next) {
+friendsController.removeFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -109,29 +109,29 @@ friendsController.removeFriend = function(req, res, next) {
             });
         } else {
             User.update({ _id: decoded.id}, { $pull: { 'friends': { friend_id: req.params.id }}}, { safe: true, multi: false })
-                .then(data => {
+                .then(() => {
                     User.update({ _id: req.params.id }, { $pull: { 'friends': { friend_id: decoded.id }}}, { safe: true, multi: false })
-                        .then(data => {
+                        .then(() => {
                             return res.status(204).json({
                                 success: 'Friend removed!'
                             });
                         })
-                        .catch(err => {
+                        .catch(() => {
                             return res.status(500).json({
                                 error: 'Something unexpected happened.'
                             });
-                        })
+                        });
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({
                         error: 'Something unexpected happened.'
                     });
-                })
+                });
         }
     });
-}
+};
 
-friendsController.acceptFriend = function(req, res, next) {
+friendsController.acceptFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         User.findById(decoded.id)
             .then(user => {
@@ -143,7 +143,7 @@ friendsController.acceptFriend = function(req, res, next) {
                     user.friends[myFriendIndex].accepted = true;
 
                     user.save()
-                        .then(data => {
+                        .then(() => {
                             User.findById(req.params.id)
                                 .then(friend => {
                                     var myIndex = friend.friends.findIndex(friend => friend.friend_id.toString() === decoded.id);
@@ -151,40 +151,40 @@ friendsController.acceptFriend = function(req, res, next) {
                                     friend.friends[myIndex].accepted = true;
 
                                     friend.save()
-                                        .then(data => {
+                                        .then(() => {
                                             return res.status(204).json({
                                                 success: 'Accepted friend request.'
                                             });
                                         })
-                                        .catch(err => {
+                                        .catch(() => {
                                             return res.status(500).json({
                                                 error: 'Something unexpected happened.'
-                                            })
-                                        })
+                                            });
+                                        });
                                 })
-                                .catch(err => {
+                                .catch(() => {
                                     return res.status(500).json({
                                         error: 'Something unexpected happened.'
-                                    })
-                                })
+                                    });
+                                });
                         })
-                        .catch(err => {
+                        .catch(() => {
                             return res.status(500).json({
                                 error: 'Something unexpected happened.'
                             });
-                        })
+                        });
                 } else {
                     return res.status(400).json({
                         error: 'You\'ve already accepted this friend request. Please wait for the other user to accept it.'
                     });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'Something unexpected happened.'
                 });
-            })
+            });
     });
-}
+};
 
 module.exports = friendsController;

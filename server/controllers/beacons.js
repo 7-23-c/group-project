@@ -1,10 +1,10 @@
-const BeaconController = new Object();
+const BeaconController = {};
 const Beacon = require('../models/beacon');
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 
-BeaconController.findAllBeacons = (req, res, next) => {
+BeaconController.findAllBeacons = (req, res) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded){
         Beacon.find({created_by: decoded.id})
             .limit(10)
@@ -14,7 +14,7 @@ BeaconController.findAllBeacons = (req, res, next) => {
                     beacons: beacons
                 });
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'An unknown error occurred.'
                 });
@@ -22,7 +22,7 @@ BeaconController.findAllBeacons = (req, res, next) => {
     });
 };
 
-BeaconController.findNearbyBeacons = (req, res, next) => {
+BeaconController.findNearbyBeacons = (req, res) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.find({
             created_by: decoded.id,
@@ -37,19 +37,17 @@ BeaconController.findNearbyBeacons = (req, res, next) => {
             },
         })
         .then(beacons => {
-            res.set('Cache-Control', 'max-age=0');
-
             return res.status(200).json({
                 beacons: beacons
             });
         })
         .catch(err => {
             console.log(err);
-        })
+        });
     });
-}
+};
 
-BeaconController.findOneBeacon = (req, res, next) => {
+BeaconController.findOneBeacon = (req, res) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id)
         .populate('created_by', 'name.first name.last')
@@ -68,7 +66,7 @@ BeaconController.findOneBeacon = (req, res, next) => {
                     });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'An unknown error occurred.'
                 });
@@ -76,7 +74,7 @@ BeaconController.findOneBeacon = (req, res, next) => {
     });
 };
 
-BeaconController.updateBeacon = (req, res, next) => {
+BeaconController.updateBeacon = (req, res) => {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -107,19 +105,19 @@ BeaconController.updateBeacon = (req, res, next) => {
                     }
 
                     beacon.save()
-                        .then(data => {
+                        .then(() => {
                             return res.status(204).json({
                                 success: 'Beacon updated successfully!'
                             });
                         })
-                        .catch(err => {
+                        .catch(() => {
                             return res.status(500).json({
                                 error: 'An unknown error occurred.'
                             });
-                        })
+                        });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: "An unknown error occurred."
                 });
@@ -128,7 +126,7 @@ BeaconController.updateBeacon = (req, res, next) => {
     });
 };
 
-BeaconController.deleteBeacon = function(req, res, next) {    
+BeaconController.deleteBeacon = function(req, res) {    
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         Beacon.findById(req.params.id)
             .then(beacon => {
@@ -138,24 +136,24 @@ BeaconController.deleteBeacon = function(req, res, next) {
                     });
                 } else {
                     beacon.remove()
-                        .then(data => {
+                        .then(() => {
                             return res.status(204).json({
                                 success: 'Beacon deleted successfully!'
                             });
                         })
-                        .catch(err => {
+                        .catch(() => {
                             return res.status(500).json({
                                 error: 'Something unexpected happened.'
                             });
-                        })
+                        });
                 }
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'Something unexpected happened.'
                 });
-            })
+            });
     });
-}
+};
 
 module.exports = BeaconController;

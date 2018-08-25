@@ -1,10 +1,10 @@
-const UserController = new Object();
+const UserController = {};
 const passport = require('passport');
 const User = require('../models/user');
 const sendEmail = require('../helpers/emailer.js');
 const extractJwt = require('../helpers/extract.js');
 const jwtSecret = require('../config/settings').jwtSecret;
-const jwt= require('jsonwebtoken')
+const jwt= require('jsonwebtoken');
 
 require('../config/passport');
 
@@ -19,13 +19,13 @@ UserController.createNewUser = function(req, res, next) {
             return res.status(500).json(info);
         }
         if (!user) {
-            return res.status(400).json(info)
+            return res.status(400).json(info);
         }
         return res.status(201).json(info);
     })(req, res, next);
-}
+};
 
-UserController.updateUser = function(req, res, next) {
+UserController.updateUser = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
@@ -37,7 +37,7 @@ UserController.updateUser = function(req, res, next) {
                 if (!user) {
                     return res.status(404).json({
                         error: 'Unable to find a user with given information.'
-                    })
+                    });
                 }
 
                 // start saving updated user details
@@ -52,49 +52,49 @@ UserController.updateUser = function(req, res, next) {
                 }
 
                 user.save()
-                    .then(data => {
+                    .then(() => {
                         return res.status(204).json({
                             success: 'User updated successfully!'
                         });
                     })
-                    .catch(err => {
+                    .catch(() => {
                         return res.status(500).json({
                             error: 'Something unexpected happened.'
                         });
-                    })    
+                    });
             })
-            .catch(err => {
+            .catch(() => {
                 return res.status(500).json({
                     error: 'Something unexpected happened.'
-                })
-            })
+                });
+            });
         }
     });
-}
+};
 
-UserController.deleteUser = function(req, res, next) {
+UserController.deleteUser = function(req, res) {
     User.findById(req.params.id)
         .then(user => {
             user.remove()
-                .then(data => {
+                .then(() => {
                     return res.status(204).json({
                         success: 'User deleted successfully!'
                     });
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({
                         error: 'Something unexpected happened.'
                     });
-                })
+                });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({
                 error: 'Something unexpected happened.'
             });
-        })
-}
+        });
+};
 
-UserController.findUser = function(req, res, next) {
+UserController.findUser = function(req, res) {
     User.findOne({ 'username': req.query.username })
         .select('username')
         .then(user => {
@@ -102,12 +102,12 @@ UserController.findUser = function(req, res, next) {
                 user: user
             });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({
                 error: 'An unknown error occurred'
             });
-        })
-}
+        });
+};
 
 //Password Reset
 UserController.forgotPassword = function(req, res){
@@ -118,7 +118,7 @@ UserController.forgotPassword = function(req, res){
             text+= possible.charAt(Math.floor(Math.random() * possible.length));
         }
         return text;
-    }
+    };
         
         User.findOne({'local.email': req.body.email})
         .then(user => {
@@ -131,25 +131,25 @@ UserController.forgotPassword = function(req, res){
             };
             user.resetPassLink = token;
             user.save()
-            .then(data => {
+            .then(() => {
                 sendEmail(emailData);
                 return res.status(200).json({message: `Email has been sent to ${user.local.email}`});
-            })
-        })
-}
+            });
+        });
+};
 
 UserController.resetPassword = function(req, res){
     const {resetpasslink, newPassword} = req.body;
     if (!req.body) return res.status(400).json({message: 'No Request Body'});
     User.findOne({'resetPassLink':resetpasslink})
     .then(user => {
-        user.local.password = user.generateHash(newPassword)
-        user.resetPassLink = ""
+        user.local.password = user.generateHash(newPassword);
+        user.resetPassLink = "";
         user.save()
-        .then(data => {
-            return res.status(200).json({message: 'Password updated succesfully'})
-        })
-    })
-}
+        .then(() => {
+            return res.status(200).json({message: 'Password updated succesfully'});
+        });
+    });
+};
 
 module.exports = UserController;
