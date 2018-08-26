@@ -22,8 +22,8 @@
     align-items: flex-start;
     flex-direction: row;
     display: flex;
-    justify-content: flex-start;
-    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
 }
 
 .Beacon img {
@@ -32,6 +32,8 @@
     max-width: 100%;
     height: auto;
     background-color: #FFFFFF;
+    margin: 5px;
+    box-sizing: border-box;
 }
 
 img.modalImage {
