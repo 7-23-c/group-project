@@ -15,4 +15,8 @@ UserController.updateUser(req, res, next));
 router.delete('/users/:id', Authorize, (req, res, next) =>
 UserController.deleteUser(req, res, next));
 
+// get a user's username and id to add them as a friend
+router.get('/users', (req, res, next) =>
+UserController.findUser(req, res, next));
+
 module.exports = router;
