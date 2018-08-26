@@ -82,4 +82,19 @@ UserController.deleteUser = function(req, res, next) {
         })
 }
 
+UserController.findUser = function (req, res) {
+    User.findOne({ 'username': req.query.username })
+        .select('username')
+        .then(user => {
+            return res.status(200).json({
+                user: user
+            });
+        })
+        .catch(() => {
+            return res.status(500).json({
+                error: 'An unknown error occurred'
+            });
+        });
+};
+
 module.exports = UserController;
