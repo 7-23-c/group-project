@@ -38,7 +38,6 @@ class Friends extends Component{
             })
             .then(res => res.json())
             .then(res => {
-
                 this.setState({ 
                     
                     friends: res.friends,
@@ -68,6 +67,7 @@ class Friends extends Component{
         }).then(res => res.json())
             .catch(error => console.error('Error:', error))
             .then(response => console.log('Success:', response))
+            
     };
 
     onDelete = (e, friend) => {
@@ -118,9 +118,13 @@ class Friends extends Component{
         else{
             return (
                     <div className="Friends">
-                    <UsersList />
+                        
                         <div className="Friends-only-Header">
                             Friends
+                                                    <div>
+
+                            <UsersList className="SearchBar" />
+                             </div>
                             {friends.length == 0 ?
 
                             <ul className="pendingItem"> No current friends </ul> :

@@ -1,3 +1,6 @@
+.SearchBar {
+    align-content: center;
+}
 .Friends {
     align-items: center;
     display: flex;
@@ -26,6 +29,7 @@
 .friendItem{
     margin-left: 50px;
     font-size: 30px;
+    
 }
 .pendingItem{
     margin-left: 50px;

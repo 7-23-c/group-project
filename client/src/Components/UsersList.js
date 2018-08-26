@@ -15,21 +15,21 @@ class UsersList extends Component{
     }
 
     render(){
-        let filteredUsers = this.props.users.filter(
-            (user) => {
-                return user.username.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
-            }
-        );
+        // let filteredUsers = this.props.users.filter(
+        //     (user) => {
+        //         return user.username.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+        //     }
+        // );
         return (
             <div>
                 <input type="text"
                     value={this.state.search}
                     onChange={this.updateSearch.bind(this)} />
                 <ul>
-                    { this.props.map((user) => {
+                    {/* { this.props.map((user) => {
                         return <User user={user} key={user._id}/> 
-                    })}
-                    <li>{this.props.users.name}</li>
+                    })} */}
+                    {/* <li>{this.props.users.name}</li> */}
                 </ul>
 
             </div>
