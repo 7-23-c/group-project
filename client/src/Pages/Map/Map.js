@@ -364,7 +364,9 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        maxWidth: '500px'
+        maxWidth: '500px',
+        overflow: 'auto',
+        maxHeight: '100vh'
     }
 };
 
