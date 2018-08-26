@@ -18,11 +18,22 @@
     text-align: center;
 }
 
+.Beacon .images {
+    align-items: flex-start;
+    flex-direction: row;
+    display: flex;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
 .Beacon img {
     display: block;
-    width: 100%;
+    width: 300px;
+    max-width: 100%;
     height: auto;
     background-color: #FFFFFF;
+    margin: 5px;
+    box-sizing: border-box;
 }
 
 img.modalImage {

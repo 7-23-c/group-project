@@ -46,7 +46,8 @@ class Map extends React.Component {
         }
         this.watch = undefined;
         this.beaconTimer = undefined;
-        this.input = undefined
+        this.input = undefined;
+        this._mounted = undefined;
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -63,24 +64,30 @@ class Map extends React.Component {
         clearInterval(this.beaconTimer);
         // reset the timer
         this.beaconTimer = undefined;
+        this._mounted = false;
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        this._mounted = true;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                this.setState({
-                    lat: pos.coords.latitude,
-                    long: pos.coords.longitude,
-                    ready: true,
-                });
-                this.startTimer();
+                if (this._mounted) {
+                    this.setState({
+                        lat: pos.coords.latitude,
+                        long: pos.coords.longitude,
+                        ready: true,
+                    });
+                    this.startTimer();
+                }
             }, null, { enableHighAccuracy: true, maximumAge: 0 });
 
             this.watch = navigator.geolocation.watchPosition((pos) => {
-                this.setState({
-                    lat: pos.coords.latitude,
-                    long: pos.coords.longitude
-                });
+                if (this._mounted) {
+                    this.setState({
+                        lat: pos.coords.latitude,
+                        long: pos.coords.longitude
+                    });
+                }
             }, null, { enableHighAccuracy: true });
         }
     }
@@ -184,9 +191,11 @@ class Map extends React.Component {
                 }
             })
             .then(res => {
-                this.setState({
-                    beacons: res.data.beacons
-                })
+                if (this._mounted) {
+                    this.setState({
+                        beacons: res.data.beacons
+                    })
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -205,9 +214,11 @@ class Map extends React.Component {
                 }
             })
             .then(res => {
-                this.setState({
-                    beacons: res.data.beacons
-                })
+                if (this._mounted) {
+                    this.setState({
+                        beacons: res.data.beacons
+                    })
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -353,7 +364,9 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        maxWidth: '500px'
+        maxWidth: '500px',
+        overflow: 'auto',
+        maxHeight: '100vh'
     }
 };
 
