@@ -8,17 +8,19 @@
     align-content: stretch;
     background: #f2f2f2;
     width: 500px;
+    max-width: 100%;
     min-height: 630px;
     border-radius: 5px;
 }
 
 .letters-avatar {
-    margin: 0 auto 15px auto;
+    margin: 15px auto;
 }
 
 .Settings>div {
     margin: 0 auto;
     width: 500px;
+    max-width: 100%;
 }
 
 .col {
