@@ -4,8 +4,6 @@ import Modal from 'react-modal';
 
 // import components
 import Progress from '@material-ui/core/CircularProgress';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Axios from 'axios';
@@ -111,9 +109,7 @@ class Beacon extends React.Component {
 
         let images = this.state.images.map((image, key) => {
             return (
-                <GridListTile key={key} cols={1}>
-                    <img onClick={() => this.preview(image.url, image.description)} src={image.url} alt={image.alt} />
-                </GridListTile>
+                <img key={key} onClick={() => this.preview(image.url, image.description)} src={image.url} alt={image.alt} />
             )
         })
 
@@ -144,9 +140,7 @@ class Beacon extends React.Component {
                 <h4>{this.state.beacon.description}</h4>
                 <h5>Created On: {fullDate} by {created_by.name.first} {created_by.name.last}</h5>
                 <div className="images">
-                    <GridList cellHeight={160} cols={3}>
-                        {images}
-                    </GridList>
+                    {images}
                 </div>
             </div>
         )
