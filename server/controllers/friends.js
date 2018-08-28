@@ -4,35 +4,53 @@ const jwtSecret = require('../config/settings').jwtSecret;
 const extractJwt = require('../helpers/extract');
 const User = require('../models/user');
 
-friendsController.getFriends = function(req, res) {    
-    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
-        if (err) {
-            return res.status(500).json({
-                error: 'An unknown error occurred.'
+friendsController.getFriends = function(req, res) {
+    if (req.query && req.query.friend) {
+        User.findOne({ username: req.query.friend })
+        .then(user => {
+            return res.status(200).json({
+                friend: {
+                    id: user.id
+                }
             });
-        } else {
-            User.findById(decoded.id, 'friends').populate('friends.friend_id', 'username')
-                .then(user => {
-                    // filter accepted friends
-                    var friends = user.friends.filter(friend => friend.accepted);
-                    // filter pending friend requests
-                    var pending = user.friends.filter(friend => !friend.accepted && !friend.sender);
-
-                    var returnedFriends = friends.map(id => id.friend_id);
-                    var returnedPending = pending.map(id => id.friend_id);
-                    
-                    return res.status(200).json({
-                        friends: returnedFriends,
-                        pending: returnedPending
-                    });
-                })
-                .catch(() => {
-                    return res.status(500).json({
-                        error: 'Something unexpected happened.'
-                    });
+        })
+        .catch(err => {
+            return res.status(404).json({
+                error: 'No user found.'
+            });
+        });
+    } else {
+        jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
+            if (err) {
+                return res.status(500).json({
+                    error: 'An unknown error occurred.'
                 });
-        }
-    });
+            } else {
+                User.findById(decoded.id, 'friends').populate('friends.friend_id', 'username')
+                    .then(user => {
+                        // filter accepted friends
+                        var friends = user.friends.filter(friend => friend.accepted);
+                        // filter pending friend requests
+                        var pending = user.friends.filter(friend => !friend.accepted && !friend.sender);
+    
+                        var returnedFriends = friends.map(id => id.friend_id);
+                        var returnedPending = pending.map(id => id.friend_id);
+                        
+                        return res.status(200).json({
+                            friends: returnedFriends,
+                            pending: returnedPending
+                        });
+                    })
+                    .catch(() => {
+                        return res.status(500).json({
+                            error: 'Something unexpected happened.'
+                        });
+                    });
+            }
+        });
+    }
+
+    
 };
 
 friendsController.addFriend = function(req, res) {
@@ -43,7 +61,6 @@ friendsController.addFriend = function(req, res) {
             });
         } else {
             User.findById(decoded.id)
-                
                 .then(user => {
                     var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
                     if (friendAdded.length > 0) {
@@ -52,7 +69,6 @@ friendsController.addFriend = function(req, res) {
                             error: 'You\'ve already sent this user a friend request.'
                         });
                     } else {
-                        //console.log(req.params.id);
                         User.findById(req.params.id)
                             .then(friend => {
                                 var newFriendSender = {
