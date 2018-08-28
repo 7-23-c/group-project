@@ -69,6 +69,7 @@ class Beacons extends React.Component {
                         <List>
                             {beacons}
                         </List>
+                        {beacons.length < 1 ? <p>Looks like there's nothing here yet!</p> : null}
                     </div>
                 </div>
             )

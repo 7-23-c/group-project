@@ -13,7 +13,7 @@ import Beacon from '../Pages/Beacon/Beacon';
 import Beacons from '../Pages/Beacons/Beacons';
 import ForgotPassword from '../Pages/ForgotPassword/ForgotPassword';
 import ResetPassword from '../Pages/ResetPassword/ResetPassword';
-//import Friends from '../Pages/Friends/Friends';
+import Friends from '../Pages/Friends/Friends';
 
 // import custom components
 import Navigation from '../Components/Navbar/Navbar';
@@ -61,6 +61,10 @@ class App extends Component {
                     <PrivateRoute
                     isLoggedIn={this.state.isLoggedIn}
                     exact path="/map" component={Map} />
+
+                    <PrivateRoute
+                    isLoggedIn={this.state.isLoggedIn}
+                    exact path="/friends" component={Friends}/>
 
                     <PrivateRoute
                     isLoggedIn={this.state.isLoggedIn}
