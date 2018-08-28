@@ -29,7 +29,7 @@ class Friends extends Component{
     }
 
     componentDidMount(){
-        fetch('/friends/', {
+        fetch('/friends', {
             method: 'GET',
             headers: {
                 //send the jsonwebtoken
@@ -38,26 +38,25 @@ class Friends extends Component{
             })
             .then(res => res.json())
             .then(res => {
+                console.log(res);
                 this.setState({ 
                     
-                    friends: res.friends,
-                    pendings: res.pending,
+                    friends: res.data.friends,
+                    pendings: res.data.pending,
                     isLoaded: true,
                 })
-            });
+            })
+            .catch(err => {
+                this.setState({
+                    isLoaded: true,
+                })
+                console.log('error')
+            })
     }
     onSubmit = e => {
         e.preventDefault();
 
-        const id_of_john = "5b73678b434bad64409d382c";
-        const id_of_seymour = "5b73683a434bad64409d382d";
-        const id_of_michael = "5b736897434bad64409d382e";
-        const my_id = "5b75f9d4a3ea5469678a7914";
-
-
-        const URLPost = '/friends/' + id_of_john;
-        console.log("Add button pressed!");
-
+        const URLPost = '/friends/';
 
         fetch(URLPost, {
             method: 'POST', // or 'PUT' 
@@ -89,9 +88,6 @@ class Friends extends Component{
 
     onAccept = (e, pending) => {
         e.preventDefault();
-        const id_of_john = "5b73678b434bad64409d382c";
-        const id_of_seymour = "5b73683a434bad64409d382d";
-        const id_of_michael = "5b736897434bad64409d382e";
 
         const URLPost = '/friends/' + pending._id;
 
