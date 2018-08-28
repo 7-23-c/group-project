@@ -11,8 +11,8 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import User from '../Components/User';
-import UsersList from '../Components/UsersList';
+// import UsersList from '../Components/UsersList';
+import Search from '../Components/Search';
 
 class Friends extends Component{
 
@@ -48,6 +48,7 @@ class Friends extends Component{
     }
     onSubmit = e => {
         e.preventDefault();
+
         const id_of_john = "5b73678b434bad64409d382c";
         const id_of_seymour = "5b73683a434bad64409d382d";
         const id_of_michael = "5b736897434bad64409d382e";
@@ -123,7 +124,7 @@ class Friends extends Component{
                             Friends
                                                     <div>
 
-                            <UsersList className="SearchBar" />
+                            <Search />
                              </div>
                             {friends.length == 0 ?
 
