@@ -1,12 +1,12 @@
 // module imports
 // require('dotenv').config(); // DEVELOPMENT ONLY
 const express = require('express');
-/*jshint unused:false*/
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const logger = require('morgan');
+const helmet = require('helmet');
 const app = express();
 
 // runs our database configuration
@@ -16,14 +16,15 @@ require('./server/config/database')();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // app middleware
-app.use(logger('dev')); // DEVELOPMENT ONLY
+app.use(logger('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 
+// initialize passport
 app.use(passport.initialize());
 
-app.disable('x-powered-by');
 
 // all api related routes go here
 app.use('/', [

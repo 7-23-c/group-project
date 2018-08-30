@@ -16,3 +16,7 @@
 .RegistrationForm hr {
   margin: 5px 0;
 }
+
+.error {
+  color: #ff3a3a;
+}

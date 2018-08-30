@@ -4,6 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import SpyGlass from '@material-ui/icons/ControlPoint';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import './Friends.css';
 
 class Friends extends React.Component {
@@ -13,8 +17,8 @@ class Friends extends React.Component {
             search: '',
             friends: [],
             pending: [],
-            added: false,
-            success: ''
+            success: '',
+            error: ''
         }
         this.searchFriends = this.searchFriends.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -46,15 +50,20 @@ class Friends extends React.Component {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            .then(done => {
+            .then(res => {
                 this.setState({
-                    added: true,
+                    success: res.data.success,
                 });
+            })
+            .catch(err => {
+                this.setState({
+                    error: err.response.error,
+                })
             })
         })
         .catch(err => {
             this.setState({
-                added: false,
+                error: err.response.error,
             })
         })
     }
@@ -73,32 +82,43 @@ class Friends extends React.Component {
         })
         .then(res => {
             this.setState({
-                success: 'Friend added successfully!'
+                success: res.data.success
             })
         })
         .catch(err => {
-            console.log(err);
+            this.setState({
+                error: err.response.error
+            })
         })
     }
 
     render() {
         let friends = this.state.friends.map((friend, key) => {
             return (
-                <li key={key}>{friend.username}</li>
+                <ListItem key={key}>
+                    <ListItemText primary={friend.username} />
+                </ListItem>
             )
         })
 
         let pending = this.state.pending.map((pending, key) => {
             return (
-                <li key={key} onClick={() => this.addFriend(pending._id)}>{pending.username}</li>
+                <ListItem key={key}>
+                    <ListItemText primary={pending.username} />
+                    <ListItemSecondaryAction>
+                        <IconButton onClick={() => this.addFriend(pending._id)}>
+                            <SpyGlass />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
             )
         })
 
         return (
             <div className="Friends">
                 <div className="FriendsList">
-                    { this.state.added ? <p>Friend added!</p> : null}
-                    { this.state.success.length > 0 ? <p>{this.state.success}</p>: null}
+                    { this.state.success.length > 0 ? <p className="success">{this.state.success}</p>: null}
+                    { this.state.error.length > 0 ? <p className="error">{this.state.error}</p> : null}
                     <form onSubmit={e => e.preventDefault()}>
                         <TextField
                             name="search"
@@ -124,11 +144,15 @@ class Friends extends React.Component {
                     <div className="YourFriends">
                         <div>
                             <h3>Friends</h3>
-                            {friends}
+                            <List>
+                                {friends}
+                            </List>
                         </div>
                         <div>
                             <h3>Pending</h3>
-                            {pending}
+                            <List>
+                                {pending}
+                            </List>
                         </div>
                     </div>
                 </div>
