@@ -120,7 +120,7 @@ class RegistrationForm extends Component {
                 this.setState({
                     loading: false,
                 });
-                console.log(err);
+                console.log(err.response);
             })
         }
     };
