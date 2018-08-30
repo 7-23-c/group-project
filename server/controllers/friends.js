@@ -63,26 +63,19 @@ friendsController.addFriend = function(req, res) {
             User.findById(decoded.id)
             .then(user => {
                 var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
-                var myId = user.friends.filter(myId => myId.friend_id.toString() === decoded.id);
                 if (friendAdded.length > 0) {
                     throw 'You\'ve already sent this user a friend request.';
-                } else if (myId.length > 0) {
+                } else if (req.params.id === decoded.id) {
                     throw 'You can\'t add yourself as a friend!';
                 } else {
-                    var newFriendSender = {
-                        friend_id: req.params.id,
-                        sender: true
-                    };
-    
-                    user.friends.push(newFriendSender);
-    
-                    return user.save();
+                    return User.findById(req.params.id);
                 }
             })
-            .then(() => {
-                return User.findById(req.params.id);
-            })
             .then(user => {
+                if (!user) {
+                    throw 'A user with that id was not found.';
+                }
+                
                 var newFriend = {
                     friend_id: decoded.id
                 };
@@ -90,6 +83,19 @@ friendsController.addFriend = function(req, res) {
                 user.friends.push(newFriend);
 
                 return user.save();            
+            })
+            .then(() => {
+                return User.findById(decoded.id);
+            })
+            .then(user => {
+                var newFriendSender = {
+                    friend_id: req.params.id,
+                    sender: true
+                };
+
+                user.friends.push(newFriendSender);
+
+                return user.save();
             })
             .then(() => {
                 return res.status(200).json({
