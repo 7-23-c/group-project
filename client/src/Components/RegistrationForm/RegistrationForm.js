@@ -103,12 +103,10 @@ class RegistrationForm extends Component {
                     this.setState({
                         loading: false,
                     });
-                    console.log(res.data.errors);
                 } else if (res.data.message === 'Missing credentials') {
                     this.setState({
                         loading: false,
                     });
-                    console.log(res.data.message);
                 } else {
                     this.setState({
                         loading: false,
@@ -117,6 +115,9 @@ class RegistrationForm extends Component {
                 }
             })
             .catch(function(err) {
+                this.setState({
+                    loading: false,
+                });
                 console.log(err);
             })
         }
