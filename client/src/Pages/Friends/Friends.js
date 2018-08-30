@@ -4,6 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import SpyGlass from '@material-ui/icons/ControlPoint';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import './Friends.css';
 
 class Friends extends React.Component {
@@ -84,13 +88,22 @@ class Friends extends React.Component {
     render() {
         let friends = this.state.friends.map((friend, key) => {
             return (
-                <li key={key}>{friend.username}</li>
+                <ListItem key={key}>
+                    <ListItemText primary={friend.username} />
+                </ListItem>
             )
         })
 
         let pending = this.state.pending.map((pending, key) => {
             return (
-                <li key={key} onClick={() => this.addFriend(pending._id)}>{pending.username}</li>
+                <ListItem key={key}>
+                    <ListItemText primary={pending.username} />
+                    <ListItemSecondaryAction>
+                        <IconButton onClick={() => this.addFriend(pending._id)}>
+                            <SpyGlass />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                </ListItem>
             )
         })
 
@@ -124,11 +137,15 @@ class Friends extends React.Component {
                     <div className="YourFriends">
                         <div>
                             <h3>Friends</h3>
-                            {friends}
+                            <List>
+                                {friends}
+                            </List>
                         </div>
                         <div>
                             <h3>Pending</h3>
-                            {pending}
+                            <List>
+                                {pending}
+                            </List>
                         </div>
                     </div>
                 </div>
