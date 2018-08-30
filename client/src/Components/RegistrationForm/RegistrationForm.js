@@ -103,10 +103,12 @@ class RegistrationForm extends Component {
                     this.setState({
                         loading: false,
                     });
+                    console.log(res.data);
                 } else if (res.data.message === 'Missing credentials') {
                     this.setState({
                         loading: false,
                     });
+                    console.log(res.data);
                 } else {
                     this.setState({
                         loading: false,
