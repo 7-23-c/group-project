@@ -55,6 +55,11 @@ class Friends extends React.Component {
                     success: res.data.success,
                 });
             })
+            .catch(err => {
+                this.setState({
+                    error: err.response.error,
+                })
+            })
         })
         .catch(err => {
             this.setState({
