@@ -114,7 +114,7 @@ class RegistrationForm extends Component {
                     window.location = '/login';
                 }
             })
-            .catch((err) => {
+            .catch(err => {
                 this.setState({
                     loading: false,
                 });
