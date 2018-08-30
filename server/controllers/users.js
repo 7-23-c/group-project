@@ -110,7 +110,7 @@ UserController.findUser = function(req, res) {
 };
 
 //Password Reset
-UserController.forgotPassword = function(req, res){
+UserController.forgotPassword = function(req, res) {
     const randomString = length => {
         let text = "";
         const possible = "abcdefghijklmnopqrstuvwxyz0123456789_-.";
@@ -133,18 +133,16 @@ UserController.forgotPassword = function(req, res){
             user.save()
             .then(() => {
                 sendEmail(emailData);
-                console.log('sent');
                 return res.status(200).json({
                     message: `Password reset email sent.`
                 });
             });
         })
         .catch(() => {
-            console.log('something happened.')
             return res.status(200).json({
                 message: `Password reset email sent.`
             });
-        })
+        });
 };
 
 UserController.resetPassword = function(req, res){

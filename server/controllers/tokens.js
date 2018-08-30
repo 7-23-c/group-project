@@ -32,7 +32,7 @@ TokenController.checkToken = function(req, res) {
         return res.status(500).json({
             error: 'Password reset link expired'
         });
-    })
-}
+    });
+};
 
 module.exports = TokenController;

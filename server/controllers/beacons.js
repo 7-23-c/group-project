@@ -42,7 +42,9 @@ BeaconController.findNearbyBeacons = (req, res) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            return res.status(401).json({
+                error: err
+            });
         });
     });
 };
@@ -66,8 +68,7 @@ BeaconController.findOneBeacon = (req, res) => {
                     });
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
                 return res.status(500).json({
                     error: 'An unknown error occurred.'
                 });

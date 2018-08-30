@@ -14,7 +14,7 @@ friendsController.getFriends = function(req, res) {
                 }
             });
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(404).json({
                 error: 'No user found.'
             });
