@@ -17,8 +17,8 @@ class Friends extends React.Component {
             search: '',
             friends: [],
             pending: [],
-            added: false,
-            success: ''
+            success: '',
+            error: ''
         }
         this.searchFriends = this.searchFriends.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -50,15 +50,15 @@ class Friends extends React.Component {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            .then(done => {
+            .then(res => {
                 this.setState({
-                    added: true,
+                    success: res.data.success,
                 });
             })
         })
         .catch(err => {
             this.setState({
-                added: false,
+                error: err.response.error,
             })
         })
     }
@@ -77,11 +77,13 @@ class Friends extends React.Component {
         })
         .then(res => {
             this.setState({
-                success: 'Friend added successfully!'
+                success: res.data.success
             })
         })
         .catch(err => {
-            console.log(err);
+            this.setState({
+                error: err.response.error
+            })
         })
     }
 
@@ -110,8 +112,8 @@ class Friends extends React.Component {
         return (
             <div className="Friends">
                 <div className="FriendsList">
-                    { this.state.added ? <p>Friend added!</p> : null}
-                    { this.state.success.length > 0 ? <p>{this.state.success}</p>: null}
+                    { this.state.success.length > 0 ? <p className="success">{this.state.success}</p>: null}
+                    { this.state.error.length > 0 ? <p className="error">{this.state.error}</p> : null}
                     <form onSubmit={e => e.preventDefault()}>
                         <TextField
                             name="search"

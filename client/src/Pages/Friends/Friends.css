@@ -26,3 +26,11 @@
 .Friends .FriendsList .YourFriends li {
     list-style: none;
 }
+
+.error {
+    color: #f53333;
+}
+
+.success {
+    color: #47cc47;
+}
