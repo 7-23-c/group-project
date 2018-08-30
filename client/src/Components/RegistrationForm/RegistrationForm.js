@@ -118,7 +118,7 @@ class RegistrationForm extends Component {
             .catch(err => {
                 this.setState({
                     loading: false,
-                    error: err.response.data.error
+                    error: err.response.data.error || err.response.data.errors
                 });
                 console.log(err.response);
             })

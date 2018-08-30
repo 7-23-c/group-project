@@ -18,6 +18,15 @@ passport.use('local-registration', new LocalStrategy({
                         error: 'That email address is already in use.'
                     });
                 }
+                
+                return User.findOne({ username: req.body.username });
+            })
+            .then(user => {
+                if (user) {
+                    return done(null, false, {
+                        error: 'That username is already in use.'
+                    });
+                }
 
                 // begin validation checks
                 var errors = [];
@@ -46,17 +55,12 @@ passport.use('local-registration', new LocalStrategy({
                 newUser.name.last = req.body.lName;
                 newUser.username = req.body.username;
 
-                newUser.save()
-                    .then(() => {
-                        return done(null, newUser, {
-                            message: 'User created successfully!'
-                        });
-                    })
-                    .catch(() => {
-                        return done(null, false, {
-                            error: 'Something unexpected happen. Please try again.'
-                        });
-                    });
+                return newUser.save();
+            })
+            .then(() => {
+                return done(null, newUser, {
+                    message: 'User created successfully!'
+                });
             })
             .catch(() => {
                 return done(null, false, {
