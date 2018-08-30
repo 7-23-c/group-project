@@ -69,8 +69,18 @@ friendsController.addFriend = function(req, res) {
                 } else if (myId.length > 0) {
                     throw 'You can\'t add yourself as a friend!';
                 } else {
-                    return User.findById(req.params.id);
+                    var newFriendSender = {
+                        friend_id: req.params.id,
+                        sender: true
+                    };
+    
+                    user.friends.push(newFriendSender);
+    
+                    return user.save();
                 }
+            })
+            .then(() => {
+                return User.findById(req.params.id);
             })
             .then(user => {
                 var newFriend = {
@@ -80,19 +90,6 @@ friendsController.addFriend = function(req, res) {
                 user.friends.push(newFriend);
 
                 return user.save();            
-            })
-            .then(() => {
-                return User.findById(decoded.id);
-            })
-            .then(user => {
-                var newFriendSender = {
-                    friend_id: req.params.id,
-                    sender: true
-                };
-
-                user.friends.push(newFriendSender);
-
-                return user.save();
             })
             .then(() => {
                 return res.status(200).json({
