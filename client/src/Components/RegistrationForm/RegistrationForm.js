@@ -31,6 +31,7 @@ class RegistrationForm extends Component {
             password_error: "",
             loading: false,
             show: false,
+            error: ''
         }
         this.showPassword = this.showPassword.bind(this);
     }
@@ -103,12 +104,10 @@ class RegistrationForm extends Component {
                     this.setState({
                         loading: false,
                     });
-                    console.log(res.data);
                 } else if (res.data.message === 'Missing credentials') {
                     this.setState({
                         loading: false,
                     });
-                    console.log(res.data);
                 } else {
                     this.setState({
                         loading: false,
@@ -119,6 +118,7 @@ class RegistrationForm extends Component {
             .catch(err => {
                 this.setState({
                     loading: false,
+                    error: err.response.data.error
                 });
                 console.log(err.response);
             })
@@ -136,6 +136,10 @@ class RegistrationForm extends Component {
             <form className="RegistrationForm">
                 { this.state.loading
                     ?   <Progress />
+                    :   null
+                }
+                { this.state.error.length > 0
+                    ?   <p className="error">{this.state.error}</p>
                     :   null
                 }
                 <TextField
