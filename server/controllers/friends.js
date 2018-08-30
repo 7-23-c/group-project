@@ -63,10 +63,14 @@ friendsController.addFriend = function(req, res) {
             User.findById(decoded.id)
                 .then(user => {
                     var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
+                    var myId = user.friends.filter(myId => myId.friend_id.toString() === decoded.id);
                     if (friendAdded.length > 0) {
-
                         return res.status(400).json({
                             error: 'You\'ve already sent this user a friend request.'
+                        });
+                    } else if (myId.length > 0) {
+                        return res.status(400).json({
+                            error: 'You can\'t add yourself as a friend!'
                         });
                     } else {
                         User.findById(req.params.id)
