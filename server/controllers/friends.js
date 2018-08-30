@@ -61,64 +61,49 @@ friendsController.addFriend = function(req, res) {
             });
         } else {
             User.findById(decoded.id)
-                .then(user => {
-                    var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
-                    var myId = user.friends.filter(myId => myId.friend_id.toString() === decoded.id);
-                    if (friendAdded.length > 0) {
-                        return res.status(400).json({
-                            error: 'You\'ve already sent this user a friend request.'
-                        });
-                    } else if (myId.length > 0) {
-                        return res.status(400).json({
-                            error: 'You can\'t add yourself as a friend!'
-                        });
-                    } else {
-                        User.findById(req.params.id)
-                            .then(friend => {
-                                var newFriendSender = {
-                                    friend_id: friend.id,
-                                    sender: true
-                                };
-                                var newFriend = {
-                                    friend_id: user.id
-                                };
+            .then(user => {
+                var friendAdded = user.friends.filter(theFriend => theFriend.friend_id.toString() === req.params.id);
+                var myId = user.friends.filter(myId => myId.friend_id.toString() === decoded.id);
+                if (friendAdded.length > 0) {
+                    throw 'You\'ve already sent this user a friend request.';
+                } else if (myId.length > 0) {
+                    throw 'You can\'t add yourself as a friend!';
+                } else {
+                    return User.findById(req.params.id);
+                }
+            })
+            .then(user => {
+                var newFriend = {
+                    friend_id: decoded.id
+                };
 
-                                user.friends.push(newFriendSender);
-                                friend.friends.push(newFriend);
+                user.friends.push(newFriend);
 
-                                user.save()
-                                    .then(() => {
-                                        friend.save()
-                                            .then(() => {
-                                                return res.status(201).json({
-                                                    success: 'Friend request sent.'
-                                                });
-                                            })
-                                            .catch(() => {
-                                                return res.status(500).json({
-                                                    error: 'Something unexpected happened.2'
-                                                });
-                                            });
-                                    })
-                                    .catch(() => {
-                                        return res.status(500).json({
-                                            error: 'Something unexpected happened.3'
-                                        });
-                                    });
-                            })
-                            .catch(() => {
-                                return res.status(500).json({
-                                    error: 'Something unexpected happened.4'
-                                    //error: err
-                                });
-                            });
-                    }
-                })
-                .catch(() => {
-                    return res.status(500).json({
-                        error: 'Something unexpected happened.5'
-                    });
+                return user.save();            
+            })
+            .then(() => {
+                return User.findById(decoded.id);
+            })
+            .then(user => {
+                var newFriendSender = {
+                    friend_id: req.params.id,
+                    sender: true
+                };
+
+                user.friends.push(newFriendSender);
+
+                return user.save();
+            })
+            .then(() => {
+                return res.status(200).json({
+                    success: 'Friend request sent!'
                 });
+            })
+            .catch(err => {
+                return res.status(400).json({
+                    error: err
+                });
+            });
         }
     });
 };
