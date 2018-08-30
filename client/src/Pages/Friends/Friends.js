@@ -1,170 +1,140 @@
-import React, { Component } from "react";
+import React from "react";
 import Axios from 'axios';
-// import './Friends.css';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import SpyGlass from '@material-ui/icons/ControlPoint';
+import './Friends.css';
 
-//import User from '../Components/User';
-//import UsersList from '../Components/UsersList';
-
-class Friends extends Component{
-
-    constructor(props){
-
-        super(props);
-
+class Friends extends React.Component {
+    constructor() {
+        super();
         this.state = {
-            items : [],
+            search: '',
             friends: [],
-            pendings: [],
-            isLoaded: false,
+            pending: [],
+            added: false,
+            success: ''
         }
+        this.searchFriends = this.searchFriends.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.addFriend = this.addFriend.bind(this);
     }
 
-    componentDidMount(){
-        fetch('/friends/', {
-            method: 'GET',
+    componentWillMount() {
+        Axios.get('/friends', {
             headers: {
-                //send the jsonwebtoken
-                Authorization: 'Bearer ' + localStorage.getItem('token')
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
+        })
+        .then(res => {
+            this.setState({
+                friends: res.data.friends,
+                pending: res.data.pending
             })
-            .then(res => res.json())
-            .then(res => {
-
-                this.setState({ 
-                    
-                    friends: res.friends,
-                    pendings: res.pending,
-                    isLoaded: true,
-                })
-            });
-    }
-    onSubmit = e => {
-        e.preventDefault();
-        const id_of_john = "5b73678b434bad64409d382c";
-        const id_of_seymour = "5b73683a434bad64409d382d";
-        const id_of_michael = "5b736897434bad64409d382e";
-        const my_id = "5b75f9d4a3ea5469678a7914";
-
-
-        const URLPost = '/friends/' + id_of_john;
-        console.log("Add button pressed!");
-
-
-        fetch(URLPost, {
-            method: 'POST', // or 'PUT' 
-            headers: {
-                //send the jsonwebtoken
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log('Success:', response))
-    };
-
-    onDelete = (e, friend) => {
-        e.preventDefault();
-        const URLPost = '/friends/' + friend._id;
-
-        fetch(URLPost, {
-            method: 'Delete',
-            headers: {
-                //send the jsonwebtoken
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log('Success:', response));
+        })
+        .catch(err => {
+            console.log('error');
+        })
     }
 
-    onAccept = (e, pending) => {
-        e.preventDefault();
-        const id_of_john = "5b73678b434bad64409d382c";
-        const id_of_seymour = "5b73683a434bad64409d382d";
-        const id_of_michael = "5b736897434bad64409d382e";
-
-        const URLPost = '/friends/' + pending._id;
-
-        //accept Friend
-        fetch(URLPost, {
-            method: 'PUT',
-            headers: {
-                //send the jsonwebtoken
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log('Success:', response));
+    searchFriends() {
+        Axios.get(`/friends?friend=${this.state.search}`)
+        .then(res => {
+            Axios.post(`/friends/${res.data.friend.id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(done => {
+                this.setState({
+                    added: true,
+                });
+            })
+        })
+        .catch(err => {
+            this.setState({
+                added: false,
+            })
+        })
     }
 
-    render(){
-        var { isLoaded, friends, pendings } = this.state;
+    onChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
 
-        if (!isLoaded) {
-            return (<div className="Friends-only-Header">
-                Loading...
-            </div>
-            );
-        }
-        else{
+    addFriend(id) {
+        Axios.put(`/friends/${id}`, {}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(res => {
+            this.setState({
+                success: 'Friend added successfully!'
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    render() {
+        let friends = this.state.friends.map((friend, key) => {
             return (
-                    <div className="Friends">
-                    <UsersList />
-                        <div className="Friends-only-Header">
-                            Friends
-                            {friends.length == 0 ?
+                <li key={key}>{friend.username}</li>
+            )
+        })
 
-                            <ul className="pendingItem"> No current friends </ul> :
+        let pending = this.state.pending.map((pending, key) => {
+            return (
+                <li key={key} onClick={() => this.addFriend(pending._id)}>{pending.username}</li>
+            )
+        })
 
-                            friends.map( (friend, index) => (
-                            <List key={index}>
-                                <ListItem button  >
-                                    <IconButton onClick={(e) => this.onDelete(e, friend)} aria-label="Delete">
-                                        <DeleteIcon className="deleteIcon" />
-                                    </IconButton>
-                                    <li className="friendItem">{friend.username} </li>
-                                </ListItem>
-                            </List>
-                            ))}
-                        <Button onClick={e => this.onSubmit(e)} variant="fab" color="primary" aria-label="Add" className="addButton">
-                            <AddIcon />
-                        </Button>
+        return (
+            <div className="Friends">
+                <div className="FriendsList">
+                    { this.state.added ? <p>Friend added!</p> : null}
+                    { this.state.success.length > 0 ? <p>{this.state.success}</p>: null}
+                    <form onSubmit={e => e.preventDefault()}>
+                        <TextField
+                            name="search"
+                            fullWidth={true}
+                            onChange={this.onChange}
+                            label="Add your friends!"
+                            error={this.state.searchSuccess ? true : false}
+                            InputProps={{
+                                endAdornment: (
+                                <InputAdornment position="end">
+                                <IconButton
+                                    type="submit"
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.searchFriends}
+                                >
+                                    <SpyGlass />
+                                </IconButton>
+                                </InputAdornment>
+                                )
+                            }}
+                        />
+                    </form>
+                    <div className="YourFriends">
+                        <div>
+                            <h3>Friends</h3>
+                            {friends}
                         </div>
-                        <br></br>
-
-
-                        <div className="Pending-only-Header">
-                            Pending
-                            {pendings.length == 0 ?
-                            
-                                <ul className ="pendingItem"> No Pending Requests </ul> :
-                            
-                                pendings.map( (pending, index) => (
-                                    <List key={index}>
-                                        <ListItem button  >
-                                            <Button onClick={ (e) => this.onAccept(e, pending)} color="primary" aria-label="Add">
-                                                <AddIcon />
-                                            </Button>
-                                            <li className="pendingItem">
-                                                {pending.username} 
-                                            </li>
-                                        </ListItem>
-                                    </List>
-                                ))
-                        }   
+                        <div>
+                            <h3>Pending</h3>
+                            {pending}
                         </div>
-                    </div> 
-            );
-        }
+                    </div>
+                </div>
+            </div>
+        )
     }
 }
+
 export default Friends;

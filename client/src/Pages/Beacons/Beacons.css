@@ -1,11 +1,23 @@
 .BeaconList {
+    align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    
+    text-align: center;
+    background-color: #00A4D7;
+    min-height: calc(100vh - 64px);
 }
 
 .BeaconList div {
-    max-width: 800px;
-    margin: 0 auto;
-    flex-grow: 1;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 40px 20px 10px 20px;
+    color: #222222;
+    width: 700px;
+}
+
+.BeaconList div h1, .BeaconList div p {
+    margin-top: 0;
 }
