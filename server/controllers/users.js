@@ -17,11 +17,11 @@ UserController.createNewUser = function(req, res, next) {
     passport.authenticate('local-registration', function(err, user, info) {
         if (err) {
             return res.status(500).json(info);
-        }
-        if (!user) {
+        } else if (!user) {
             return res.status(400).json(info);
+        } else {
+            return res.status(201).json(info);
         }
-        return res.status(201).json(info);
     })(req, res, next);
 };
 

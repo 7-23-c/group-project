@@ -14,18 +14,14 @@ passport.use('local-registration', new LocalStrategy({
         User.findOne({ 'local.email': email })
         .then(user => {
             if (user) {
-                return done(null, false, {
-                    error: 'That email address is already in use.'
-                });
+                throw 'That email address is already in use.'
             }
 
             return User.findOne({ username: req.body.username });
         })
         .then(user => {
             if (user) {
-                return done(null, false, {
-                    error: 'That username is already in use.'
-                });
+                throw 'That username is already in use.'
             }
 
             // begin validation checks
@@ -44,7 +40,7 @@ passport.use('local-registration', new LocalStrategy({
             }
 
             if (errors.length > 0) {
-                return done(null, false, { errors: errors });
+                throw errors;
             }
         
             var newUser = new User();
@@ -62,9 +58,9 @@ passport.use('local-registration', new LocalStrategy({
                 message: 'User created successfully!'
             });
         })
-        .catch(() => {
+        .catch(err => {
             return done(null, false, {
-                error: 'Something unexpected happened. Please try again.'
+                error: err
             });
         });
     }
