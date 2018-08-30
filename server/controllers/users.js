@@ -19,7 +19,7 @@ UserController.createNewUser = function(req, res, next) {
             return res.status(500).json(info);
         }
         if (!user) {
-            return res.status(400).json(info);
+            return res.status(401).json(info);
         }
         return res.status(201).json(info);
     })(req, res, next);
