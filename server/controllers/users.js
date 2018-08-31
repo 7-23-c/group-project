@@ -2,9 +2,6 @@ const UserController = {};
 const passport = require('passport');
 const User = require('../models/user');
 const sendEmail = require('../helpers/emailer.js');
-const extractJwt = require('../helpers/extract.js');
-const jwtSecret = require('../config/settings').jwtSecret;
-const jwt= require('jsonwebtoken');
 
 require('../config/passport');
 
@@ -26,72 +23,52 @@ UserController.createNewUser = function(req, res, next) {
 };
 
 UserController.updateUser = function(req, res) {
-    jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
-        if (err) {
-            return res.status(500).json({
-                error: 'An unknown error occurred'
-            });
-        } else {
-            User.findById(decoded.id)
-            .then(user => {
-                if (!user) {
-                    return res.status(404).json({
-                        error: 'Unable to find a user with given information.'
-                    });
-                }
-
-                // start saving updated user details
-                if (req.body.email) {
-                    user.local.email = req.body.email;
-                }
-                if (req.body.username) {
-                    user.username = req.body.username;
-                }
-                if (req.body.password && req.body.password.length > 5) {
-                    user.local.password = user.generateHash(req.body.password);
-                }
-
-                user.save()
-                    .then(() => {
-                        return res.status(204).json({
-                            success: 'User updated successfully!'
-                        });
-                    })
-                    .catch(() => {
-                        return res.status(500).json({
-                            error: 'Something unexpected happened.'
-                        });
-                    });
-            })
-            .catch(() => {
-                return res.status(500).json({
-                    error: 'Something unexpected happened.'
-                });
-            });
+    User.findById(req.locals.decoded.id)
+    .then(user => {
+        if (!user) {
+            throw 'Unable to find a user with given information.';
         }
+
+        // start saving updated user details
+        if (req.body.email) {
+            user.local.email = req.body.email;
+        }
+        if (req.body.username) {
+            user.username = req.body.username;
+        }
+        if (req.body.password && req.body.password.length > 5) {
+            user.local.password = user.generateHash(req.body.password);
+        }
+
+        return user.save();
+    })
+    .then(() => {
+        return res.status(204).json({
+            success: 'User updated successfully!'
+        });
+    })
+    .catch(err => {
+        return res.status(500).json({
+            error: err
+        });
     });
 };
 
 UserController.deleteUser = function(req, res) {
-    User.findById(req.params.id)
-        .then(user => {
-            user.remove()
-                .then(() => {
-                    return res.status(204).json({
-                        success: 'User deleted successfully!'
-                    });
-                })
-                .catch(() => {
-                    return res.status(500).json({
-                        error: 'Something unexpected happened.'
-                    });
-                });
-        })
-        .catch(() => {
-            return res.status(500).json({
-                error: 'Something unexpected happened.'
-            });
+    User.findById(req.locals.decoded.id)
+    .then(user => {
+        return user.remove();  
+    })
+    .then(() => {
+        return res.status(204).json({
+            success: 'User deleted successfully!'
         });
+    })
+    .catch(() => {
+        return res.status(500).json({
+            error: 'Something unexpected happened.'
+        });
+    });
 };
 
 UserController.findUser = function(req, res) {

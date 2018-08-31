@@ -50,7 +50,11 @@ class Friends extends React.Component {
     }
 
     searchFriends() {
-        Axios.get(`/friends?friend=${this.state.search}`)
+        Axios.get(`/friends?friend=${this.state.search}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
         .then(res => {
             return Axios.post(`/friends/${res.data.friend.id}`, {}, {
                 headers: {
@@ -177,18 +181,30 @@ class Friends extends React.Component {
                         />
                     </form>
                     <div className="YourFriends">
-                        <div>
-                            <h3>Friends</h3>
-                            <List>
-                                {friends}
-                            </List>
-                        </div>
-                        <div>
-                            <h3>Pending</h3>
-                            <List>
-                                {pending}
-                            </List>
-                        </div>
+                    { this.state.friends.length === 0 && this.state.pending.length === 0
+                        ?   <div>
+                                <h3>Looks like you have no friends yet, use the bar above to add one!</h3>
+                            </div>
+                        :   null
+                    }
+                    { this.state.friends.length > 0
+                        ?   <div>
+                                <h3>Friends</h3>
+                                <List>
+                                    {friends}
+                                </List>
+                            </div>
+                        :   null
+                    }
+                    { this.state.pending.length > 0
+                        ?   <div>
+                                <h3>Pending</h3>
+                                <List>
+                                    {pending}
+                                </List>
+                            </div>
+                        :   null
+                    }
                     </div>
                 </div>
             </div>
