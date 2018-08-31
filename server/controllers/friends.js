@@ -57,7 +57,7 @@ friendsController.addFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
             return res.status(500).json({
-                error: 'Something unexpected happened.1'
+                error: 'Something unexpected happened.'
             });
         } else {
             User.findById(decoded.id)
@@ -114,29 +114,25 @@ friendsController.addFriend = function(req, res) {
 friendsController.removeFriend = function(req, res) {
     jwt.verify(extractJwt(req), jwtSecret, function(err, decoded) {
         if (err) {
+            console.log(err);
             return res.status(500).json({
                 error: 'Something unexpected happened.'
             });
         } else {
             User.update({ _id: decoded.id}, { $pull: { 'friends': { friend_id: req.params.id }}}, { safe: true, multi: false })
-                .then(() => {
-                    User.update({ _id: req.params.id }, { $pull: { 'friends': { friend_id: decoded.id }}}, { safe: true, multi: false })
-                        .then(() => {
-                            return res.status(204).json({
-                                success: 'Friend removed!'
-                            });
-                        })
-                        .catch(() => {
-                            return res.status(500).json({
-                                error: 'Something unexpected happened.'
-                            });
-                        });
-                })
-                .catch(() => {
-                    return res.status(500).json({
-                        error: 'Something unexpected happened.'
-                    });
+            .then(() => {
+                return User.update({ _id: req.params.id }, { $pull: { 'friends': { friend_id: decoded.id }}}, { safe: true, multi: false });
+            })
+            .then(() => {
+                return res.status(200).json({
+                    success: 'Friend removed!'
                 });
+            })
+            .catch(err => {
+                return res.status(500).json({
+                    error: err
+                });
+            });
         }
     });
 };
@@ -152,46 +148,29 @@ friendsController.acceptFriend = function(req, res) {
 
                     user.friends[myFriendIndex].accepted = true;
 
-                    user.save()
-                        .then(() => {
-                            User.findById(req.params.id)
-                                .then(friend => {
-                                    var myIndex = friend.friends.findIndex(friend => friend.friend_id.toString() === decoded.id);
-                                
-                                    friend.friends[myIndex].accepted = true;
-
-                                    friend.save()
-                                        .then(() => {
-                                            return res.status(204).json({
-                                                success: 'Accepted friend request.'
-                                            });
-                                        })
-                                        .catch(() => {
-                                            return res.status(500).json({
-                                                error: 'Something unexpected happened.'
-                                            });
-                                        });
-                                })
-                                .catch(() => {
-                                    return res.status(500).json({
-                                        error: 'Something unexpected happened.'
-                                    });
-                                });
-                        })
-                        .catch(() => {
-                            return res.status(500).json({
-                                error: 'Something unexpected happened.'
-                            });
-                        });
+                    return user.save();
                 } else {
-                    return res.status(400).json({
-                        error: 'You\'ve already accepted this friend request. Please wait for the other user to accept it.'
-                    });
+                    throw 'You\'ve already accepted this friend request. Please wait for the other user to accept it.';
                 }
             })
-            .catch(() => {
+            .then(() => {
+                return User.findById(req.params.id);
+            })
+            .then(friend => {
+                var myIndex = friend.friends.findIndex(friend => friend.friend_id.toString() === decoded.id);
+            
+                friend.friends[myIndex].accepted = true;
+
+                return friend.save();
+            })
+            .then(() => {
+                return res.status(200).json({
+                    success: 'Accepted friend request.'
+                });
+            })
+            .catch(err => {
                 return res.status(500).json({
-                    error: 'Something unexpected happened.'
+                    error: err
                 });
             });
     });
