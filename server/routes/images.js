@@ -4,7 +4,7 @@ const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const imageController = require('../controllers/images');
-const confirmUserIsValid = require('../helpers/confirm');
+const Verify = require('../helpers/verify');
 
 aws.config.update({
     secretAccessKey: process.env.AWS_SECRET || process.env.aws_secret_access_key,
@@ -24,19 +24,19 @@ const upload = multer({
     })
 });
 
-router.get('/images', (req, res, next) =>
+router.get('/images', Verify, (req, res, next) =>
 imageController.getImages(req, res, next));
 
 // retrieve a single image with a presigned url
-router.get('/images/:id', (req, res, next) =>
+router.get('/images/:id', Verify, (req, res, next) =>
 imageController.getSingleImage(req, res, next));
 
 // upload an image
-router.post('/images', confirmUserIsValid, upload.single('image'), (req, res, next) =>
+router.post('/images', Verify, upload.single('image'), (req, res, next) =>
 imageController.uploadImage(req, res, next));
 
 // delete an image
-router.delete('/images/:id', (req, res, next) =>
+router.delete('/images/:id', Verify, (req, res, next) =>
 imageController.deleteImage(req, res, next));
 
 module.exports = router;

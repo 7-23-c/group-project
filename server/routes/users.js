@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/users');
-const Authorize = require('../helpers/authorize');
+const Verify = require('../helpers/verify');
 
 //forgot password
 router.put('/users/forgotpassword', (req, res) => 
@@ -20,11 +20,11 @@ router.post('/users', (req, res, next) =>
 UserController.createNewUser(req, res, next));
 
 // update a user
-router.put('/users', (req, res, next) =>
+router.put('/users', Verify, (req, res, next) =>
 UserController.updateUser(req, res, next));
 
 // delete a user
-router.delete('/users/:id', Authorize, (req, res, next) =>
+router.delete('/users/:id', Verify, (req, res, next) =>
 UserController.deleteUser(req, res, next));
 
 
