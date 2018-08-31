@@ -8,6 +8,7 @@
     margin: 0 auto;
     background-color: #00A4D7;
     padding: 15px 5px;
+    position: relative;
 }
 
 .Beacon h3 {
@@ -42,4 +43,12 @@ img.modalImage {
 
 .Beacon .images img:hover {
     cursor: pointer;
+}
+
+.message {
+    color: #28d328;
+}
+
+.SettingsIcon {
+    position: absolute; top: 0; right: 10px;
 }

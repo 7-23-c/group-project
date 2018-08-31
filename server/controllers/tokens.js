@@ -20,17 +20,15 @@ TokenController.checkToken = function(req, res) {
     User.findOne({ resetPassLink: req.body.resetToken })
     .then(user => {
         if (!user) {
-            return res.status(500).json({
-                message: 'Token is invalid.'
-            });
+            throw 'Password reset link expired or doesn\'t exist.';
         }
         return res.status(200).json({
             message: 'Token is valid.'
         });
     })
-    .catch(() => {
+    .catch(err => {
         return res.status(500).json({
-            error: 'Password reset link expired'
+            error: err
         });
     });
 };
